@@ -71,7 +71,67 @@ void testSort() {
     printarr(notInOrder, 5);
 }
 
+/*
+ * This function times the execution time of insertion sort on a given array.
+ * It uses a timing method described here: https://stackoverflow.com/questions/5248915/execution-time-of-c-program
+ * arr - The array to sort
+ * length - Length of the array
+ */
+ double timeInsertionSort(int arr[], int length) {
+
+    clock_t begin = clock();      // start timer
+    insertionSort(arr, length);   // execute sort
+    clock_t end = clock();        // stop timer
+        
+    double timeSpent = ((double)(end - begin)) / CLOCKS_PER_SEC;  // in seconds
+    timeSpent *= 1000.0;  // in milliseconds
+
+    return timeSpent;
+}
+
+/*
+ * Gets the average runtime of insertionSort after initializing one of given length
+ * with random integers.
+ * times - The number of times to run the test
+ * length - The length of the array to test
+ */
+double getAvgTime(int times, int length) {
+    
+    double total = 0.0;
+    for (int i = 0; i < times; i++) {
+        srand(28);  // every array will have the same numbers
+        
+        // initialize array and fill with random numbers
+        int arr[length];
+        for (int j = 0; j < length; j++) {
+            arr[j] = rand();
+        }
+
+        // get time of one run and add to total
+        double timeOfRun = timeInsertionSort(arr, length);
+        total += timeOfRun;
+    }
+
+    // return the average
+    return total / (double)times;
+}
+
 int main() {
-    testSort();
-    return 0;
+
+    // Output statistics
+    printf("--------------------\n");
+    printf("SLOW SORT: INSERTION\n");
+    printf("--------------------\n");
+    printf("30 runs\n");
+
+    // Large array
+    printf("Large:\t10000 elements\t %.3f msecs\n", getAvgTime(30, 10000));
+    
+    // Medium array
+    printf("Med:\t1000 elements\t %.3f msecs\n", getAvgTime(30, 1000));
+    
+    // Small array
+    printf("Small:\t10 elements\t %.3f msecs\n", getAvgTime(30, 10));
+    
+    printf("\n");  // extra newline for clarity
 }
