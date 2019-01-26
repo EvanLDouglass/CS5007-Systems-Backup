@@ -29,6 +29,13 @@ int main() {
     // int* p;
     // *p = 3;
     // this code will corrupt memory
+    //
+    // Also scope matters
+    // And NEVER return an address location from a function unless it is of
+    // a global variable (and even then be cautious)
+    //
+    // Can use pointers as parameters in functions to share data
+    // (be cautious with this too, but can be helpful).
 
 
     return 0;
