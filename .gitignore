@@ -6,6 +6,7 @@ Makefile~
 .gitignore~
 
 # Ignore individual binary files
-~/evandouglass/a1/hello
-~/evandouglass/a2/slowsort
-~/evandouglass/a2/fastsort
+a1/hello
+a2/slowsort
+a2/fastsort
+a3/pointers
