@@ -38,7 +38,7 @@ void small(Name* name) {
 }
 
 void formatName(Name* name, char format) {
-    switch(format) {
+    switch (format) {
         case 'B':
         case 'b':
             big(name);
@@ -70,8 +70,7 @@ void fillName(Name* name, char format, char* dest) {
     char* comma = ", ";   // for last format
 
     // Main work
-    switch(format) {
-
+    switch (format) {
         // big
         case 'B':
         case 'b':
@@ -115,7 +114,6 @@ void fillName(Name* name, char format, char* dest) {
             strcat(dest, space);
             // Middle initial if exists
             if (name->middle) {
-
                 // Make middle initial string
                 char midInitial[4];
                 midInitial[0] = name->middle[0];
@@ -144,17 +142,18 @@ void fillName(Name* name, char format, char* dest) {
 
 void listByName(Name* n1, Name* n2, Name* n3, char format) {
     // Make an array of strings
-    char names[3][80];  // Not sure of a better way to do this yet. For now names limited to 80 chars.
+    // For now names limited to 80 chars. Not sure of a better way yet.
+    char names[3][80];
 
     // Use fillName to put each name into appropriate format
     fillName(n1, format, names[0]);
     fillName(n2, format, names[1]);
     fillName(n3, format, names[2]);
-    
+
     // Use selection sort to get the names in order.
     // Proceedure taken from "Algorithms Unlocked" textbook.
     // Speed not important since we are guaranteed only 3 strings
-    for (int i = 0; i < 2; i++) {         // loops through first two strings    
+    for (int i = 0; i < 2; i++) {         // loops through first two strings
         // Find smallest string in each round
         int smallestIndex = i;
         for (int j = i+1; j < 3; j++) {

@@ -7,4 +7,4 @@ run: build
 	./a3
 
 clean: 
-	rm a3
+	rm a3 pointers *.c~ Makefile~
