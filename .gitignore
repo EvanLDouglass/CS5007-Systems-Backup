@@ -1,5 +1,6 @@
 # Ignore temporary files and intermediate compiled files
 *.c~
+*.h~
 *.o
 *.a
 Makefile~
@@ -11,3 +12,5 @@ a2/slowsort
 a2/fastsort
 a3/pointers
 a3/a3
+a4/deck
+a4/a4

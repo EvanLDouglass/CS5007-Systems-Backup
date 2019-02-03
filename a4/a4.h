@@ -33,10 +33,10 @@ struct game_score{
 	int player2_score; 
 };
 
-typedef struct score GameScore; 
+typedef struct game_score GameScore; 
 
 
-typedef struct card_node CardNode; 
+typedef struct card_node CardNode;
 
 struct card_node{
 	CardNode *nextCard; 
