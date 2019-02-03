@@ -4,7 +4,8 @@
  * Author: Evan Douglass
  * Date Created: Feb. 02 2019
  *
- * This file implements a Deck for our NEUcher card game as a stack.
+ * This file implements a Deck for our NEUcher card game as an
+ * array-based stack.
  */
 
 #include <stdio.h>
@@ -50,6 +51,8 @@ Deck* pushCardToDeck(Card* card, Deck* deck) {
 
 // Peek at top card w/o removing
 Card* peekAtTopCard(Deck* deck) {
+    assert(!isDeckEmpty(deck));
+
     Card* top = deck->cards[deck->topCard];
     return top;
 }
@@ -57,13 +60,20 @@ Card* peekAtTopCard(Deck* deck) {
 
 // Removes and returns the top card
 Card* popCardFromDeck(Deck* deck) {
+    assert(!isDeckEmpty(deck));
 
+    Card* top = deck->cards[deck->topCard--];  // Decrements topCard for pop
+    return top;
 }
 
 
 // Tests for empty deck
 int isDeckEmpty(Deck* deck) {
-
+    if (deck->topCard < 0) {
+        return 1;  // true
+    } else {
+        return 0;  // false
+    }
 }
 
 
@@ -79,30 +89,3 @@ void destroyDeck(Deck* deck) {
    free(deck);
 }
 
-
-int main() {
-
-    Deck *deck = createDeck();
-    assert(deck->topCard < 1);
-
-    // test push
-    Card jackHearts = {JACK, HEARTS, 11};
-    Card queenClubs = {QUEEN, CLUBS, 12};
-    Card kingDiamonds = {KING, DIAMONDS, 13};
-    Card aceSpades = {ACE, SPADES, 14};
-
-    pushCardToDeck(&aceSpades, deck);
-    pushCardToDeck(&kingDiamonds, deck);
-    pushCardToDeck(&queenClubs, deck);
-    pushCardToDeck(&jackHearts, deck);
-
-    Card* A = peekAtTopCard(deck); 
-    assert(A == &jackHearts);
-    /*
-    Card* top = popCardFromDeck(deck);
-    Card* nextTop = peekAtTopCard(deck);
-
-    assert(top == jackHearts);
-    assert(nextTop == queenClubs);
-    */
-}
