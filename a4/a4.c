@@ -72,8 +72,28 @@ void addCardToHand(Card* card, Hand* hand) {
 }
 
 
-// Remove a card from the hand
+// Remove a card from the hand, returns NULL if card not in hand.
+// Deallocates CardNode
+// Caller is responsible for deallocating the card
 Card* removeCardFromHand(Card* card, Hand* hand) {
+
+    // Search for card
+    CardNode* targetNode = hand->firstCard;
+    while (targetNode->thisCard != card || targetNode->nextCard == NULL) {
+        targetNode = targetNode->nextCard;
+    }
+    
+    // Extra test in case we get to last card without finding the target
+    if (targetNode->thisCard == card) {
+        // Remove from list
+        targetNode->prevCard->nextCard = targetNode->nextCard;
+        targetNode->nextCard->prevCard = targetNode->prevCard;
+        free(targetNode);
+        
+        return targetNode->thisCard;  // same card as given in principle
+    } else {  // card was not found
+        return NULL;
+    }
 
 }
 
@@ -81,7 +101,7 @@ Card* removeCardFromHand(Card* card, Hand* hand) {
 // Tests for an empty hand
 int isHandEmpty(Hand* hand) {
     
-    if (!hand->firstCard) {  // first card is NULL
+    if (hand->firstCard == NULL) {
         return 1;  // deck is empty
     } else { 
         return 0;  // at least one card
@@ -93,7 +113,15 @@ int isHandEmpty(Hand* hand) {
 // Frees memory used by hand
 void destroyHand(Hand* hand) {
 
-    // TODO: Free cards
+    // Free cards
+    CardNode* card = hand->firstCard;
+    while (card != NULL) {
+        CardNode* dummyVar = card;  // Allows for further iteration
+        card = card->nextCard;
+
+        free(dummyVar);
+    }
+
     free(hand);
 }
 
