@@ -6,29 +6,24 @@
 #define assert(EXPRESSION) ((EXPRESSION) ? _assert_pass(#EXPRESSION, __FILE__, __LINE__) : \
                                            _assert_fail(#EXPRESSION, __FILE__, __LINE__))
 
-void _assert_fail(const char* expression, const char* file, int line)
-{
+void _assert_fail(const char* expression, const char* file, int line) {
   fprintf(stderr, "\n**** Assertion '%s' FAILED, file '%s' line '%d' *******.\n", expression, file, line);
 }
 
-void _assert_pass(const char *expression, const char *file, int line)
-{
+void _assert_pass(const char *expression, const char *file, int line) {
   fprintf(stdout, "Assertion '%s' passed, file '%s' line '%d'.\n", expression, file, line);
 }
 
-void start_test(const char *test)
-{
+void start_test(const char *test) {
   static int count = 1;
   printf("Test #%d: %s\n\n", count++, test);
 }
 
-void end_test()
-{
+void end_test() {
   printf("\n--------------------------------\n\n");
 }
 
-void test_create_deck()
-{
+void test_create_deck() {
   start_test("create_deck");
 
   Deck *deck = createDeck();
@@ -48,17 +43,16 @@ void test_create_deck()
   end_test();
 }
 
-void test_push_card_to_deck()
-{
+void test_push_card_to_deck() {
   start_test("push_card_to_deck");
 
   Deck *deck = createDeck();
 
   Card card1 = {NINE, HEARTS, -1};
-  int top = deck->topCard; 
+  int top = deck->topCard;
 
   pushCardToDeck(&card1, deck);
-  top += 1; 
+  top += 1;
   assert(deck->cards[0] == &card1);
   // The index pointing at the top card should increment by 1
   assert(deck->topCard == top);
@@ -66,7 +60,7 @@ void test_push_card_to_deck()
   Card card2 = {JACK, CLUBS, -1};
 
   pushCardToDeck(&card2, deck);
-  top += 1; 
+  top += 1;
   assert(deck->cards[0] == &card1);
   assert(deck->cards[1] == &card2);
   assert(deck->topCard == top);
@@ -76,7 +70,7 @@ void test_push_card_to_deck()
   int i = 2;
   for(; i < NUM_CARDS_IN_DECK; i++) {
     pushCardToDeck(&card3, deck);
-    top += 1; 
+    top += 1;
     assert(deck->topCard == top);
   }
 
@@ -98,8 +92,7 @@ void test_push_card_to_deck()
   end_test();
 }
 
-void test_populate_deck()
-{
+void test_populate_deck() {
   start_test("populate_deck");
 
   int is_deck_populated = 0;
@@ -108,13 +101,13 @@ void test_populate_deck()
   Name n = NINE;
 
   Deck *deck = populateDeck();
-  
+
 
   // deck should be populated in order
   // and not shuffled at this stage
-  // If this test is failing for you, 
-  // there's a more efficient way to populate 
-  // your deck :) 
+  // If this test is failing for you,
+  // there's a more efficient way to populate
+  // your deck :)
   for(; s <= DIAMONDS; s++) {
     for(; n <= ACE; n++) {
       assert(deck->cards[i]->suit == s);
@@ -131,11 +124,10 @@ void test_populate_deck()
   end_test();
 }
 
-void test_peek_at_top_card()
-{
+void test_peek_at_top_card() {
   start_test("peek_at_top_deck");
 
-  Deck *emptyDeck = createDeck(); 
+  Deck *emptyDeck = createDeck();
 
   //empty deck peek should return NULL
   assert(peekAtTopCard(emptyDeck) == NULL);
@@ -185,8 +177,7 @@ void test_peek_at_top_card()
   end_test();
 }
 
-void test_pop_card_from_deck()
-{
+void test_pop_card_from_deck() {
   start_test("pop_card_from_deck");
 
   Deck *deck = createDeck();
@@ -212,8 +203,7 @@ void test_pop_card_from_deck()
   end_test();
 }
 
-void test_is_deck_empty()
-{
+void test_is_deck_empty() {
   start_test("is_deck_empty");
 
   Deck *deck = createDeck();
@@ -238,15 +228,13 @@ void test_is_deck_empty()
   end_test();
 }
 
-void test_shuffle()
-{
+void test_shuffle() {
   start_test("test_shuffle");
 
   end_test();
 }
 
-void test_add_card_to_hand()
-{
+void test_add_card_to_hand() {
   start_test("add_card_to_hand");
 
   Hand hand;
@@ -276,8 +264,7 @@ void test_add_card_to_hand()
   end_test();
 }
 
-void test_remove_card_from_hand()
-{
+void test_remove_card_from_hand() {
   start_test("remove_card_from_hand");
 
   Hand hand;
@@ -335,8 +322,7 @@ void test_remove_card_from_hand()
   end_test();
 }
 
-void test_deal()
-{
+void test_deal() {
   start_test("deal");
 
   Deck *deck = populateDeck();
@@ -399,8 +385,7 @@ void test_deal()
   end_test();
 }
 
-void test_is_legal_move()
-{
+void test_is_legal_move() {
   start_test("is_legal_move");
 
   Hand hand;
@@ -438,8 +423,7 @@ void test_is_legal_move()
   end_test();
 }
 
-void test_who_won()
-{
+void test_who_won() {
   start_test("create_deck");
 
   Card card1 = {QUEEN, HEARTS, -1};
@@ -456,26 +440,22 @@ void test_who_won()
   end_test();
 }
 
-void test_get_best_move()
-{
+void test_get_best_move() {
   start_test("get_best_move");
   end_test();
 }
 
-void test_sort_hand()
-{
+void test_sort_hand() {
   start_test("sort_hand");
   end_test();
 }
 
-void test_shuffle_hand()
-{
+void test_shuffle_hand() {
   start_test("shuffle_hand");
   end_test();
 }
 
-int main(void)
-{
+int main(void) {
   srand(21774);
 
   test_create_deck();

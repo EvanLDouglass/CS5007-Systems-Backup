@@ -29,7 +29,7 @@ Hand* createHand() {
     assert(hand);  // test for malloc failure
 
     // initialize fields
-    hand->num_cards_in_hand = NUM_CARDS_IN_HAND;
+    hand->num_cards_in_hand = 0;
     hand->firstCard = NULL;
 
     // Return hand pointer
@@ -40,6 +40,9 @@ Hand* createHand() {
 
 // Add a card to the hand
 void addCardToHand(Card* card, Hand* hand) {
+
+    // Ensure hand is under the card limit
+    assert(hand->num_cards_in_hand < NUM_CARDS_IN_HAND);
 
     // Allocate card node memory
     CardNode* node = (CardNode*)malloc(sizeof(CardNode));
@@ -57,7 +60,8 @@ void addCardToHand(Card* card, Hand* hand) {
         // Set node as firstCard
         hand->firstCard = node;
 
-    } else {  // If hand is not empty
+    // If hand is not empty
+    } else {
         // Find the last card
         CardNode* lastCard = hand->firstCard;
         while (!(lastCard->nextCard == NULL)) {
@@ -69,6 +73,10 @@ void addCardToHand(Card* card, Hand* hand) {
         node->prevCard = lastCard;
         node->nextCard = NULL;
     }
+    
+    // Increment num cards in hand after successful addition
+    hand->num_cards_in_hand++;
+
 }
 
 
@@ -77,9 +85,12 @@ void addCardToHand(Card* card, Hand* hand) {
 // Caller is responsible for deallocating the card
 Card* removeCardFromHand(Card* card, Hand* hand) {
 
+    // Ensure hand is not empty
+    assert(hand->num_cards_in_hand > 0);
+
     // Search for card
     CardNode* targetNode = hand->firstCard;
-    while (targetNode->thisCard != card || targetNode->nextCard == NULL) {
+    while (targetNode->thisCard != card || targetNode->nextCard != NULL) {
         targetNode = targetNode->nextCard;
     }
     
@@ -89,19 +100,20 @@ Card* removeCardFromHand(Card* card, Hand* hand) {
         targetNode->prevCard->nextCard = targetNode->nextCard;
         targetNode->nextCard->prevCard = targetNode->prevCard;
         free(targetNode);
-        
+        hand->num_cards_in_hand--;
+
         return targetNode->thisCard;  // same card as given in principle
+
     } else {  // card was not found
         return NULL;
     }
-
 }
 
 
 // Tests for an empty hand
 int isHandEmpty(Hand* hand) {
     
-    if (hand->firstCard == NULL) {
+    if (hand->num_cards_in_hand == 0 || hand->firstCard == NULL) {
         return 1;  // deck is empty
     } else { 
         return 0;  // at least one card
@@ -113,19 +125,105 @@ int isHandEmpty(Hand* hand) {
 // Frees memory used by hand
 void destroyHand(Hand* hand) {
 
-    // Free cards
-    CardNode* card = hand->firstCard;
-    while (card != NULL) {
-        CardNode* dummyVar = card;  // Allows for further iteration
-        card = card->nextCard;
-
-        free(dummyVar);
+    if (!isHandEmpty(hand)) {
+        // Free cards if there are any
+        CardNode* card = hand->firstCard;
+        while (card != NULL) {
+            CardNode* dummyVar = card;  // Allows for further iteration
+            card = card->nextCard;
+    
+            free(dummyVar);
+        }
     }
 
     free(hand);
 }
 
+
+/*
+ * Game Functions
+ */
+
+// Determines if a given suit is in a hand
+int isSuitInHand(Hand* hand, Suit givenSuit) {
+
+    // Ensure hand isn't empty
+    assert(!isHandEmpty(hand));
+    CardNode* node = hand->firstCard;
+
+    // Compare given suit to cards in hand
+    for (int i = 0; i < hand->num_cards_in_hand; i++) {
+        if (node->thisCard->suit == givenSuit) {
+            return 1;  // suit is in hand
+        }
+        // Not the same suit -> move to next card
+        node = node->nextCard;
+    }
+
+    // If while loop ends normally, suit is not in hand
+    return 0;
+
+}
+
+
+// Determines if a move is legal in NEUcher
+int isLegalMove(Hand* hand, Card* leadCard, Card* playedCard) {
+    
+    // Find suit of lead card
+    Suit suitOfLead = leadCard->suit;
+
+    // If playedCard is same suit -> move is legal
+    if (playedCard->suit == suitOfLead) {
+        return 1;
+
+    // No cards in hand -> move is legal
+    } else if (hand->num_cards_in_hand == 0) {
+        return 1;
+
+    } else {
+        // No cards of same suit in hand -> move is legal
+        // Card of same suit in hand -> not legal
+        return isSuitInHand(hand, suitOfLead);
+    }
+}
+
+
+// Determines the winner of one play
+int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
+
+    int winner;  // 1 if lead wins, 0 if followed wins
+
+    // Same suit -> higher card wins, tie to lead
+    if (leadCard->suit == followedCard->suit) {
+        // Lead wins
+        if (leadCard->value >= followedCard->value) {
+            winner = 1;
+
+        // Followed card wins
+        } else {  
+            winner = 0;
+        }
+        
+    // Diff suits
+    } else {
+        // Trump card played
+        if (followedCard->suit == trump) {
+            winner = 0;
+
+        // Trump card not played
+        } else {
+            winner = 1;
+        }
+    }
+
+    return winner;
+}
+
+/*
 int main() {
+
+    
 
     return 0;
 }
+*/
