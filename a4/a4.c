@@ -39,44 +39,40 @@ Hand* createHand() {
 
 
 // Add a card to the hand
+// Builds a linked list, acting as a stack
 void addCardToHand(Card* card, Hand* hand) {
 
-    // Ensure hand is under the card limit
-    assert(hand->num_cards_in_hand < NUM_CARDS_IN_HAND);
+    if (hand->num_cards_in_hand < NUM_CARDS_IN_HAND) {
+        // Allocate card node memory
+        CardNode* node = (CardNode*)malloc(sizeof(CardNode));
+        assert(node);
 
-    // Allocate card node memory
-    CardNode* node = (CardNode*)malloc(sizeof(CardNode));
-    assert(node);
+        // Connect node with card
+        node->thisCard = card;
 
-    // Connect node with card
-    node->thisCard = card;
+        // If hand is empty
+        if (hand->firstCard == NULL) {
+            // Initialize prev/next fields to NULL
+            node->nextCard = NULL;
+            node->prevCard = NULL;
 
-    // If hand is empty
-    if (hand->firstCard == NULL) {
-        // Initialize prev/next fields to NULL
-        node->nextCard = NULL;
-        node->prevCard = NULL;
+            // Set node as firstCard
+            hand->firstCard = node;
 
-        // Set node as firstCard
-        hand->firstCard = node;
+        // If hand is not empty
+        } else {
+            // Set new node as the first node
+            CardNode* crntFirst = hand->firstCard;
+            crntFirst->prevCard = node;
 
-    // If hand is not empty
-    } else {
-        // Find the last card
-        CardNode* lastCard = hand->firstCard;
-        while (!(lastCard->nextCard == NULL)) {
-            lastCard = lastCard->nextCard;            
+            node->nextCard = crntFirst;
+            node->prevCard = NULL;
+            hand->firstCard = node;
         }
-
-        // Set new node as the last node 
-        lastCard->nextCard = node;
-        node->prevCard = lastCard;
-        node->nextCard = NULL;
-    }
     
-    // Increment num cards in hand after successful addition
-    hand->num_cards_in_hand++;
-
+        // Increment num cards in hand after successful addition
+        hand->num_cards_in_hand++;
+    }
 }
 
 
@@ -85,27 +81,51 @@ void addCardToHand(Card* card, Hand* hand) {
 // Caller is responsible for deallocating the card
 Card* removeCardFromHand(Card* card, Hand* hand) {
 
-    // Ensure hand is not empty
-    assert(hand->num_cards_in_hand > 0);
-
-    // Search for card
-    CardNode* targetNode = hand->firstCard;
-    while (targetNode->thisCard != card || targetNode->nextCard != NULL) {
-        targetNode = targetNode->nextCard;
-    }
+    // Ensure hand has more than 0 cards. Do nothing if hand is empty
+    if (hand->num_cards_in_hand > 0) {
+        // Search for card
+        CardNode* targetNode = hand->firstCard;
+        while (targetNode->thisCard != card && targetNode->nextCard != NULL) {
+            targetNode = targetNode->nextCard;
+        }
     
-    // Extra test in case we get to last card without finding the target
-    if (targetNode->thisCard == card) {
-        // Remove from list
-        targetNode->prevCard->nextCard = targetNode->nextCard;
-        targetNode->nextCard->prevCard = targetNode->prevCard;
-        free(targetNode);
-        hand->num_cards_in_hand--;
+        // Extra test in case we get to last card without finding the target
+        if (targetNode->thisCard == card) {
+            // Remove from list
+            CardNode* prev = targetNode->prevCard;
+            CardNode* next = targetNode->nextCard;
 
-        return targetNode->thisCard;  // same card as given in principle
+            // Case: middle card is target
+            if (prev != NULL && next != NULL) {
+                prev->nextCard = targetNode->nextCard;
+                next->prevCard = targetNode->prevCard;
 
-    } else {  // card was not found
-        return NULL;
+            // Case: first card is target
+            } else if (prev == NULL && next != NULL) {
+                next->prevCard = NULL;
+                hand->firstCard = next;
+
+            // Case: last card is target
+            } else if (prev != NULL && next == NULL) {
+                prev->nextCard = NULL;
+
+            // Case: target is only card
+            } else {
+                hand->firstCard = NULL;
+            }
+
+            // Deallocate
+            free(targetNode);
+            targetNode = NULL;
+
+            // Decrement number of cards
+            hand->num_cards_in_hand--;
+
+            return card;
+
+        } else {  // card was not found
+            return NULL;
+        }
     }
 }
 

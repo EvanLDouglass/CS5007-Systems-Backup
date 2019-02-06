@@ -11,8 +11,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 #include "a4.h"
+//#include "a4_helpers.c"
 
 #define PRINT_DEBUG 1
 #define EMPTY -1
@@ -38,7 +40,10 @@ Card* createCard(Suit suit, Name name) {
 
 // Deallocates a card
 void destroyCard(Card* card) {
-    free(card);
+    if (card != NULL) {
+        free(card);
+        card = NULL;
+    }
 }
 
 
@@ -70,31 +75,36 @@ Deck* pushCardToDeck(Card* card, Deck* deck) {
 
     int index;
     
-    // If deck not full, increment topCard value
-    if (deck->topCard < NUM_CARDS_IN_DECK) {
+    // If deck not full, add card
+    // Do nothing if full
+    if (deck->topCard < NUM_CARDS_IN_DECK-1) {
         index = ++deck->topCard;
+        deck->cards[index] = card;
     }
-
-    // Add card to deck
-    deck->cards[index] = card;
-
+    
+    return deck;
 }
 
 
 // Peek at top card w/o removing
 Card* peekAtTopCard(Deck* deck) {
 
-    assert(!isDeckEmpty(deck));
+    if (isDeckEmpty(deck)) {
+        return NULL;
+    }
+
     Card* top = deck->cards[deck->topCard];
     return top;
-
 }
 
 
 // Removes and returns the top card
 Card* popCardFromDeck(Deck* deck) {
 
-    assert(!isDeckEmpty(deck));
+    if (isDeckEmpty(deck)) {
+        return NULL;
+    }
+
     Card* top = deck->cards[deck->topCard--];  // Decrements topCard for pop
     return top;
 
@@ -104,7 +114,7 @@ Card* popCardFromDeck(Deck* deck) {
 // Tests for empty deck
 int isDeckEmpty(Deck* deck) {
 
-    if (deck->topCard < 0) {
+    if (deck->topCard == -1) {
         return 1;  // true
     } else {
         return 0;  // false
@@ -116,14 +126,15 @@ int isDeckEmpty(Deck* deck) {
 // Frees the deck and cards in it from heap memory
 void destroyDeck(Deck* deck) {
 
-   // Free cards in deck
-   while (!isDeckEmpty(deck)) {
-        Card* card = popCardFromDeck(deck);
-        destroyCard(card);
-   }
+    // Free cards in deck
+    for (int i = 0; i < NUM_CARDS_IN_DECK; i++) {
+        if (deck->cards[i]) {
+            destroyCard(deck->cards[i]);
+        }
+    }
 
-   // Free deck
-   free(deck);
+    // Free deck
+    free(deck);
 
 }
 
@@ -132,8 +143,23 @@ void destroyDeck(Deck* deck) {
  * Game Functions
  */
 
+// Shuffles the cards in a given deck
+// Shuffle algorithm used from post on Piazza
 void shuffle(Deck* aDeck) {
+    
+    // Make rand unpredictable
+    srand(time(0));
 
+    // From bottom of deck to top
+    for (int i = NUM_CARDS_IN_DECK - 1; i > 0; i--) {
+        // Get random number in array range
+        int j = rand() % NUM_CARDS_IN_DECK;
+
+        // Swap values
+        Card* temp = aDeck->cards[i];
+        aDeck->cards[i] = aDeck->cards[j];
+        aDeck->cards[j] = temp;
+    }
 }
 
 
@@ -161,6 +187,12 @@ Deck* populateDeck() {
 
 /*
 int main() {
+    Deck* deck = populateDeck();
+    printDeck(deck);
+    shuffle(deck);
+    printDeck(deck);
+
+    destroyDeck(deck);
     return 0;
 }
 */
