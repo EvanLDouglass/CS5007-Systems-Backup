@@ -14,7 +14,6 @@
 #include <time.h>
 
 #include "a4.h"
-//#include "a4_helpers.c"
 
 #define PRINT_DEBUG 1
 #define EMPTY -1
@@ -63,7 +62,7 @@ Deck* createDeck() {
         // Set pointers to NULL
         deck->cards[i] = NULL;
     }
-    
+
     deck->topCard = EMPTY;
 
     return deck;
@@ -74,14 +73,14 @@ Deck* createDeck() {
 Deck* pushCardToDeck(Card* card, Deck* deck) {
 
     int index;
-    
+
     // If deck not full, add card
     // Do nothing if full
     if (deck->topCard < NUM_CARDS_IN_DECK-1) {
         index = ++deck->topCard;
         deck->cards[index] = card;
     }
-    
+
     return deck;
 }
 
@@ -107,7 +106,6 @@ Card* popCardFromDeck(Deck* deck) {
 
     Card* top = deck->cards[deck->topCard--];  // Decrements topCard for pop
     return top;
-
 }
 
 
@@ -119,7 +117,6 @@ int isDeckEmpty(Deck* deck) {
     } else {
         return 0;  // false
     }
-
 }
 
 
@@ -135,7 +132,6 @@ void destroyDeck(Deck* deck) {
 
     // Free deck
     free(deck);
-
 }
 
 
@@ -146,12 +142,12 @@ void destroyDeck(Deck* deck) {
 // Shuffles the cards in a given deck
 // Shuffle algorithm used from post on Piazza
 void shuffle(Deck* aDeck) {
-    
+
     // Make rand unpredictable
     srand(time(0));
 
     // From bottom of deck to top
-    for (int i = NUM_CARDS_IN_DECK - 1; i > 0; i--) {
+    for (int i = NUM_CARDS_IN_DECK - 1; i >= 0; i--) {
         // Get random number in array range
         int j = rand() % NUM_CARDS_IN_DECK;
 
@@ -185,14 +181,3 @@ Deck* populateDeck() {
     return deck;
 }
 
-/*
-int main() {
-    Deck* deck = populateDeck();
-    printDeck(deck);
-    shuffle(deck);
-    printDeck(deck);
-
-    destroyDeck(deck);
-    return 0;
-}
-*/

@@ -223,13 +223,32 @@ void test_is_deck_empty() {
   popCardFromDeck(deck);
   assert(isDeckEmpty(deck));
 
-  destroyDeck(deck);
+  free(deck);
 
   end_test();
 }
 
 void test_shuffle() {
   start_test("test_shuffle");
+
+  Deck* deck = populateDeck();
+
+  printDeck(deck);
+  printf("\n");
+
+  shuffle(deck);
+  printDeck(deck);
+  printf("\n");
+
+  shuffle(deck);
+  printDeck(deck);
+  printf("\n");
+
+  shuffle(deck);
+  printDeck(deck);
+  printf("\n");
+
+  destroyDeck(deck);;
 
   end_test();
 }
@@ -321,7 +340,7 @@ void test_remove_card_from_hand() {
 
   end_test();
 }
-
+/*
 void test_deal() {
   start_test("deal");
 
@@ -454,7 +473,7 @@ void test_shuffle_hand() {
   start_test("shuffle_hand");
   end_test();
 }
-
+*/
 int main(void) {
   srand(21774);
 
@@ -467,13 +486,14 @@ int main(void) {
   test_shuffle();
   test_add_card_to_hand();
   test_remove_card_from_hand();
+  /*
   test_deal();
   test_is_legal_move();
   test_who_won();
   test_get_best_move();
   test_sort_hand();
   test_shuffle_hand();
-
+    */
   return EXIT_SUCCESS;
 }
 

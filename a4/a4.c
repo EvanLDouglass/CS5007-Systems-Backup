@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h> 
+#include <time.h>
 #include <string.h>
 #include <assert.h>
 
@@ -34,7 +34,6 @@ Hand* createHand() {
 
     // Return hand pointer
     return hand;
-
 }
 
 
@@ -69,7 +68,7 @@ void addCardToHand(Card* card, Hand* hand) {
             node->prevCard = NULL;
             hand->firstCard = node;
         }
-    
+
         // Increment num cards in hand after successful addition
         hand->num_cards_in_hand++;
     }
@@ -88,7 +87,7 @@ Card* removeCardFromHand(Card* card, Hand* hand) {
         while (targetNode->thisCard != card && targetNode->nextCard != NULL) {
             targetNode = targetNode->nextCard;
         }
-    
+
         // Extra test in case we get to last card without finding the target
         if (targetNode->thisCard == card) {
             // Remove from list
@@ -132,13 +131,12 @@ Card* removeCardFromHand(Card* card, Hand* hand) {
 
 // Tests for an empty hand
 int isHandEmpty(Hand* hand) {
-    
+
     if (hand->num_cards_in_hand == 0 || hand->firstCard == NULL) {
         return 1;  // deck is empty
-    } else { 
+    } else {
         return 0;  // at least one card
     }
-
 }
 
 
@@ -151,11 +149,10 @@ void destroyHand(Hand* hand) {
         while (card != NULL) {
             CardNode* dummyVar = card;  // Allows for further iteration
             card = card->nextCard;
-    
+
             free(dummyVar);
         }
     }
-
     free(hand);
 }
 
@@ -182,13 +179,12 @@ int isSuitInHand(Hand* hand, Suit givenSuit) {
 
     // If while loop ends normally, suit is not in hand
     return 0;
-
 }
 
 
 // Determines if a move is legal in NEUcher
 int isLegalMove(Hand* hand, Card* leadCard, Card* playedCard) {
-    
+
     // Find suit of lead card
     Suit suitOfLead = leadCard->suit;
 
@@ -220,10 +216,10 @@ int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
             winner = 1;
 
         // Followed card wins
-        } else {  
+        } else {
             winner = 0;
         }
-        
+
     // Diff suits
     } else {
         // Trump card played
@@ -239,11 +235,3 @@ int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
     return winner;
 }
 
-/*
-int main() {
-
-    
-
-    return 0;
-}
-*/
