@@ -23,7 +23,6 @@
 
 // Creates and initializes a hand
 Hand* createHand() {
-
     // Create hand struct
     Hand* hand = (Hand*)malloc(sizeof(Hand));
     assert(hand);  // test for malloc failure
@@ -40,7 +39,6 @@ Hand* createHand() {
 // Add a card to the hand
 // Builds a linked list, acting as a stack
 void addCardToHand(Card* card, Hand* hand) {
-
     if (hand->num_cards_in_hand < NUM_CARDS_IN_HAND) {
         // Allocate card node memory
         CardNode* node = (CardNode*)malloc(sizeof(CardNode));
@@ -79,7 +77,6 @@ void addCardToHand(Card* card, Hand* hand) {
 // Deallocates CardNode
 // Caller is responsible for deallocating the card
 Card* removeCardFromHand(Card* card, Hand* hand) {
-
     // Ensure hand has more than 0 cards. Do nothing if hand is empty
     if (hand->num_cards_in_hand > 0) {
         // Search for card
@@ -131,7 +128,6 @@ Card* removeCardFromHand(Card* card, Hand* hand) {
 
 // Tests for an empty hand
 int isHandEmpty(Hand* hand) {
-
     if (hand->num_cards_in_hand == 0 || hand->firstCard == NULL) {
         return 1;  // deck is empty
     } else {
@@ -142,7 +138,6 @@ int isHandEmpty(Hand* hand) {
 
 // Frees memory used by hand
 void destroyHand(Hand* hand) {
-
     if (!isHandEmpty(hand)) {
         // Free cards if there are any
         CardNode* card = hand->firstCard;
@@ -153,6 +148,7 @@ void destroyHand(Hand* hand) {
             free(dummyVar);
         }
     }
+
     free(hand);
 }
 
@@ -163,7 +159,6 @@ void destroyHand(Hand* hand) {
 
 // Determines if a given suit is in a hand
 int isSuitInHand(Hand* hand, Suit givenSuit) {
-
     // Ensure hand isn't empty
     assert(!isHandEmpty(hand));
     CardNode* node = hand->firstCard;
@@ -184,7 +179,6 @@ int isSuitInHand(Hand* hand, Suit givenSuit) {
 
 // Determines if a move is legal in NEUcher
 int isLegalMove(Hand* hand, Card* leadCard, Card* playedCard) {
-
     // Find suit of lead card
     Suit suitOfLead = leadCard->suit;
 
@@ -206,7 +200,6 @@ int isLegalMove(Hand* hand, Card* leadCard, Card* playedCard) {
 
 // Determines the winner of one play
 int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
-
     int winner;  // 1 if lead wins, 0 if followed wins
 
     // Same suit -> higher card wins, tie to lead

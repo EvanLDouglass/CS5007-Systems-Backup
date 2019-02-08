@@ -25,7 +25,6 @@
 // Creates a Card
 // The caller must deallocate with destroyCard
 Card* createCard(Suit suit, Name name) {
-
     // Get memory for card and test successful allocation
     Card* card = (Card*)malloc(sizeof(Card));
     assert(card);
@@ -52,7 +51,6 @@ void destroyCard(Card* card) {
 
 // Creates a deck
 Deck* createDeck() {
-
     // Allocate space for deck
     Deck* deck = (Deck*)malloc(sizeof(Deck));
     assert(deck);
@@ -71,7 +69,6 @@ Deck* createDeck() {
 
 // Adds card to top of deck
 Deck* pushCardToDeck(Card* card, Deck* deck) {
-
     int index;
 
     // If deck not full, add card
@@ -87,7 +84,6 @@ Deck* pushCardToDeck(Card* card, Deck* deck) {
 
 // Peek at top card w/o removing
 Card* peekAtTopCard(Deck* deck) {
-
     if (isDeckEmpty(deck)) {
         return NULL;
     }
@@ -99,7 +95,6 @@ Card* peekAtTopCard(Deck* deck) {
 
 // Removes and returns the top card
 Card* popCardFromDeck(Deck* deck) {
-
     if (isDeckEmpty(deck)) {
         return NULL;
     }
@@ -111,7 +106,6 @@ Card* popCardFromDeck(Deck* deck) {
 
 // Tests for empty deck
 int isDeckEmpty(Deck* deck) {
-
     if (deck->topCard == -1) {
         return 1;  // true
     } else {
@@ -122,7 +116,6 @@ int isDeckEmpty(Deck* deck) {
 
 // Frees the deck and cards in it from heap memory
 void destroyDeck(Deck* deck) {
-
     // Free cards in deck
     for (int i = 0; i < NUM_CARDS_IN_DECK; i++) {
         if (deck->cards[i]) {
@@ -142,7 +135,6 @@ void destroyDeck(Deck* deck) {
 // Shuffles the cards in a given deck
 // Shuffle algorithm used from post on Piazza
 void shuffle(Deck* aDeck) {
-
     // Make rand unpredictable
     srand(time(0));
 
@@ -160,13 +152,11 @@ void shuffle(Deck* aDeck) {
 
 
 void deal(Deck* aDeck, Hand* p1hand, Hand* p2hand) {
-
 }
 
 
 // Create the cards and deck for a game
 Deck* populateDeck() {
-
     Deck* deck = createDeck();
 
     // Push all cards to deck, unshuffled
