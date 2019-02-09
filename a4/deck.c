@@ -152,6 +152,16 @@ void shuffle(Deck* aDeck) {
 
 
 void deal(Deck* aDeck, Hand* p1hand, Hand* p2hand) {
+    // Deal 5 cards to each hand
+    for (int i = 0; i < NUM_CARDS_IN_HAND; i++) {
+        // Take two cards from deck
+        Card* cardOne = popCardFromDeck(aDeck);
+        Card* cardTwo = popCardFromDeck(aDeck);
+
+        // Deal to each hand, respectively
+        addCardToHand(cardOne, p1hand);
+        addCardToHand(cardTwo, p2hand);
+    }
 }
 
 

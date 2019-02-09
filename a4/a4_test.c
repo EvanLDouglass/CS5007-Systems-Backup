@@ -109,7 +109,7 @@ void test_populate_deck() {
   // there's a more efficient way to populate
   // your deck :)
   for(; s <= DIAMONDS; s++) {
-    for(; n <= ACE; n++) {
+    for(n=NINE; n <= ACE; n++) {
       assert(deck->cards[i]->suit == s);
       assert(deck->cards[i++]->name == n);
     }
@@ -340,7 +340,7 @@ void test_remove_card_from_hand() {
 
   end_test();
 }
-/*
+
 void test_deal() {
   start_test("deal");
 
@@ -473,10 +473,10 @@ void test_shuffle_hand() {
   start_test("shuffle_hand");
   end_test();
 }
-*/
+
 int main(void) {
   srand(21774);
-
+  //Part 1 tests
   test_create_deck();
   test_push_card_to_deck();
   test_populate_deck();
@@ -486,14 +486,14 @@ int main(void) {
   test_shuffle();
   test_add_card_to_hand();
   test_remove_card_from_hand();
-  /*
+  // Part 2 tests
   test_deal();
   test_is_legal_move();
   test_who_won();
-  test_get_best_move();
-  test_sort_hand();
-  test_shuffle_hand();
-    */
+  //test_get_best_move();
+  //test_sort_hand();
+  //test_shuffle_hand();
+
   return EXIT_SUCCESS;
 }
 

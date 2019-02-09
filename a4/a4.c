@@ -159,20 +159,21 @@ void destroyHand(Hand* hand) {
 
 // Determines if a given suit is in a hand
 int isSuitInHand(Hand* hand, Suit givenSuit) {
-    // Ensure hand isn't empty
-    assert(!isHandEmpty(hand));
     CardNode* node = hand->firstCard;
 
-    // Compare given suit to cards in hand
-    for (int i = 0; i < hand->num_cards_in_hand; i++) {
-        if (node->thisCard->suit == givenSuit) {
-            return 1;  // suit is in hand
+    // Ensure hand isn't empty
+    if (node != NULL) {
+        // Compare given suit to cards in hand
+        for (int i = 0; i < hand->num_cards_in_hand; i++) {
+            if (node->thisCard->suit == givenSuit) {
+                return 1;  // suit is in hand
+            }
+            // Not the same suit -> move to next card
+            node = node->nextCard;
         }
-        // Not the same suit -> move to next card
-        node = node->nextCard;
     }
 
-    // If while loop ends normally, suit is not in hand
+    // If while loop ends normally or there are no cards, suit is not in hand
     return 0;
 }
 
@@ -186,14 +187,10 @@ int isLegalMove(Hand* hand, Card* leadCard, Card* playedCard) {
     if (playedCard->suit == suitOfLead) {
         return 1;
 
-    // No cards in hand -> move is legal
-    } else if (hand->num_cards_in_hand == 0) {
-        return 1;
-
     } else {
         // No cards of same suit in hand -> move is legal
         // Card of same suit in hand -> not legal
-        return isSuitInHand(hand, suitOfLead);
+        return !(isSuitInHand(hand, suitOfLead));
     }
 }
 
@@ -205,7 +202,7 @@ int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
     // Same suit -> higher card wins, tie to lead
     if (leadCard->suit == followedCard->suit) {
         // Lead wins
-        if (leadCard->value >= followedCard->value) {
+        if (leadCard->name >= followedCard->name) {
             winner = 1;
 
         // Followed card wins
@@ -228,3 +225,19 @@ int whoWon(Card* leadCard, Card* followedCard, Suit trump) {
     return winner;
 }
 
+
+// Returns all the cards in a hand to the deck
+// Side affect: Frees CardNodes
+// Does not free hand, that is left to destroyHand
+void returnHandToDeck(Hand* hand, Deck* deck) {
+    // For each card in hand
+    CardNode* node = hand->firstCard;
+    while (node != NULL) {
+        CardNode* nextNode = node->nextCard;  // current node is freed during remove
+        // remove the card from hand
+        Card* card = removeCardFromHand(node->thisCard, hand);
+        // put the card in the deck
+        pushCardToDeck(card, deck);
+        node = nextNode;
+    }
+}
