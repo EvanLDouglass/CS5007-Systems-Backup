@@ -53,7 +53,7 @@ void testPackChars() {
 }
 
 void testUnpackChars() {
-    char unpacked[20];
+    int unpacked[2];
 
     // Pack chars
     unsigned int Aa = packCharactersHelper(A, a);
@@ -63,16 +63,20 @@ void testUnpackChars() {
 
     // Unpack chars and test
     unpackCharactersHelper(Aa, unpacked);
-    assert(strcmp(unpacked, "16737: 'A', 'a'") == 0);
+    assert(unpacked[0] == 'A');
+    assert(unpacked[1] == 'a');
 
     unpackCharactersHelper(bB, unpacked);
-    assert(strcmp(unpacked, "25154: 'b', 'B'") == 0);
+    assert(unpacked[0] == 'b');
+    assert(unpacked[1] == 'B');
 
     unpackCharactersHelper(ac, unpacked);
-    assert(strcmp(unpacked, "24931: 'a', 'c'") == 0);
+    assert(unpacked[0] == 'a');
+    assert(unpacked[1] == 'c');
 
     unpackCharactersHelper(CB, unpacked);
-    assert(strcmp(unpacked, "17218: 'C', 'B'") == 0);
+    assert(unpacked[0] == 'C');
+    assert(unpacked[1] == 'B');
 
     printf("unpackCharacters passed all tests.\n");
 }
@@ -92,7 +96,7 @@ void testPower2() {
     assert(num4 == 8);
     assert(num5 == 12);
 
-    printf("power2 passed all test.\n");
+    printf("power2 passed all tests.\n");
 }
 
 int main() {

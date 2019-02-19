@@ -12,11 +12,16 @@
 #include "a5.h"
 
 // Prints the bits of a given value
-// This function provided by instructors
-void displayBits(unsigned value){
+// This function provided by instructors, but slightly modified
+// to allow for packed ints to be printed with a correct label.
+void displayBits(unsigned value, int isPacked) {
 	unsigned c, displayMask = 1 << 15; 
-
-	printf("%3c%7u = ", value, value); 
+    
+    if (isPacked) {
+        printf("Packed%7u = ", value);
+    } else {
+	    printf("%3c%7u = ", value, value); 
+    }
 
 	for(c=1; c<=16; c++){
 		putchar(value & displayMask ? '1' : '0'); 
@@ -27,6 +32,19 @@ void displayBits(unsigned value){
 		}
 	}
 	putchar('\n');
+}
+
+// Compresses two chars into an unsigned int. Prints the chars
+// before compression and the resulting int.
+void packCharacters(char c1, char c2) {
+    // Input chars
+    printf("Input\n=====\n");
+    displayBits(c1, 0);
+    displayBits(c2, 0);
+    
+    // Output packed chars
+    printf("Output\n======\n");
+    displayBits(packCharactersHelper(c1, c2), 1);
 }
 
 // Packs two chars into one 2 byte unsigned integer
@@ -43,10 +61,24 @@ unsigned int packCharactersHelper(char c1, char c2) {
     return packedChars;
 }
 
+// Unpacks chars from an unsigned int and prints the output
+void unpackCharacters(unsigned int packed) {
+    int results[2];
+
+    // Input packed chars
+    printf("Input\n=====\n");
+    displayBits(packed, 1);
+
+    // Output unpacked chars
+    unpackCharactersHelper(packed, results);
+    printf("Output\n======\n");
+    displayBits(results[0], 0);
+    displayBits(results[1], 0);
+}
+
 // Unpacks two chars from a 2 byte unsigned integer
-void unpackCharactersHelper(unsigned int packed, char* result) {
-    unsigned int startVal = packed;  // packed is modified below
-    unsigned int mask = 255;         // 00000000 111111111
+void unpackCharactersHelper(unsigned int packed, int* resultArr) {
+    unsigned int mask = 255;  // 00000000 111111111
     char c1, c2;
 
     // Get chars
@@ -54,11 +86,37 @@ void unpackCharactersHelper(unsigned int packed, char* result) {
     packed >>= 8;
     c1 = packed;         // first char added
 
-    // Make string
-    sprintf(result, "%u: '%c', '%c'", startVal, c1, c2);
+    resultArr[0] = c1;
+    resultArr[1] = c2;
 }
 
 // Returns a given number times 2 to a given power (x * 2^y)
 unsigned int power2Helper(unsigned int number, int pow) {
     return number << pow;
 }
+
+/*
+// Main used for testing wrapper functions.
+// Commented out after testing complete.
+int main() {
+    printf("=== Pack Characters ===\n");
+    packCharacters('A', 'a');
+    puts("");
+    packCharacters('4', 'I');
+    puts("");
+    packCharacters('*', 'z');
+    puts("");
+
+    printf("=== Unpack Characters ===\n");
+    unpackCharacters(16737);
+    puts("");
+    unpackCharacters(25154);
+    puts("");
+    unpackCharacters(24931);
+    puts("");
+    unpackCharacters(17218);
+    puts("");
+
+    return 0;
+}
+*/
