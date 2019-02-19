@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #include "a5.h"
 
@@ -33,10 +34,10 @@ void testPackChars() {
     assert(c == 99);
 
     // Pack chars
-    unsigned int Aa = packCharacters(A, a);
-    unsigned int bB = packCharacters(b, B);
-    unsigned int ac = packCharacters(a, c);
-    unsigned int CB = packCharacters(C, B);
+    unsigned int Aa = packCharactersHelper(A, a);
+    unsigned int bB = packCharactersHelper(b, B);
+    unsigned int ac = packCharactersHelper(a, c);
+    unsigned int CB = packCharactersHelper(C, B);
 
     // Test pack
     assert(Aa == 0x4161);  // 01000001 01100001
@@ -51,35 +52,38 @@ void testPackChars() {
     printf("packCharacters passed all tests.\n");
 }
 
-void testUnpackChars() { 
+void testUnpackChars() {
+    char unpacked[20];
+
     // Pack chars
-    unsigned int Aa = packCharacters(A, a);
-    unsigned int bB = packCharacters(b, B);
-    unsigned int ac = packCharacters(a, c);
-    unsigned int CB = packCharacters(C, B);
+    unsigned int Aa = packCharactersHelper(A, a);
+    unsigned int bB = packCharactersHelper(b, B);
+    unsigned int ac = packCharactersHelper(a, c);
+    unsigned int CB = packCharactersHelper(C, B);
 
-    // Unpack chars
-    char* A_a = unpackCharacters(16737);
-    char* b_B = unpackCharacters(25154);
-    char* a_c = unpackCharacters(24931);
-    char* C_B = unpackCharacters(17218);
+    // Unpack chars and test
+    unpackCharactersHelper(Aa, unpacked);
+    assert(strcmp(unpacked, "16737: 'A', 'a'") == 0);
 
-    // Tesk unpack
-    assert(strcmp(A_a, "16737: 'A', 'a'") == 0);
-    assert(strcmp(b_B, "25154: 'b', 'B'") == 0);
-    assert(strcmp(a_c, "24931: 'a', 'c'") == 0);
-    assert(strcmp(C_B, "17218: 'C', 'B'") == 0);
-   
+    unpackCharactersHelper(bB, unpacked);
+    assert(strcmp(unpacked, "25154: 'b', 'B'") == 0);
+
+    unpackCharactersHelper(ac, unpacked);
+    assert(strcmp(unpacked, "24931: 'a', 'c'") == 0);
+
+    unpackCharactersHelper(CB, unpacked);
+    assert(strcmp(unpacked, "17218: 'C', 'B'") == 0);
+
     printf("unpackCharacters passed all tests.\n");
 }
 
 void testPower2() {
     // Get powers
-    unsigned int num1 = power2(2, 2);
-    unsigned int num2 = power2(5, 3);
-    unsigned int num3 = power2(0, 4);
-    unsigned int num4 = power2(8, 0);
-    unsigned int num5 = power2(6, 1);
+    unsigned int num1 = power2Helper(2, 2);
+    unsigned int num2 = power2Helper(5, 3);
+    unsigned int num3 = power2Helper(0, 4);
+    unsigned int num4 = power2Helper(8, 0);
+    unsigned int num5 = power2Helper(6, 1);
 
     // Test calculations
     assert(num1 == 8);
@@ -92,8 +96,11 @@ void testPower2() {
 }
 
 int main() {
+    printf("Testing Bit Manipulation Functions\n");
+    printf("==================================\n");
     testPackChars();
-    //testUnpackChars();
-    //testPower2();
+    testUnpackChars();
+    testPower2();
+    printf("\n");
     return 0;
 }

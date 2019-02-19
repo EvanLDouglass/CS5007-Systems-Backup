@@ -10,14 +10,16 @@
  * ==========================
  */
 
+// Prints the given value's binary representation
+void displayBits(unsigned value);
+
 // Packs two characters into a single 2 byte unsigned variable.
-unsigned int packCharacters(char c1, char c2);
+unsigned int packCharactersHelper(char c1, char c2);
 
 // Unpacks two characters from a 2 byte unsigned integer that has been
-// previously packed.
-// Returns a string of the given integer and the resulting chars.
-char* unpackCharacters(unsigned int packed);
+// previously packed. Writes the result into a given char array.
+void unpackCharactersHelper(unsigned int packed, char* result);
 
 // Uses bit manipulation to calculate a number to a given power of two.
-unsigned int power2(unsigned int number, int pow);
+unsigned int power2Helper(unsigned int number, int pow);
 
