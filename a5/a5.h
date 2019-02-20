@@ -6,13 +6,13 @@
  */
 
 /*
- * Bit Manipulation Functions
- * ==========================
+ * Bit Manipulation Prototypes
+ * ===========================
  */
 
 // Prints the given value's binary representation.
 // Given by instructors, but modified to account for packed ints.
-void displayBits(unsigned value, int isPacked);
+void displayBits(unsigned value, int printOptions);
 
 // Packs two characters into a single 2 byte unsigned variable.
 unsigned int packCharactersHelper(char c1, char c2);
@@ -33,3 +33,12 @@ unsigned int power2Helper(unsigned int number, int pow);
 
 // Wrapper for power2Helper.
 void power2(unsigned int number, int pow);
+
+
+/*
+ * Adjacency Matrix Prototypes
+ * ===========================
+ */
+
+#define NUM_COLS = 1001;
+#define NUM_ROWS = 1001;

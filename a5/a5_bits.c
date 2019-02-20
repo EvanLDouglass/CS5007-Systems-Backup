@@ -14,13 +14,15 @@
 // Prints the bits of a given value
 // This function provided by instructors, but slightly modified
 // to allow for packed ints to be printed with a correct label.
-void displayBits(unsigned value, int isPacked) {
+void displayBits(unsigned value, int printOptions) {
 	unsigned c, displayMask = 1 << 15; 
     
-    if (isPacked) {
-        printf("Packed%7u = ", value);
+    if (printOptions == 1) {
+        printf("Pack%7u = ", value);  // for unpackCharacters
+    } else if (printOptions == 0) {
+	    printf("%3c%7u = ", value, value);  // for packCharacters
     } else {
-	    printf("%3c%7u = ", value, value); 
+        printf("%u = ", value);  // for power2
     }
 
 	for(c=1; c<=16; c++){
@@ -38,12 +40,12 @@ void displayBits(unsigned value, int isPacked) {
 // before compression and the resulting int.
 void packCharacters(char c1, char c2) {
     // Input chars
-    printf("Input\n=====\n");
+    printf("Input:\n");
     displayBits(c1, 0);
     displayBits(c2, 0);
     
     // Output packed chars
-    printf("Output\n======\n");
+    printf("Output:\n");
     displayBits(packCharactersHelper(c1, c2), 1);
 }
 
@@ -66,12 +68,12 @@ void unpackCharacters(unsigned int packed) {
     int results[2];
 
     // Input packed chars
-    printf("Input\n=====\n");
+    printf("Input:\n");
     displayBits(packed, 1);
 
     // Output unpacked chars
     unpackCharactersHelper(packed, results);
-    printf("Output\n======\n");
+    printf("Output:\n");
     displayBits(results[0], 0);
     displayBits(results[1], 0);
 }
@@ -88,6 +90,13 @@ void unpackCharactersHelper(unsigned int packed, int* resultArr) {
 
     resultArr[0] = c1;
     resultArr[1] = c2;
+}
+
+// Prints a number times a given power of two
+void power2(unsigned int number, int pow) {
+    unsigned int result = power2Helper(number, pow);
+    printf("%u * 2^%d = ", number, pow);
+    displayBits(result, 2);
 }
 
 // Returns a given number times 2 to a given power (x * 2^y)
@@ -115,6 +124,14 @@ int main() {
     unpackCharacters(24931);
     puts("");
     unpackCharacters(17218);
+    puts("");
+
+    printf("=== Power 2 ===\n");
+    power2(5, 9);
+    puts("");
+    power2(2, 0);
+    puts("");
+    power2(5, 2);
     puts("");
 
     return 0;
