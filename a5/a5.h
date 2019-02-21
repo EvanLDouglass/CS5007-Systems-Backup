@@ -41,6 +41,8 @@ void power2(unsigned int number, int pow);
  */
 
 #define NUM_NODES 1000
+#define MAX_TITLE_LEN 50
+#define FILE_PATH "miles_graph.csv"
 
 struct adjGraph {
     char** nodes;     // An array of strings denoting the names of nodes
@@ -50,12 +52,12 @@ struct adjGraph {
 typedef struct adjGraph AdjGraph;
 
 // Builds the graph from the given file.
-AdjGraph* buildAdjGraphFromFile(char* filePath);
+AdjGraph* buildAdjGraphFromFile();
 
 // Allocates memory for the graph
 AdjGraph* buildAdjGraph();
 
 // Reads a csv file containing an adjacency matrix, parsing the nodes into a
 // char* array and the values into a 2D int array. 
-void parseMatrix(AdjGraph* graph);
+void parseMatrixInto(AdjGraph* graph, FILE* fPtr);
 
