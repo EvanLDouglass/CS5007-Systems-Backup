@@ -12,7 +12,7 @@
 
 // Prints the given value's binary representation.
 // Given by instructors, but modified to account for packed ints.
-void displayBits(unsigned value, int printOptions);
+void displayBits(unsigned int value, int printOptions);
 
 // Packs two characters into a single 2 byte unsigned variable.
 unsigned int packCharactersHelper(char c1, char c2);
@@ -40,5 +40,9 @@ void power2(unsigned int number, int pow);
  * ===========================
  */
 
-#define NUM_COLS = 1001;
-#define NUM_ROWS = 1001;
+#define NUM_NODES 1000
+
+// Reads a csv file containing an adjacency matrix, parsing the nodes into a
+// char* array and the values into a 2D int array. 
+void parseMatrix(FILE* fPtr, char** nodes, int** adjMatrix);
+

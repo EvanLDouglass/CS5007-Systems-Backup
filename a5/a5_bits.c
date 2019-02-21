@@ -14,7 +14,7 @@
 // Prints the bits of a given value
 // This function provided by instructors, but slightly modified
 // to allow for packed ints to be printed with a correct label.
-void displayBits(unsigned value, int printOptions) {
+void displayBits(unsigned int value, int printOptions) {
 	unsigned c, displayMask = 1 << 15; 
     
     if (printOptions == 1) {
