@@ -42,7 +42,20 @@ void power2(unsigned int number, int pow);
 
 #define NUM_NODES 1000
 
+struct adjGraph {
+    char** nodes;     // An array of strings denoting the names of nodes
+    int** adjMatrix;  // A 2D array of ints
+};
+
+typedef struct adjGraph AdjGraph;
+
+// Builds the graph from the given file.
+AdjGraph* buildAdjGraphFromFile(char* filePath);
+
+// Allocates memory for the graph
+AdjGraph* buildAdjGraph();
+
 // Reads a csv file containing an adjacency matrix, parsing the nodes into a
 // char* array and the values into a 2D int array. 
-void parseMatrix(FILE* fPtr, char** nodes, int** adjMatrix);
+void parseMatrix(AdjGraph* graph);
 
