@@ -13,9 +13,9 @@
 #include "a5.h"
 
 // Builds a graph from the given file
-AdjGraph* buildAdjGraphFromFile() {
+AdjGraph* buildAdjGraphFromFile(char* file_path) {
     AdjGraph* graph;
-    FILE* fPtr = fopen(FILE_PATH, "r");
+    FILE* fPtr = fopen(file_path, "r");
     
     // Test if file exists
     if (fPtr == NULL) {
@@ -124,7 +124,7 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
 }
 /*
 int main() {
-    AdjGraph* g = buildAdjGraphFromFile();
+    AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
     for (int i = 0; i<15; i++) {
         printf("%s, ", g->nodes[i]);
     }

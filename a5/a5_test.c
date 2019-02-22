@@ -108,16 +108,17 @@ void testPower2() {
 
 // Minimal testing is done here due to a short timeline
 void testSuccessfulFileReadAndDataStructureLoad() {
-    AdjGraph* g = buildAdjGraphFromFile();
+    AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
 
     assert(strcmp(g->nodes[0], "Abilene_TX") == 0);
     assert(strcmp(g->nodes[999], "Yuma_AZ") == 0);
-
+    
+    float zero = 0.0;
     float na = -1.0;
     float aValue = 18.76;
     float bValue = 385.4;
     float delta = 0.01;
-    assert(g->adjMatrix[0][0] == na);
+    assert(g->adjMatrix[0][0] == zero);
     assert(g->adjMatrix[0][1] == na);
     assert(fabs(g->adjMatrix[11][1] - aValue) <= delta); // Account for accuracy issues in floats
     assert(fabs(g->adjMatrix[12][1] - bValue) <= delta);

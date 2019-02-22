@@ -42,7 +42,6 @@ void power2(unsigned int number, int pow);
 
 #define NUM_NODES 1000
 #define MAX_TITLE_LEN 50 
-#define FILE_PATH "miles_graph.csv"
 
 struct adjGraph {
     char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
@@ -52,7 +51,7 @@ struct adjGraph {
 typedef struct adjGraph AdjGraph;
 
 // Builds the graph from the given file.
-AdjGraph* buildAdjGraphFromFile();
+AdjGraph* buildAdjGraphFromFile(char* file_path);
 
 // Allocates memory for the graph
 AdjGraph* buildAdjGraph();
