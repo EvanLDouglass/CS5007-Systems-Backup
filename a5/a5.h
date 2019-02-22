@@ -50,23 +50,7 @@ struct adjGraph {
     float shortest[NUM_NODES];       // Used in dijkstra's, saved for continued reference
     int pred[NUM_NODES];             // Used in dijkstra's, saved for continued reference
 };
-
 typedef struct adjGraph AdjGraph;
-
-struct qnode {
-    int nodeIndex;
-    float shortest;
-    int predIndex;
-    int visited;
-};
-
-typedef struct qnode QNode;
-
-struct pqueue {
-    QNode* first;
-};
-
-typedef struct pqueue PQueue;
 
 // Builds the graph from the given file.
 AdjGraph* buildAdjGraphFromFile(char* file_path);
@@ -87,6 +71,8 @@ void splitToStrings(AdjGraph* graph, char* string, char* delimiter);
 // Splits a given string into an array of ints and attaches it to graph->adjMatrix[index]
 void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter);
 
+// ===== Dijkstra Algorithm Functions =====
+
 // Finds the integer index of a node
 int findNodeIndex(AdjGraph* graph, char* nodeName);
 
@@ -94,7 +80,7 @@ int findNodeIndex(AdjGraph* graph, char* nodeName);
 void dijkstra(AdjGraph* graph, char* source); 
 
 // Relaxes all neighbor nodes
-void relaxNeighbors(AdjGraph* graph, QNode* ndoe);
+void relaxNeighbors(AdjGraph* graph, SetNode* node);
 
 // Updates the shortest path between to nodes
 void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
@@ -102,22 +88,36 @@ void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
 // Gets the weight of an edge between two nodes
 float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
 
-// QUEUE RELATED FUNCTIONS
 
-// Creates a priority queue that uses linear search
-PQueue* buildPQueue();
+/*
+ * Dijkstra Data Structures Prototypes
+ * ===================================
+ */
 
-// Creates a node for the priority queue
-QNode* buildQNode(int pNodeI, float shortest);
+struct nodeNeighbors {
+    int nodeIndex;
+};
 
-// Puts a node in the queue
-void insertQNode(PQueue* q, QNode* qnode);
+struct setNode {
+    float shortestFromSource;
+    int prevNode;
+    int shortestFound;  // Boolean. Indicates node has been removed from the set.
+};
+typedef struct setNode SetNode;
 
-// Tests if a node is already in the queue
-int contains(PQueue* q, QNode* qnode);
+struct dijSet {
+    SetNode (*set)[NUM_NODES];
+};
+typedef struct dijSet DijSet;
 
-// Returns and removes the top node
-QNode* popPQ();
+// Initialize the DijSet
+DijSet* buildSet();
 
-// Test for an empty queue
-int isEmpty(PQueue* q);
+// Frees all SetNodes and the DijSet
+void destroySet(DijSet* set);
+
+// Fills the set with every vertex in the graph and initializes the SetNodes
+void initSet(DijSet* set);
+
+// Gets the node with the smallest value in shortestFromSource and marks it as removed
+SetNode* getShortest(DijSet* set);
