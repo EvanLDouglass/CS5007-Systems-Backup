@@ -48,20 +48,9 @@ AdjGraph* buildAdjGraph() {
     assert(nodes);
     assert(adjMatrix);
 
-    // Allocate Dijkstra's related structures
-    // Only initialized once Dijkstra's is called
-    mostRecentSource = malloc(sizeof(int));
-    shortest = malloc(sizeof(*shortest) * NUM_NODES);
-    pred = malloc(sizeof(*pred) * NUM_NODES);
-    assert(mostRecentSource);
-    assert(shortest);
-    assert(pred);
-
     // Attach arrays to graph
     graph->nodes = nodes;
     graph->adjMatrix = adjMatrix;
-    graph->shortest = shortest;
-    graph->pred = pred;
 
     return graph;
 }
@@ -70,9 +59,6 @@ AdjGraph* buildAdjGraph() {
 void freeAdjGraph(AdjGraph* graph) {
     free(graph->nodes);
     free(graph->adjMatrix);
-    free(graph->mostRecentSource);
-    free(graph->shortest);
-    free(graph->pred);
     free(graph);
 }
 
