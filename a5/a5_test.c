@@ -128,12 +128,12 @@ void testSuccessfulFileReadAndDataStructureLoad() {
 
 
 int main() {
-    printf("Testing Bit Manipulation Functions\n");
+/*    printf("Testing Bit Manipulation Functions\n");
     printf("==================================\n");
     testPackChars();
     testUnpackChars();
     testPower2();
-    
+*/    
     printf("\nTesting Graph w/ Matrix Functions\n");
     printf("=================================\n");
     testSuccessfulFileReadAndDataStructureLoad();

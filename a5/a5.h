@@ -45,10 +45,28 @@ void power2(unsigned int number, int pow);
 
 struct adjGraph {
     char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
-    float (*adjMatrix)[NUM_NODES];  // A 2D array of ints
+    float (*adjMatrix)[NUM_NODES];   // A 2D array of ints
+    int mostRecentSource;            // Updated when dijkstra's is called
+    float shortest[NUM_NODES];       // Used in dijkstra's, saved for continued reference
+    int pred[NUM_NODES];             // Used in dijkstra's, saved for continued reference
 };
 
 typedef struct adjGraph AdjGraph;
+
+struct qnode {
+    int nodeIndex;
+    float shortest;
+    int predIndex;
+    int visited;
+};
+
+typedef struct qnode QNode;
+
+struct pqueue {
+    QNode* first;
+};
+
+typedef struct pqueue PQueue;
 
 // Builds the graph from the given file.
 AdjGraph* buildAdjGraphFromFile(char* file_path);
@@ -69,3 +87,37 @@ void splitToStrings(AdjGraph* graph, char* string, char* delimiter);
 // Splits a given string into an array of ints and attaches it to graph->adjMatrix[index]
 void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter);
 
+// Finds the integer index of a node
+int findNodeIndex(AdjGraph* graph, char* nodeName);
+
+// Performs Dijkstra's algorithm to find the shortest path
+void dijkstra(AdjGraph* graph, char* source); 
+
+// Relaxes all neighbor nodes
+void relaxNeighbors(AdjGraph* graph, QNode* ndoe);
+
+// Updates the shortest path between to nodes
+void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
+
+// Gets the weight of an edge between two nodes
+float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
+
+// QUEUE RELATED FUNCTIONS
+
+// Creates a priority queue that uses linear search
+PQueue* buildPQueue();
+
+// Creates a node for the priority queue
+QNode* buildQNode(int pNodeI, float shortest);
+
+// Puts a node in the queue
+void insertQNode(PQueue* q, QNode* qnode);
+
+// Tests if a node is already in the queue
+int contains(PQueue* q, QNode* qnode);
+
+// Returns and removes the top node
+QNode* popPQ();
+
+// Test for an empty queue
+int isEmpty(PQueue* q);

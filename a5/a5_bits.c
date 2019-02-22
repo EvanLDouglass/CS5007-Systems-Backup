@@ -104,9 +104,7 @@ unsigned int power2Helper(unsigned int number, int pow) {
     return number << pow;
 }
 
-/*
-// Main used for testing wrapper functions.
-// Commented out after testing complete.
+
 int main() {
     printf("=== Pack Characters ===\n");
     packCharacters('A', 'a');
@@ -136,4 +134,4 @@ int main() {
 
     return 0;
 }
-*/
+

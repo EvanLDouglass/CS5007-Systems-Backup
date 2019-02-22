@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <math.h>
 
 #include "a5.h"
 
@@ -33,16 +34,18 @@ AdjGraph* buildAdjGraph() {
     AdjGraph* graph;
     char (*nodes)[MAX_TITLE_LEN];
     float (*adjMatrix)[NUM_NODES];
-    
-    // Allocate graph memory
+
+    // Allocate struct graph memory
     graph = (AdjGraph*)malloc(sizeof(AdjGraph));
     assert(graph);
 
-    // Allocate array memory
+    // Allocate graph representation memory
     nodes = malloc(sizeof(*nodes) * NUM_NODES);
     adjMatrix = malloc(sizeof(*adjMatrix) * NUM_NODES);
     assert(nodes);
     assert(adjMatrix);
+
+
 
     // Attach arrays to graph
     graph->nodes = nodes;
@@ -122,8 +125,104 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
         }
     }
 }
-/*
+
+// Finds the index of a given node. A better implementation would be binary search, but
+// in the interest of time, this is linear search. Returns -1 on failure.
+int findNodeIndex(AdjGraph* graph, char* nodeName) {
+    int index = -1;
+    for (int i = 0; i < NUM_NODES; i++) {
+        if (strcmp(nodeName, graph->nodes[i]) == 0) {
+            index = i;
+        }
+    }
+    return index;
+}
+
+// Dijkstra's Algorithm for shortest paths. Prints the value of the shortest path as well
+// as the nodes it includes.
+void dijkstra(AdjGraph* graph, char* source) {
+    int sourceI = findNodeIndex(graph, source);
+    graph->shortest[sourceI] = 0.0;
+
+    // Initialize Dijkstra related fields in graph
+    graph->mostRecentSource = sourceI;
+    for (int i = 0; i < NUM_NODES; i++) {
+        graph->shortest[i] = INFINITY;
+        graph->pred[i] = -1;
+    }
+
+    PQueue* q = buildPQueue();
+    while (!isEmpty(q)) {
+        QNode* node = popPQ();
+        relaxNeighbors(graph, node);
+    }
+}
+
+// Relax all neighbor nodes
+void relaxNeighbors(AdjGraph* graph, QNode* node) {
+
+}
+
+// Adjusts the shortest path between the given nodes, if needed.
+void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
+    float* s = graph->shortest;
+    int* p = graph->pred;
+
+    float testWeight = s[nodeIndex1] + getWeight(graph, nodeIndex1, nodeIndex2);
+    if (testWeight < s[nodeIndex2]) {
+        s[nodeIndex2] = testWeight;
+        p[nodeIndex2] = nodeIndex1;
+    }
+}
+
+// Determines the weight between two given nodes
+float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
+    return graph->adjMatrix[nodeIndex1][nodeIndex2];
+}
+
+// Creates a priority queue containing all nodes
+PQueue* buildPQueue() {
+    PQueue* q = malloc(sizeof(PQueue));
+    assert(q);
+
+    for (int i = 0; i < NUM_NODES; i++) {
+    }
+}
+
+// Creates a node for the pqueue
+QNode* buildQNode(int pNodeI, float shortest) {
+
+}
+
+// Puts a node in the queue
+void insertQNode(PQueue* q, QNode* qnode) {
+
+}
+
+// Tests if a node is already in the queue
+int contains(PQueue* q, QNode* qnode) {
+
+}
+
+// Returns and removes the top node
+// Does not actually remove the node, but marks it as "visited"
+QNode* popPQ() {
+
+}
+
+// Test for an empty queue
+int isEmpty(PQueue* q) {
+
+}
+
+// Removes the memory given to the queue
+void destroyPQ(PQueue* q) {
+
+}
+
+
 int main() {
+    /*
     AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
     for (int i = 0; i<15; i++) {
         printf("%s, ", g->nodes[i]);
@@ -136,5 +235,7 @@ int main() {
         puts("");
     }
     freeAdjGraph(g);
+    */
     return 0;
-}*/
+    
+}
