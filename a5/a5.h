@@ -55,7 +55,7 @@ struct setNode {
 typedef struct setNode SetNode;
 
 struct dijSet {
-    SetNode (*set)[NUM_NODES];
+    SetNode* set[NUM_NODES];
     int size;
 };
 typedef struct dijSet DijSet;
@@ -84,9 +84,9 @@ int isEmpty(DijSet* set);
 struct adjGraph {
     char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
     float (*adjMatrix)[NUM_NODES];   // A 2D array of ints
-    int* mostRecentSource;            // Updated when dijkstra's is called
-    float* (*shortest)[NUM_NODES];       // Used in dijkstra's, saved for continued reference
-    int (*pred)[NUM_NODES];             // Used in dijkstra's, saved for continued reference
+    int mostRecentSource;            // Updated when dijkstra's is called
+    float shortest[NUM_NODES];       // Used in dijkstra's, saved for continued reference
+    int pred[NUM_NODES];             // Used in dijkstra's, saved for continued reference
 };
 typedef struct adjGraph AdjGraph;
 
