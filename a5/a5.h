@@ -36,6 +36,41 @@ void power2(unsigned int number, int pow);
 
 
 /*
+ * Dijkstra Data Structures Prototypes
+ * ===================================
+ */
+
+struct setNode {
+    int nodeIndex;
+    float shortestFromSource;
+    int prevNode;
+    int shortestFound;  // Boolean. Indicates node has been removed from the set.
+};
+typedef struct setNode SetNode;
+
+struct dijSet {
+    SetNode (*set)[NUM_NODES];
+    int size;
+};
+typedef struct dijSet DijSet;
+
+// Initialize the DijSet
+DijSet* buildSet();
+
+// Frees all SetNodes and the DijSet
+void destroySet(DijSet* set);
+
+// Fills the set with every vertex in the graph and initializes the SetNodes
+void initSet(DijSet* set);
+
+// Gets the node with the smallest value in shortestFromSource and marks it as removed
+SetNode* getShortest(DijSet* set);
+
+// Tests for an empty set
+int isEmpty(DijSet* set);
+
+
+/*
  * Adjacency Matrix Prototypes
  * ===========================
  */
@@ -87,38 +122,3 @@ void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
 
 // Gets the weight of an edge between two nodes
 float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
-
-
-/*
- * Dijkstra Data Structures Prototypes
- * ===================================
- */
-
-struct setNode {
-    int nodeIndex;
-    float shortestFromSource;
-    int prevNode;
-    int shortestFound;  // Boolean. Indicates node has been removed from the set.
-};
-typedef struct setNode SetNode;
-
-struct dijSet {
-    SetNode (*set)[NUM_NODES];
-    int size;
-};
-typedef struct dijSet DijSet;
-
-// Initialize the DijSet
-DijSet* buildSet();
-
-// Frees all SetNodes and the DijSet
-void destroySet(DijSet* set);
-
-// Fills the set with every vertex in the graph and initializes the SetNodes
-void initSet(DijSet* set);
-
-// Gets the node with the smallest value in shortestFromSource and marks it as removed
-SetNode* getShortest(DijSet* set);
-
-// Tests for an empty set
-int isEmpty(DijSet* set);
