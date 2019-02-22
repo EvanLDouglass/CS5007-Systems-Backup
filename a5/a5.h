@@ -46,9 +46,9 @@ void power2(unsigned int number, int pow);
 struct adjGraph {
     char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
     float (*adjMatrix)[NUM_NODES];   // A 2D array of ints
-    int mostRecentSource;            // Updated when dijkstra's is called
-    float shortest[NUM_NODES];       // Used in dijkstra's, saved for continued reference
-    int pred[NUM_NODES];             // Used in dijkstra's, saved for continued reference
+    int* mostRecentSource;            // Updated when dijkstra's is called
+    float* (*shortest)[NUM_NODES];       // Used in dijkstra's, saved for continued reference
+    int (*pred)[NUM_NODES];             // Used in dijkstra's, saved for continued reference
 };
 typedef struct adjGraph AdjGraph;
 
@@ -94,11 +94,8 @@ float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
  * ===================================
  */
 
-struct nodeNeighbors {
-    int nodeIndex;
-};
-
 struct setNode {
+    int nodeIndex;
     float shortestFromSource;
     int prevNode;
     int shortestFound;  // Boolean. Indicates node has been removed from the set.
@@ -107,6 +104,7 @@ typedef struct setNode SetNode;
 
 struct dijSet {
     SetNode (*set)[NUM_NODES];
+    int size;
 };
 typedef struct dijSet DijSet;
 
@@ -121,3 +119,6 @@ void initSet(DijSet* set);
 
 // Gets the node with the smallest value in shortestFromSource and marks it as removed
 SetNode* getShortest(DijSet* set);
+
+// Tests for an empty set
+int isEmpty(DijSet* set);
