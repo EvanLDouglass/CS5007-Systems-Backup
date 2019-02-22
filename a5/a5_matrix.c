@@ -34,9 +34,6 @@ AdjGraph* buildAdjGraph() {
     AdjGraph* graph;
     char (*nodes)[MAX_TITLE_LEN];
     float (*adjMatrix)[NUM_NODES];
-    int* mostRecentSource;
-    float* (*shortest)[NUM_NODES];
-    int (*pred)[NUM_NODES];  
     
     // Allocate struct graph memory
     graph = (AdjGraph*)malloc(sizeof(AdjGraph));
@@ -152,12 +149,14 @@ void dijkstra(AdjGraph* graph, char* source) {
     for (int i = 0; i < NUM_NODES; i++) {
         graph->shortest[i] = INFINITY;
         graph->pred[i] = -1;
+        graph->visited[i] = 0;
     }
 
-    DijSet* set = buildSet();
-    initSet(set);
+    // The actual algorithm
+    int* set = graph->visited;
     while (!isEmpty(set)) {
-        SetNode* node = getShortest(set);
+        int node = getShortest(set);
+        set[node] = 1;  // was visited
         relaxNeighbors(graph, node);
     }
 
@@ -165,10 +164,31 @@ void dijkstra(AdjGraph* graph, char* source) {
     destroySet(set);
 }
 
+int getShortest(AdjGraph graph) {
+    float temp = INFINITY;
+    int index = -1;
+    for (int i = 0; i < NUM_NODES; i++) {
+        if (graph->visited[i] == 0 && graph->shortest[i] < temp) {
+            temp = graph->shortest[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
+// Tests for an empty set (visited)
+// Needs work when I have more time
+int isEmpty(int* array) {
+    for (int i = 0; i < NUM_NODES; i++) {
+        if (array[i] == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 // Relax all neighbor nodes
-void relaxNeighbors(AdjGraph* graph, SetNode* node) {
-    int index = node->nodeIndex;
-    
+void relaxNeighbors(AdjGraph* graph, int index) {
     // Search row=index to find neighbors and call relax
     for (int j = 0; j < NUM_NODES; j++) {
         if (graph->adjMatrix[index][j] > 0) {
