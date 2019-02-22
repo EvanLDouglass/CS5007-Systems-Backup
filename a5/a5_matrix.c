@@ -159,7 +159,7 @@ int findNodeIndex(AdjGraph* graph, char* nodeName) {
 // as the nodes it includes.
 void dijkstra(AdjGraph* graph, char* source) {
     int sourceI = findNodeIndex(graph, source);
-    graph->shortest[sourceI] = 0.0;
+    *graph->shortest[sourceI] = (float) 0;
 
     // Initialize Dijkstra related fields in graph
     graph->mostRecentSource = sourceI;
