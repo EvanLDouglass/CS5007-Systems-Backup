@@ -86,7 +86,7 @@ int findNodeIndex(AdjGraph* graph, char* nodeName);
 void dijkstra(AdjGraph* graph, char* source); 
 
 // Relaxes all neighbor nodes
-void relaxNeighbors(AdjGraph* graph, SetNode* node);
+void relaxNeighbors(AdjGraph* graph, int node);
 
 // Updates the shortest path between to nodes
 void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
@@ -95,7 +95,7 @@ void relax(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
 float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2);
 
 // Finds the index of the node with the current shortest path
-int getShortest(AdjGraph graph);
+int getShortest(AdjGraph* graph);
 
 // Tests for an empty set (visited)
 // Needs work when I have more time

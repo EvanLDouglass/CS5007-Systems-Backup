@@ -2,7 +2,7 @@ all: compile run
 
 compile: a5_bits.c a5.h
 	gcc a5_bits.c -o bits
-	gcc a5_matrix.c a5_structs.c -o matrix -g
+	gcc a5_matrix.c -o matrix -g
 
 run: a5_matrix.c a5.h
 	./bits

@@ -155,16 +155,13 @@ void dijkstra(AdjGraph* graph, char* source) {
     // The actual algorithm
     int* set = graph->visited;
     while (!isEmpty(set)) {
-        int node = getShortest(set);
+        int node = getShortest(graph);
         set[node] = 1;  // was visited
         relaxNeighbors(graph, node);
     }
-
-    // Results are stored in graph so OK to free set
-    destroySet(set);
 }
 
-int getShortest(AdjGraph graph) {
+int getShortest(AdjGraph* graph) {
     float temp = INFINITY;
     int index = -1;
     for (int i = 0; i < NUM_NODES; i++) {
