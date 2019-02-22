@@ -99,6 +99,17 @@ void testPower2() {
     printf("power2 passed all tests.\n");
 }
 
+
+/*
+ * Test Graph Using Adjacency Matrix
+ * =================================
+ */
+
+void testSuccessfulFileReadAndDataStructureLoad() {
+    
+}
+
+
 int main() {
     printf("Testing Bit Manipulation Functions\n");
     printf("==================================\n");
