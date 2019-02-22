@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 #include "a5.h"
 
@@ -105,8 +106,23 @@ void testPower2() {
  * =================================
  */
 
+// Minimal testing is done here due to a short timeline
 void testSuccessfulFileReadAndDataStructureLoad() {
-    
+    AdjGraph* g = buildAdjGraphFromFile();
+
+    assert(strcmp(g->nodes[0], "Abilene_TX") == 0);
+    assert(strcmp(g->nodes[999], "Yuma_AZ") == 0);
+
+    float na = -1.0;
+    float aValue = 18.76;
+    float bValue = 385.4;
+    float delta = 0.01;
+    assert(g->adjMatrix[0][0] == na);
+    assert(g->adjMatrix[0][1] == na);
+    assert(fabs(g->adjMatrix[11][1] - aValue) <= delta); // Account for accuracy issues in floats
+    assert(fabs(g->adjMatrix[12][1] - bValue) <= delta);
+
+    printf("Passed load file and parse data test\n");
 }
 
 
@@ -116,6 +132,10 @@ int main() {
     testPackChars();
     testUnpackChars();
     testPower2();
+    
+    printf("\nTesting Graph w/ Matrix Functions\n");
+    printf("=================================\n");
+    testSuccessfulFileReadAndDataStructureLoad();
     printf("\n");
     return 0;
 }
