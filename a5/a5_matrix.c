@@ -160,7 +160,7 @@ void dijkstra(AdjGraph* graph, char* source) {
         SetNode* node = getShortest(set);
         relaxNeighbors(graph, node);
     }
-    
+
     // Results are stored in graph so OK to free set
     destroySet(set);
 }
@@ -197,7 +197,7 @@ float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
 
 int main() {
     AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
-    
+    dijkstra(g, "Seattle_WA");    
     freeAdjGraph(g);
     
     return 0;

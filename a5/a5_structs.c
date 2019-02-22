@@ -51,11 +51,12 @@ SetNode* getShortest(DijSet* set) {
     SetNode* node = NULL;
 
     for(int i = 0; i < NUM_NODES; i++) {
-        if (set->set[i]->shortestFromSource < smallest) {
+        if (set->set[i]->shortestFound == 0 && set->set[i]->shortestFromSource < smallest) {
             smallest = set->set[i]->shortestFromSource;
             node = set->set[i];
         }
     }
+    node->shortestFound = 1;
     return node;
 }
 
