@@ -34,7 +34,10 @@ AdjGraph* buildAdjGraph() {
     AdjGraph* graph;
     char (*nodes)[MAX_TITLE_LEN];
     float (*adjMatrix)[NUM_NODES];
-
+    int* mostRecentSource;
+    float* (*shortest)[NUM_NODES];
+    int (*pred)[NUM_NODES];  
+    
     // Allocate struct graph memory
     graph = (AdjGraph*)malloc(sizeof(AdjGraph));
     assert(graph);
@@ -45,11 +48,20 @@ AdjGraph* buildAdjGraph() {
     assert(nodes);
     assert(adjMatrix);
 
-
+    // Allocate Dijkstra's related structures
+    // Only initialized once Dijkstra's is called
+    mostRecentSource = malloc(sizeof(int));
+    shortest = malloc(sizeof(*shortest) * NUM_NODES);
+    pred = malloc(sizeof(*pred) * NUM_NODES);
+    assert(mostRecentSource);
+    assert(shortest);
+    assert(pred);
 
     // Attach arrays to graph
     graph->nodes = nodes;
     graph->adjMatrix = adjMatrix;
+    graph->shortest = shortest;
+    graph->pred = pred;
 
     return graph;
 }
@@ -58,6 +70,9 @@ AdjGraph* buildAdjGraph() {
 void freeAdjGraph(AdjGraph* graph) {
     free(graph->nodes);
     free(graph->adjMatrix);
+    free(graph->mostRecentSource);
+    free(graph->shortest);
+    free(graph->pred);
     free(graph);
 }
 
@@ -126,6 +141,8 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
     }
 }
 
+// ===== Dijkstra Algorithm Functions =====
+
 // Finds the index of a given node. A better implementation would be binary search, but
 // in the interest of time, this is linear search. Returns -1 on failure.
 int findNodeIndex(AdjGraph* graph, char* nodeName) {
@@ -151,16 +168,27 @@ void dijkstra(AdjGraph* graph, char* source) {
         graph->pred[i] = -1;
     }
 
-    PQueue* q = buildPQueue();
+    DijSet* set = buildSet();
+    initSet(set);
     while (!isEmpty(q)) {
-        QNode* node = popPQ();
+        SetNode* node = getShortest(set);
         relaxNeighbors(graph, node);
     }
+    
+    // Results are stored in graph so OK to free set
+    destroySet(set);
 }
 
 // Relax all neighbor nodes
-void relaxNeighbors(AdjGraph* graph, QNode* node) {
-
+void relaxNeighbors(AdjGraph* graph, SetNode* node) {
+    int index = node->nodeIndex;
+    
+    // Search row=index to find neighbors and call relax
+    for (int j = 0; j < NUM_NODES; j++) {
+        if (graph->adjMatrix[index][j] > 0) {
+            relax(graph, index, j);    
+        }
+    }
 }
 
 // Adjusts the shortest path between the given nodes, if needed.
@@ -180,62 +208,11 @@ float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
     return graph->adjMatrix[nodeIndex1][nodeIndex2];
 }
 
-// Creates a priority queue containing all nodes
-PQueue* buildPQueue() {
-    PQueue* q = malloc(sizeof(PQueue));
-    assert(q);
-
-    for (int i = 0; i < NUM_NODES; i++) {
-    }
-}
-
-// Creates a node for the pqueue
-QNode* buildQNode(int pNodeI, float shortest) {
-
-}
-
-// Puts a node in the queue
-void insertQNode(PQueue* q, QNode* qnode) {
-
-}
-
-// Tests if a node is already in the queue
-int contains(PQueue* q, QNode* qnode) {
-
-}
-
-// Returns and removes the top node
-// Does not actually remove the node, but marks it as "visited"
-QNode* popPQ() {
-
-}
-
-// Test for an empty queue
-int isEmpty(PQueue* q) {
-
-}
-
-// Removes the memory given to the queue
-void destroyPQ(PQueue* q) {
-
-}
-
 
 int main() {
-    /*
     AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
-    for (int i = 0; i<15; i++) {
-        printf("%s, ", g->nodes[i]);
-    }
-    puts("");
-    for (int i = 0; i<5; i++) {
-        for (int j = 0; j<15; j++) {
-            printf("%f ", g->adjMatrix[i][j]);
-        }
-        puts("");
-    }
-    freeAdjGraph(g);
-    */
-    return 0;
     
+    freeAdjGraph(g);
+    
+    return 0;
 }
