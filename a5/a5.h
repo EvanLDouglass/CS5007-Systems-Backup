@@ -6,6 +6,12 @@
  */
 
 /*
+ * Constants
+ */
+#define NUM_NODES 1000
+#define MAX_TITLE_LEN 50 
+
+/*
  * Bit Manipulation Prototypes
  * ===========================
  */
@@ -74,9 +80,6 @@ int isEmpty(DijSet* set);
  * Adjacency Matrix Prototypes
  * ===========================
  */
-
-#define NUM_NODES 1000
-#define MAX_TITLE_LEN 50 
 
 struct adjGraph {
     char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
