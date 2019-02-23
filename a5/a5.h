@@ -9,7 +9,7 @@
  * Constants
  */
 #define NUM_NODES 1000
-#define MAX_TITLE_LEN 50 
+#define MAX_TITLE_LEN 50
 
 /*
  * Bit Manipulation Prototypes
@@ -34,7 +34,8 @@ void unpackCharactersHelper(unsigned int packed, int* resultArr);
 // Wrapper for unpackCharactersHelper.
 void unpackCharacters(unsigned int packed);
 
-// Uses bit manipulation to calculate a number to a given power of two (i.e. x * 2^y).
+// Uses bit manipulation to calculate a number to a given power
+// of two (i.e. x * 2^y).
 unsigned int power2Helper(unsigned int number, int pow);
 
 // Wrapper for power2Helper.
@@ -47,13 +48,19 @@ void power2(unsigned int number, int pow);
  */
 
 struct adjGraph {
-    char (*nodes)[MAX_TITLE_LEN];    // An array of strings denoting the names of nodes
-    float (*adjMatrix)[NUM_NODES];   // A 2D array of ints
-    
+    // An array of strings denoting the names of nodes
+    char (*nodes)[MAX_TITLE_LEN];
+    // A 2D array of floats containing the edges
+    float (*adjMatrix)[NUM_NODES];
+
     // Dijkstra Related Fields
-    int mostRecentSource;            // Updated when dijkstra's is called
-    float shortest[NUM_NODES];       // Used in dijkstra's, saved for continued reference
-    int pred[NUM_NODES];             // Used in dijkstra's, saved for continued reference
+    // Updated when dijkstra's is called
+    int mostRecentSource;
+    // Used in dijkstra's, saved for continue reference
+    float shortest[NUM_NODES];
+    // Used in dijkstra's, saved for continue reference
+    int pred[NUM_NODES];
+    // 1 == visited, 2 == in queue, 0 == unvisited, not in queue
     int visited[NUM_NODES];
 };
 typedef struct adjGraph AdjGraph;
@@ -68,14 +75,17 @@ AdjGraph* buildAdjGraph();
 void freeAdjGraph(AdjGraph* graph);
 
 // Reads a csv file containing an adjacency matrix, parsing the nodes into a
-// char* array and the values into a 2D int array. 
+// char* array and the values into a 2D int array
 void parseMatrixInto(AdjGraph* graph, FILE* fPtr);
 
-// Splits a given string into an array of strings and attaches it to graph->nodes
+// Splits a given string into an array of strings and
+// attaches it to graph->nodes
 void splitToStrings(AdjGraph* graph, char* string, char* delimiter);
 
-// Splits a given string into an array of ints and attaches it to graph->adjMatrix[index]
-void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter);
+// Splits a given string into an array of ints and
+// attaches it to graph->adjMatrix[index]
+void splitToFloats(AdjGraph* graph, char* string,
+                    int rowIndex, char* delimiter);
 
 // ===== Dijkstra Algorithm Functions =====
 
@@ -83,7 +93,7 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
 int findNodeIndex(AdjGraph* graph, char* nodeName);
 
 // Performs Dijkstra's algorithm to find the shortest path
-void dijkstra(AdjGraph* graph, char* source); 
+void dijkstra(AdjGraph* graph, char* source);
 
 // Relaxes all neighbor nodes
 void relaxNeighbors(AdjGraph* graph, int node);
@@ -104,5 +114,5 @@ int isEmpty(int* array);
 // Display the shortest distance from the most recent source to a given node
 void displayShortestDistance(AdjGraph* graph, int nodeIndex);
 
-    // Recursively prints the shortest path from the latest source to the given node
-void displayPath(AdjGraph* graph, int nodeIndex); 
+// Recursively prints the shortest path from the latest source to the given node
+void displayPath(AdjGraph* graph, int nodeIndex);

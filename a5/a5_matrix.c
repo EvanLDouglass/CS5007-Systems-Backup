@@ -17,7 +17,7 @@
 AdjGraph* buildAdjGraphFromFile(char* file_path) {
     AdjGraph* graph;
     FILE* fPtr = fopen(file_path, "r");
-    
+
     // Test if file exists
     if (fPtr == NULL) {
         printf("File not found\n");
@@ -34,7 +34,7 @@ AdjGraph* buildAdjGraph() {
     AdjGraph* graph;
     char (*nodes)[MAX_TITLE_LEN];
     float (*adjMatrix)[NUM_NODES];
-    
+
     // Allocate struct graph memory
     graph = (AdjGraph*)malloc(sizeof(AdjGraph));
     assert(graph);
@@ -63,14 +63,16 @@ void freeAdjGraph(AdjGraph* graph) {
 // Assumes the file exists and is open, therefore does not close it either.
 void parseMatrixInto(AdjGraph* graph, FILE* fPtr) {
     int len = MAX_TITLE_LEN * NUM_NODES;
-    char line[len];
+
+    // Linter said not to use len here
+    char line[MAX_TITLE_LEN * NUM_NODES];
 
     // Get first line for node names.
     if (!feof(fPtr)) {
         fgets(line, len, fPtr);
         splitToStrings(graph, line, ",");
     }
-    
+
     // Get rest of matrix for adjMatrix
     int i = 0;
     while (!feof(fPtr)) {
@@ -95,14 +97,15 @@ void splitToStrings(AdjGraph* graph, char* string, char* delimiter) {
 
     // Parse remaining title strings
     int i = 0;
-    while((title = strsep(&string, delimiter)) != NULL) {
+    while ((title = strsep(&string, delimiter)) != NULL) {
         strcpy(graph->nodes[i], title);
         i++;
     }
 }
 
 // Splits a line of text into an integer array
-void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter) {
+void splitToFloats(AdjGraph* graph, char* string,
+                    int rowIndex, char* delimiter) {
     char* temp;
     int lastChar = strlen(string) - 1;
 
@@ -115,7 +118,7 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
 
     // Parse remaining integers, making empty strings -1.
     int i = 0;
-    while((temp = strsep(&string, delimiter)) != NULL) {
+    while ((temp = strsep(&string, delimiter)) != NULL) {
         if (strcmp(temp, "") == 0) {
             graph->adjMatrix[rowIndex][i++] = -1.0;
         } else {
@@ -126,8 +129,10 @@ void splitToFloats(AdjGraph* graph, char* string, int rowIndex, char* delimiter)
 
 // ===== Dijkstra Algorithm Functions =====
 
-// Finds the index of a given node. A better implementation would be binary search, but
-// in the interest of time, this is linear search. Returns -1 on failure.
+// Finds the index of a given node.
+// A better implementation would be binary search, but in the
+// interest of time, this is linear search.
+// Returns -1 on failure.
 int findNodeIndex(AdjGraph* graph, char* nodeName) {
     int index = -1;
     for (int i = 0; i < NUM_NODES; i++) {
@@ -138,8 +143,8 @@ int findNodeIndex(AdjGraph* graph, char* nodeName) {
     return index;
 }
 
-// Dijkstra's Algorithm for shortest paths. Prints the value of the shortest path as well
-// as the nodes it includes.
+// Dijkstra's Algorithm for shortest paths.
+// Prints the value of the shortest path as well as the nodes it includes.
 void dijkstra(AdjGraph* graph, char* source) {
     int sourceI = findNodeIndex(graph, source);
 
@@ -156,16 +161,16 @@ void dijkstra(AdjGraph* graph, char* source) {
     // The actual algorithm
     int* set = graph->visited;
     while (!isEmpty(set)) {
-       // puts("start of while");
+        // puts("start of while");
         int node = getShortest(graph);
-       // printf("node = %d\n", node);
-       // printf("shortest[node] = %f\n", graph->shortest[node]);
-        
+        // printf("node = %d\n", node);
+        // printf("shortest[node] = %f\n", graph->shortest[node]);
+
         // Test dead end
         if (node > -1) {
             set[node] = 1;  // was visited
             relaxNeighbors(graph, node);
-         //   puts("End of while\n");
+        //   puts("End of while\n");
         } else {
             break;
         }
@@ -225,8 +230,10 @@ float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
 
 // Display the shortest distance from the most recent source to a given node
 void displayShortestDistance(AdjGraph* graph, int nodeIndex) {
-    printf("Shortest distance from Seattle_WA to %s: %.2f\n",
-            graph->nodes[nodeIndex], graph->shortest[nodeIndex]);
+    printf("Shortest distance from %s to %s: %.2f\n",
+            graph->nodes[graph->mostRecentSource],
+            graph->nodes[nodeIndex],
+            graph->shortest[nodeIndex]);
 }
 
 // Display the path to get from the most recent source to a given node
@@ -245,14 +252,26 @@ void displayPath(AdjGraph* graph, int nodeIndex) {
 
 
 int main() {
-    AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
-    dijkstra(g, "Seattle_WA");
+    AdjGraph* g = buildAdjGraphFromFile(
+                   "./a5_data_files/miles_graph_FINAL.csv");
 
+    // Seattle to Boston
+    dijkstra(g, "Seattle_WA");
     int bosIndex = findNodeIndex(g, "Boston_MA");
     displayShortestDistance(g, bosIndex);
     printf("The path:\n");
     displayPath(g, bosIndex);
+    printf("\n");
+
+    // Minneapolis to Ann Arbor
+    dijkstra(g, "Minneapolis_MN");
+    int annArborIndex = findNodeIndex(g, "Ann Arbor_MI");
+    displayShortestDistance(g, annArborIndex);
+    printf("The path:\n");
+    displayPath(g, annArborIndex);
+    printf("\n");
+
     freeAdjGraph(g);
-    
+
     return 0;
 }
