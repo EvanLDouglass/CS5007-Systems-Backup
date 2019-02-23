@@ -100,3 +100,9 @@ int getShortest(AdjGraph* graph);
 // Tests for an empty set (visited)
 // Needs work when I have more time
 int isEmpty(int* array);
+
+// Display the shortest distance from the most recent source to a given node
+void displayShortestDistance(AdjGraph* graph, int nodeIndex);
+
+    // Recursively prints the shortest path from the latest source to the given node
+void displayPath(AdjGraph* graph, int nodeIndex); 

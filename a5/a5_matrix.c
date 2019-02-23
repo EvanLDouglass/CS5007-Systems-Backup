@@ -142,7 +142,6 @@ int findNodeIndex(AdjGraph* graph, char* nodeName) {
 // as the nodes it includes.
 void dijkstra(AdjGraph* graph, char* source) {
     int sourceI = findNodeIndex(graph, source);
-    graph->shortest[sourceI] = 0.0;
 
     // Initialize Dijkstra related fields in graph
     graph->mostRecentSource = sourceI;
@@ -151,13 +150,25 @@ void dijkstra(AdjGraph* graph, char* source) {
         graph->pred[i] = -1;
         graph->visited[i] = 0;
     }
+    graph->shortest[sourceI] = 0.0;
+    graph->visited[sourceI] = 2;
 
     // The actual algorithm
     int* set = graph->visited;
     while (!isEmpty(set)) {
+       // puts("start of while");
         int node = getShortest(graph);
-        set[node] = 1;  // was visited
-        relaxNeighbors(graph, node);
+       // printf("node = %d\n", node);
+       // printf("shortest[node] = %f\n", graph->shortest[node]);
+        
+        // Test dead end
+        if (node > -1) {
+            set[node] = 1;  // was visited
+            relaxNeighbors(graph, node);
+         //   puts("End of while\n");
+        } else {
+            break;
+        }
     }
 }
 
@@ -165,7 +176,7 @@ int getShortest(AdjGraph* graph) {
     float temp = INFINITY;
     int index = -1;
     for (int i = 0; i < NUM_NODES; i++) {
-        if (graph->visited[i] == 0 && graph->shortest[i] < temp) {
+        if (graph->visited[i] == 2 && graph->shortest[i] < temp) {
             temp = graph->shortest[i];
             index = i;
         }
@@ -188,8 +199,9 @@ int isEmpty(int* array) {
 void relaxNeighbors(AdjGraph* graph, int index) {
     // Search row=index to find neighbors and call relax
     for (int j = 0; j < NUM_NODES; j++) {
-        if (graph->adjMatrix[index][j] > 0) {
-            relax(graph, index, j);    
+        if (graph->adjMatrix[index][j] > 0 && graph->visited[j] != 1) {
+            relax(graph, index, j);
+            graph->visited[j] = 2;
         }
     }
 }
@@ -211,10 +223,35 @@ float getWeight(AdjGraph* graph, int nodeIndex1, int nodeIndex2) {
     return graph->adjMatrix[nodeIndex1][nodeIndex2];
 }
 
+// Display the shortest distance from the most recent source to a given node
+void displayShortestDistance(AdjGraph* graph, int nodeIndex) {
+    printf("Shortest distance from Seattle_WA to %s: %.2f\n",
+            graph->nodes[nodeIndex], graph->shortest[nodeIndex]);
+}
+
+// Display the path to get from the most recent source to a given node
+void displayPath(AdjGraph* graph, int nodeIndex) {
+    // Only print one node if the source is the sink
+    if (graph->pred[nodeIndex] == -1) {
+        printf("%s", graph->nodes[nodeIndex]);
+
+    // Recursively print the path nodes
+    } else {
+        displayPath(graph, graph->pred[nodeIndex]);
+        printf("-> %s", graph->nodes[nodeIndex]);
+    }
+    printf("\n");
+}
+
 
 int main() {
     AdjGraph* g = buildAdjGraphFromFile("./a5_data_files/miles_graph_FINAL.csv");
-    dijkstra(g, "Seattle_WA");    
+    dijkstra(g, "Seattle_WA");
+
+    int bosIndex = findNodeIndex(g, "Boston_MA");
+    displayShortestDistance(g, bosIndex);
+    printf("The path:\n");
+    displayPath(g, bosIndex);
     freeAdjGraph(g);
     
     return 0;
