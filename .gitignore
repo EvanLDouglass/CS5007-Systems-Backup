@@ -7,7 +7,7 @@ Makefile~
 .gitignore~
 
 # Ignore the Python linting file
-./bin
+./bin/
 
 # Ignore individual binary files
 a1/hello
