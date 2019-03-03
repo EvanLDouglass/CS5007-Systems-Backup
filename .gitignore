@@ -6,6 +6,9 @@
 Makefile~
 .gitignore~
 
+# Ignore the Python linting file
+./bin
+
 # Ignore individual binary files
 a1/hello
 a2/slowsort
@@ -15,5 +18,6 @@ a3/a3
 a4/deck
 a4/a4
 a4/test
-a5/warmup
-a5/test
+a5/bits
+a5/matrix
+a5/list
