@@ -116,6 +116,13 @@ Assert007.o: Assert007.c Assert007.h
 hello: hello_world.c hello_world.h
 	gcc -g -o hello_world hello_world.c
 
+info: system_info.sh
+	@echo ==========================
+	@echo Ensuring execution permissions and running script
+	@echo ==========================
+	chmod +x ./system_info.sh
+	./system_info.sh
+
 .PHONY: clean 
 
 clean:
