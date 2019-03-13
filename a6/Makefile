@@ -126,5 +126,5 @@ info: system_info.sh
 .PHONY: clean 
 
 clean:
-	rm -f hello_world example_ll test_suite *.o
+	rm -f hello_world example_ll test_suite *.o *.c~ Makefile~
 

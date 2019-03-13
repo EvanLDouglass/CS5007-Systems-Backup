@@ -27,8 +27,11 @@ LinkedList CreateLinkedList() {
     return (LinkedList) NULL;
   }
   
-  // Step 1.
-  // initialize the newly allocated record structure
+    // Step 1.
+    // initialize the newly allocated record structure
+    list->num_elements = 0;
+    list->head = NULL;
+    list->tail = NULL;
 
     return list;
 }
@@ -40,8 +43,17 @@ int DestroyLinkedList(LinkedList list,
 
   // Step 2.
   // Free the payloads, as well as the nodes 
-
-    return 0;
+  LinkedListNodePtr node = list->head;
+  while (node != NULL) {
+    payload_free_function(node->payload);
+    LinkedListNodePtr toFree = node;
+    node = node->next;
+    DestroyLinkedListNode(toFree);
+  }
+  list->head = NULL;
+  list->tail = NULL;
+  free(list);
+  return 0;
 }
 
 unsigned int NumElementsInLinkedList(LinkedList list) {
@@ -92,9 +104,19 @@ int InsertLinkedList(LinkedList list, void *data) {
   
   // Step 3.
   // typical case; list has >=1 elements
-  
-  
+  if (list->num_elements > 0) {
+    Assert007(list->head != NULL);
+    Assert007(list->tail != NULL);
+    LinkedListNodePtr oldHead = list->head;
+    oldHead->prev = new_node;
+    list->head = new_node;
+    new_node->next = oldHead;
+    new_node->prev = NULL;
+    list->num_elements++;
     return 0;
+  }
+
+  return 0;
 }
 
 int AppendLinkedList(LinkedList list, void *data) {
