@@ -120,7 +120,7 @@ info: system_info.sh
 	@echo ==========================
 	@echo Ensuring execution permissions and running script
 	@echo ==========================
-	chmod +x ./system_info.sh
+	chmod 755 ./system_info.sh
 	./system_info.sh
 
 .PHONY: clean 

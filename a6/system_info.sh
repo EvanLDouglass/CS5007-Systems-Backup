@@ -20,6 +20,6 @@ echo "memory: $FREE MB/$TOTAL MB"
 
 # Display partition storage
 # The awk command adds 0 to the field to convert it to a number
-SIZE=$(df -H / | grep /dev/sda2 | awk '{print $2+0}')
-AVAIL=$(df -H / | grep /dev/sda2 | awk '{print $4+0}')
+SIZE=$(df --si / | grep /dev/sda2 | awk '{print $2+0}')
+AVAIL=$(df --si / | grep /dev/sda2 | awk '{print $4+0}')
 echo "primary partition storage: $AVAIL GB/$SIZE GB"
