@@ -29,14 +29,14 @@ LinkedList CreateLinkedList() {
         // out of memory
         return (LinkedList) NULL;
     }
-    
-        // Step 1.
-        // initialize the newly allocated record structure
-        list->num_elements = 0;
-        list->head = NULL;
-        list->tail = NULL;
 
-        return list;
+    // Step 1.
+    // initialize the newly allocated record structure
+    list->num_elements = 0;
+    list->head = NULL;
+    list->tail = NULL;
+
+    return list;
 }
 
 int DestroyLinkedList(LinkedList list,
@@ -65,16 +65,16 @@ unsigned int NumElementsInLinkedList(LinkedList list) {
 }
 
 LinkedListNodePtr CreateLinkedListNode(void *data) {
-        LinkedListNodePtr node = (LinkedListNodePtr)malloc(sizeof(LinkedListNode));
-        if (node == NULL) {
-                // Out of memory
-                return NULL; 
-        }
-        node->payload = data;
-        node->next = NULL;
-        node->prev = NULL;
+    LinkedListNodePtr node = (LinkedListNodePtr)malloc(sizeof(LinkedListNode));
+    if (node == NULL) {
+            // Out of memory
+            return NULL; 
+    }
+    node->payload = data;
+    node->next = NULL;
+    node->prev = NULL;
 
-        return node;
+    return node;
 }
 
 int DestroyLinkedListNode(LinkedListNode *node) {
@@ -88,9 +88,9 @@ int DestroyLinkedListNode(LinkedListNode *node) {
 
 int InsertLinkedList(LinkedList list, void *data) {
     Assert007(list != NULL);
-    Assert007(data != NULL); 
+    Assert007(data != NULL);
     LinkedListNodePtr new_node = CreateLinkedListNode(data);
-    
+
     if (new_node == NULL) {
         return 1; 
     }
@@ -390,5 +390,68 @@ int LLIterDelete(LLIter iter, LLPayloadFreeFnPtr payload_free_function) {
     // the iterator is pointing to, and also free any LinkedList
     // data structure element as appropriate.
     
-    
+    LinkedList list = iter->list;
+
+    // Shouldn't need this, but just in case...
+    if (list->num_elements == 0) {
+        return 1;
+    }
+
+    // One element in list
+    if (list->num_elements == 1) {
+        LinkedListNodePtr node = list->head;
+        // Adjust List
+        list->head = NULL;
+        list->tail = NULL;
+        list->num_elements--;
+        // Destroy list elements
+        payload_free_function(node->payload);
+        DestroyLinkedListNode(node);
+        DestroyLLIter(iter);
+        return 1;
+    }
+
+    // More than one element, iter at head
+    if (iter->cur_node == list->head) {
+        LinkedListNodePtr node = list->head;
+        // Adjust List
+        list->head = node->next;
+        node->prev = NULL;
+        list->num_elements--;
+        // Move up iterator
+        LLIterNext(iter);
+        // Destroy list elements
+        payload_free_function(node->payload);
+        DestroyLinkedListNode(node);
+        return 0;
+    }
+
+    // More than one element, iter at tail
+    if (iter->cur_node == list->tail) {
+        LinkedListNodePtr node = list->tail;
+        // Adjust list
+        list->tail = node->prev;
+        node->prev->next = NULL;
+        list->num_elements--;
+        // Move back iterator
+        LLIterPrev(iter);
+        // Destroy list elements
+        payload_free_function(node->payload);
+        DestroyLinkedListNode(node);
+        return 0;
+    }
+
+    // More than two items and iter at a middle element
+    // This is the only option left, so no if needed
+    LinkedListNodePtr node = iter->cur_node;
+    // Adjust list
+    node->next->prev = node->prev;
+    node->prev->next = node->next;
+    list->num_elements--;
+    // Move iterator up
+    LLIterNext(iter);
+    // Delete list elements
+    payload_free_function(node->payload);
+    DestroyLinkedListNode(node);
+    return 0;
 }

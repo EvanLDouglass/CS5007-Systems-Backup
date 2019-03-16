@@ -1,6 +1,7 @@
 # Ignore temporary files and intermediate compiled files
 *.c~
 *.h~
+*.sh~
 *.o
 *.a
 Makefile~
@@ -9,7 +10,7 @@ Makefile~
 # Ignore the Python linting file
 ./bin/
 
-# Ignore individual binary files
+# Ignore individual binary files and folders
 a1/hello
 a2/slowsort
 a2/fastsort
@@ -21,3 +22,5 @@ a4/test
 a5/bits
 a5/matrix
 a5/list
+a6/solution_binaries/
+a6/test_suite
