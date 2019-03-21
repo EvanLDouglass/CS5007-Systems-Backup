@@ -122,5 +122,5 @@ Assert007.o: Assert007.c Assert007.h
 .PHONY: clean 
 
 clean:
-	rm -f example_ll example_ht test_suite Hashtable.o
+	rm -f example_ll example_ht test_suite Hashtable.o *.c~ Makefile~
 

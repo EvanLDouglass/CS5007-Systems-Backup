@@ -82,69 +82,6 @@ void DestroyHashtable(Hashtable ht, ValueFreeFnPtr valueFreeFunction) {
   free(ht);
 }
 
-// Determines if a key exists in a given linked list (one of the buckets).
-// INPUT:
-//   list: A hash table bucket (linked list)
-//   key: The key to find
-// Returns 1 if found, 0 otherwise.
-int DoesKeyExistInList(LinkedList list, uint64_t key, HTKeyValue *result) {
-  Assert007(list != NULL);
-
-  if (NumElementsInLinkedList(list) == 0) {
-    return 0;
-  }
-
-  // Iterate over values
-  LLIter iter = CreateLLIter(list);  // ensures at least one item exists
-  void *payload;
-  while (iter != NULL) {
-    LLIterGetPayload(iter, &payload);
-    result = (HTKeyValue*)payload;
-    if (key == result->key) {
-        // Key found
-        DestroyLLIter(iter);
-        return 1;
-    }
-    LLIterNext(iter);
-  }
-
-  // Key not found
-  result = NULL;
-  DestroyLLIter(iter);
-  return 0;
-}
-
-// Replaces an old Key Value pair with a new one in the given linked list.
-// Assumes the old kv pair is in the list.
-// INPUT:
-//   list: A hash table bucket
-//   kvp: a Key-Value pointer
-//   old_kvp: a pointer to put the old value into
-// Returns 0 on success, 1 otherwise.
-int ReplaceValueInList(LinkedList list, HTKeyValue *new_kvp, HTKeyValue *old_kvp) {
-  Assert007(list != NULL);
-  Assert007(new_kvp != NULL);
-
-  // Iterate to find values
-  LLIter iter = CreateLLIter(list);
-  void *payload;
-  while (iter != NULL) {
-    LLIterGetPayload(iter, &payload);
-    old_kvp = (HTKeyValue*)payload;
-    if (old_kvp->key == new_kvp->key) {
-      // delete LL node using a null free function
-      LLIterDelete(iter, &NullFree);
-      if (iter != NULL) {
-        DestroyLLIter(iter);
-      }
-      AppendLinkedList(list, (void*)new_kvp);
-      return 0;
-    }
-  }
-  DestroyLLIter(iter);
-  return 1;
-}
-
 int PutInHashtable(Hashtable ht,
                    HTKeyValue kvp,
                    HTKeyValue *old_key_value) {
@@ -162,23 +99,11 @@ int PutInHashtable(Hashtable ht,
 
   // STEP 1: Finish the implementation of the put.
   // This is a fairly complex task, so you might decide you want
-  // to define/implement a helper function hat helps you find
+  // to define/implement a helper function that helps you find
   // and optionally remove a key within a chain, rather than putting
   // all that logic inside here. You might also find that your helper(s)
   // can be reused in step 2 and 3.
   
-  int found = DoesKeyExistInList(insert_chain, kvp.key, old_key_value);
-
-  // Case: kvp.key not in hashtable bucket
-  if (found == 0) {
-    AppendLinkedList(insert_chain, (void*)&kvp);
-    return 0;
-
-  // Case: kvp.key is in hashtable bucket
-  } else {
-    ReplaceValueInList(insert_chain, &kvp, old_key_value);
-    return 2;
-  }
 }
 
 int HashKeyToBucketNum(Hashtable ht, uint64_t key) {
@@ -187,16 +112,6 @@ int HashKeyToBucketNum(Hashtable ht, uint64_t key) {
 
 // -1 if not found; 0 if success
 int LookupInHashtable(Hashtable ht, uint64_t key, HTKeyValue *result) {
-  Assert007(ht != NULL);
-  
-  // STEP 2: Implement lookup
-  for (int i = 0; i < ht->num_buckets; i++) {
-    int found = DoesKeyExistInList(ht->buckets[i], key, result);
-    if (found == 1) {  // 1 is true for for DoesKeyExist...
-      return 0;
-    }
-  }
-  return -1;
 }
 
 
@@ -211,10 +126,7 @@ int NumElemsInHashtable(Hashtable ht) {
 
 int RemoveFromHashtable(Hashtable ht, uint64_t key, HTKeyValuePtr junkKVP) {
   // STEP 3: Implement Remove
-  int found = LookupInHashtable(ht, key, junkKVP);
-  if (found == 0) {  // Success
-    // 
-  }
+
   
 }
 
