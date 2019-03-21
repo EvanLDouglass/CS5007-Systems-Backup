@@ -25,10 +25,24 @@ The basic tasks you need to complete:
 * Modify MovieSet to ensure no duplicates of movies
 * Bulk up tests
 
-To do this, go through each file, and identify the "TODO" tags (An easy way to do this might be to use grep). 
+To do this, go through each file, and identify the "TODO" tags (listed below; generated with ```grep -n TODO *.c```). 
 
-While you're going through the TODO tags, you'll see some questions where we ask you what to put somewhere. Collect those, and put them (with answers) in your README.md file for this assignment. (In MovieIndex, FileParser). 
+## A list of the TODOs and some more details
 
+### TODOs where you should change the code/implement something
 
+* example_indexer.c:17:  // TODO: Parse command-line args to index based on the correct field
+* example_indexer.c:20:  // TODO: Output report to file, rather than terminal (see MovieReport.h)
+* FileParser.c:45:  // TODO: Check that there is at least one movie
+* Movie.c:14:  // TODO: Populate/Initialize movie.
+* Movie.c:66:  // TODO: Change such that genres is an array, not just a string.
+* MovieIndex.c:47:        // TODO: What to do if there are multiple genres? (Also make a note of what you did in the README)
+* MovieIndex.c:71:      // TODO: how to deal with multiple genres?? 
+* MovieReport.c:57:  // TODO: Implement this.
+* MovieReport.c:63:  // TODO: Implement this. You might utilize OutputReport.
 
+### TODOs that you should address in your README.md
 
+* FileParser.c:37:  // TODO: How big to make this hashtable? How to decide? What to think about?
+* FileParser.c:55:      // TODO: What to do if there is a collision?
+* MovieIndex.c:47:        // TODO: What to do if there are multiple genres? (Also implement it)

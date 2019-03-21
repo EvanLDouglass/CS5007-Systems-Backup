@@ -1,4 +1,4 @@
-/* Modified by Evan Douglass, March 20 2019 */
+/* Modified by Evan Douglass, March 21 2019 */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,6 +82,54 @@ void DestroyHashtable(Hashtable ht, ValueFreeFnPtr valueFreeFunction) {
   free(ht);
 }
 
+// Looks for a key in a given linked list. Copies the HTKeyValue
+// in the payload if there is one, or makes it NULL if not. Optionally
+// removes the matched LL node using the dummy free function at the top
+// of this file.
+// INPUT
+//   list: a linked list (ht bucket)
+//   key: an integer key to look for
+//   old_kvp: an HTKeyValue pointer to put the old kvp into when found
+//   remove: an int indicating if a found kvp's node should be deleted
+//     1 - delete, 0 - don't delete
+// Returns 0 if find was successful, -1 if key was not found, 1 if node was
+//   deleted.
+int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
+  Assert007(list != NULL);
+  
+  // If list is empty, nothing found
+  if (NumElementsInLinkedList(list) == 0) {
+    return -1;
+  }
+
+  // If at least one element, try to find matching key
+  LLIter iter = CreateLLIter(list);
+  void* voidTemp;
+  HTKeyValue* kvpTemp;
+  while (iter != NULL) {
+    LLIterGetPayload(iter, &voidTemp);
+    kvpTemp = (HTKeyValue*)voidTemp;
+    // Test for key match
+    if (kvpTemp->key == key) {
+      old_kvp = kvpTemp;  // pointer to the heap
+      // Delete node if needed
+      int iterState;
+      if (remove == 1) {
+        iterState = LLIterDelete(iter, &NullFree);
+      }
+      // If iter wasn't already free'd (list is still non-empty), free it
+      if (iterState == 1) {
+        DestroyLLIter(iter);
+      }
+      return remove;  // given int is same as return
+    }
+  }
+
+  // Nothing was found if this point reached
+  DestroyLLIter(iter);
+  return -1;
+}
+
 int PutInHashtable(Hashtable ht,
                    HTKeyValue kvp,
                    HTKeyValue *old_key_value) {
@@ -99,10 +147,26 @@ int PutInHashtable(Hashtable ht,
 
   // STEP 1: Finish the implementation of the put.
   // This is a fairly complex task, so you might decide you want
-  // to define/implement a helper function that helps you find
+  // to define/implement a helper function hat helps you find
   // and optionally remove a key within a chain, rather than putting
   // all that logic inside here. You might also find that your helper(s)
   // can be reused in step 2 and 3.
+
+  // Make payload for HT
+  HTKeyValue* kvpPayload = (HTKeyValue*)malloc(sizeof(HTKeyValue));
+  if (kvpPayload == NULL) {  // malloc failure, no more memory
+    return 1;
+  }
+  kvpPayload->key = kvp.key;
+  kvpPayload->value = kvp.value;
+
+  // If HT empty, append to bucket
+  if (NumElemsInHashtable(ht) == 0) {
+    AppendLinkedList(insert_chain, (void*)kvpPayload);
+    return 0;
+  }
+
+  // Test if key exists already and delete if there
   
 }
 
@@ -112,6 +176,10 @@ int HashKeyToBucketNum(Hashtable ht, uint64_t key) {
 
 // -1 if not found; 0 if success
 int LookupInHashtable(Hashtable ht, uint64_t key, HTKeyValue *result) {
+  Assert007(ht != NULL);
+  
+  // STEP 2: Implement lookup
+  
 }
 
 
@@ -276,13 +344,22 @@ int HTIteratorHasMore(HTIter iter) {
   if (iter->bucket_iter == NULL) {
     return 0;
   }
-
+  
   if (LLIterHasNext(iter->bucket_iter) == 1)
     return 1;
-
+  
   // No more in this iter; are there more buckets?
-  if (iter->which_bucket < (iter->ht->num_buckets -1) )
-    return 1;
-  else return 0; 
+  int i = iter->which_bucket + 1;
+  while (i < (iter->ht->num_buckets)) {
+    // Make sure one of them has elements in it
+    if ((iter->ht->buckets[i] != NULL) &&
+        (NumElementsInLinkedList(iter->ht->buckets[i]) > 0)) {
+      return 1; 
+    }
+    i++;
+  }
+  
+  return 0;  
 }
+
 
