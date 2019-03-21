@@ -107,7 +107,7 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
   void* voidTemp;
   HTKeyValue* kvpTemp;
   while (iter != NULL) {
-    LLIterGetPayload(iter, &voidTemp);
+    LLIterGetPayload(iter,(void**)&voidTemp);
     kvpTemp = (HTKeyValue*)voidTemp;
     // Test for key match
     if (kvpTemp->key == key) {
@@ -123,6 +123,7 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
       }
       return remove;  // given int is same as return
     }
+    LLIterNext(iter);
   }
 
   // Nothing was found if this point reached
@@ -160,8 +161,9 @@ int PutInHashtable(Hashtable ht,
   kvpPayload->key = kvp.key;
   kvpPayload->value = kvp.value;
 
-  // Test if key exists already and delete if there
+  // Test if key exists already and delete if there.
   // FindInList tests for an empty list, so I don't need to here.
+  // It also copies the found HTKeyValue into the provided pointer..
   int found = FindInList(insert_chain, kvp.key, old_key_value, 1);
   AppendLinkedList(insert_chain, (void*)kvpPayload);
   // Return depending on result of "search and destroy"
