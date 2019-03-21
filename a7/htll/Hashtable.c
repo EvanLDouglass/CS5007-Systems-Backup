@@ -160,14 +160,16 @@ int PutInHashtable(Hashtable ht,
   kvpPayload->key = kvp.key;
   kvpPayload->value = kvp.value;
 
-  // If HT empty, append to bucket
-  if (NumElemsInHashtable(ht) == 0) {
-    AppendLinkedList(insert_chain, (void*)kvpPayload);
-    return 0;
-  }
-
   // Test if key exists already and delete if there
-  
+  // FindInList tests for an empty list, so I don't need to here.
+  int found = FindInList(insert_chain, kvp.key, old_key_value, 1);
+  AppendLinkedList(insert_chain, (void*)kvpPayload);
+  // Return depending on result of "search and destroy"
+  if (found == -1) {  // key not found
+    return 0;
+  } else {            // key found and node deleted
+    return 2;
+  }
 }
 
 int HashKeyToBucketNum(Hashtable ht, uint64_t key) {
