@@ -108,14 +108,15 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
   LLIter iter = CreateLLIter(list);
   void* voidTemp;
   HTKeyValue* kvpTemp;
-  while (iter != NULL) {
+  int moved = 0;
+  while (moved == 0) {
     LLIterGetPayload(iter,(void**)&voidTemp);
     kvpTemp = (HTKeyValue*)voidTemp;
     // Test for key match
     if (kvpTemp->key == key) {
       old_kvp->value = kvpTemp->value;
       // Delete node if needed
-      int iterState;
+      int iterState = 0;
       if (remove == 1) {
         iterState = LLIterDelete(iter, (LLPayloadFreeFnPtr)&NullFree);
       }
@@ -126,7 +127,7 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
       }
       return remove;  // given int is same as return
     }
-    LLIterNext(iter);
+    moved = LLIterNext(iter);
   }
 
   // Nothing was found if this point reached
@@ -170,7 +171,7 @@ int PutInHashtable(Hashtable ht,
   // FindInList tests for an empty list, so I don't need to here.
   // It also copies the found HTKeyValue into the provided pointer..
   int found = FindInList(insert_chain, kvp.key, old_key_value, 1);
-  AppendLinkedList(insert_chain, (void*)kvpPayload);
+  InsertLinkedList(insert_chain, (void*)kvpPayload);
   // Return depending on result of "search and destroy"
   if (found == -1) {  // key not found
     return 0;
@@ -362,19 +363,54 @@ void DestroyHashtableIterator(HTIter iter) {
 // Moves to the next element; does not return. 
 int HTIteratorNext(HTIter iter) {
   // Step 4: Implement HTIteratorNext
+  Assert007(iter != NULL);
+  LLIter iterLL = iter->bucket_iter;
+
   // Case: There are more elements in this bucket
+  if (LLIterHasNext(iterLL) == 1) {
+    LLIterNext(iterLL);
+    return 0;
+
   // Case: iter on last element in bucket
-    // Destroy this iter
+  } else {
     // Check subsequent buckets lengths
+    int i = iter->which_bucket + 1;
+    while (i < (iter->ht->num_buckets)) {
       // If a bucket has at least 1 element, make an iter for that bucket
-      // return 0
-    // If no other elements, return 1 
+      if ((iter->ht->buckets[i] != NULL) &&
+         (NumElementsInLinkedList(iter->ht->buckets[i]) > 0)) {
+        iter->bucket_iter = CreateLLIter(iter->ht->buckets[i]);
+        iter->which_bucket = i;
+
+        // Destroy previous iter
+        int success = DestroyLLIter(iterLL);
+        if (success != 0) {
+          return 1;
+        }
+        iterLL = NULL;
+
+        return 0;
+      }
+      i++;
+    }
+    // If no other elements, return 1
+    return 1;
+  }
 }
 
 int HTIteratorGet(HTIter iter, HTKeyValuePtr dest) {
   Assert007(iter != NULL); 
   // Step 6 -- implement HTIteratorGet.
-  
+  LLIter iterLL = iter->bucket_iter;
+  void* temp;
+
+  int result = LLIterGetPayload(iterLL, (void**)&temp);
+  if (result == 0) {  // success
+    HTKeyValuePtr tempKV = (HTKeyValuePtr)temp;
+    dest->key = tempKV->key;
+    dest->value = tempKV->value;
+  }
+  return result;
 }
 
 //  0 if there are no more elements.
@@ -399,5 +435,3 @@ int HTIteratorHasMore(HTIter iter) {
   
   return 0;  
 }
-
-
