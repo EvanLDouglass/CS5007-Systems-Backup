@@ -96,9 +96,11 @@ void DestroyHashtable(Hashtable ht, ValueFreeFnPtr valueFreeFunction) {
 //   deleted.
 int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
   Assert007(list != NULL);
-  
+  old_kvp->key = key;
+
   // If list is empty, nothing found
   if (NumElementsInLinkedList(list) == 0) {
+    old_kvp->value = NULL;
     return -1;
   }
 
@@ -111,15 +113,16 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
     kvpTemp = (HTKeyValue*)voidTemp;
     // Test for key match
     if (kvpTemp->key == key) {
-      old_kvp = kvpTemp;  // pointer to the heap
+      old_kvp->value = kvpTemp->value;
       // Delete node if needed
       int iterState;
       if (remove == 1) {
-        iterState = LLIterDelete(iter, &NullFree);
+        iterState = LLIterDelete(iter, (LLPayloadFreeFnPtr)&NullFree);
       }
       // If iter wasn't already free'd (list is still non-empty), free it
       if (iterState == 1) {
         DestroyLLIter(iter);
+        iter = NULL;
       }
       return remove;  // given int is same as return
     }
@@ -128,6 +131,8 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
 
   // Nothing was found if this point reached
   DestroyLLIter(iter);
+  iter = NULL;
+  old_kvp->value = NULL;
   return -1;
 }
 
@@ -191,8 +196,7 @@ int LookupInHashtable(Hashtable ht, uint64_t key, HTKeyValue *result) {
   insert_bucket = HashKeyToBucketNum(ht, key);
   insert_chain = ht->buckets[insert_bucket];
 
-  int found = FindInList(insert_chain, key, result, 0);  // don't delete
-  return found;  // will return same values
+  return FindInList(insert_chain, key, result, 0);  // don't delete
 }
 
 
@@ -208,7 +212,7 @@ int NumElemsInHashtable(Hashtable ht) {
 int RemoveFromHashtable(Hashtable ht, uint64_t key, HTKeyValuePtr junkKVP) {
   // STEP 3: Implement Remove
   Assert007(ht != NULL);
-  
+
   int insert_bucket;
   LinkedList insert_chain;
 
@@ -340,11 +344,13 @@ HTIter CreateHashtableIterator(Hashtable table) {
   }
   iter->ht = table;
   iter->which_bucket = 0;
+  while (NumElementsInLinkedList(iter->ht->buckets[iter->which_bucket]) == 0) {
+    iter->which_bucket++; 
+  }
   iter->bucket_iter = CreateLLIter(iter->ht->buckets[iter->which_bucket]);
 
   return iter;
 }
-
 
 void DestroyHashtableIterator(HTIter iter) {
   // Destroy the list iter
@@ -356,7 +362,13 @@ void DestroyHashtableIterator(HTIter iter) {
 // Moves to the next element; does not return. 
 int HTIteratorNext(HTIter iter) {
   // Step 4: Implement HTIteratorNext
-  
+  // Case: There are more elements in this bucket
+  // Case: iter on last element in bucket
+    // Destroy this iter
+    // Check subsequent buckets lengths
+      // If a bucket has at least 1 element, make an iter for that bucket
+      // return 0
+    // If no other elements, return 1 
 }
 
 int HTIteratorGet(HTIter iter, HTKeyValuePtr dest) {
