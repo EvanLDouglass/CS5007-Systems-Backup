@@ -183,7 +183,16 @@ int LookupInHashtable(Hashtable ht, uint64_t key, HTKeyValue *result) {
   Assert007(ht != NULL);
   
   // STEP 2: Implement lookup
-  
+  int insert_bucket;
+  LinkedList insert_chain;
+
+  // calculate which bucket we're inserting into,
+  // get the list
+  insert_bucket = HashKeyToBucketNum(ht, key);
+  insert_chain = ht->buckets[insert_bucket];
+
+  int found = FindInList(insert_chain, key, result, 0);  // don't delete
+  return found;  // will return same values
 }
 
 
@@ -198,10 +207,23 @@ int NumElemsInHashtable(Hashtable ht) {
 
 int RemoveFromHashtable(Hashtable ht, uint64_t key, HTKeyValuePtr junkKVP) {
   // STEP 3: Implement Remove
-
+  Assert007(ht != NULL);
   
-}
+  int insert_bucket;
+  LinkedList insert_chain;
 
+  // calculate which bucket we're inserting into,
+  // get the list
+  insert_bucket = HashKeyToBucketNum(ht, key);
+  insert_chain = ht->buckets[insert_bucket];
+
+  int found = FindInList(insert_chain, key, junkKVP, 1);  // delete
+  if (found == 1 && junkKVP != NULL) {
+    return 0;
+  } else {
+    return -1;
+  }
+}
 
 uint64_t FNVHash64(unsigned char *buffer, unsigned int len) {
   // This code is adapted from code by Landon Curt Noll
