@@ -1,3 +1,7 @@
+/* Edited by Evan Douglass
+ * March 22 2019
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -15,6 +19,7 @@ int main(int argc, char* argv[]){
   LinkedList movie_list  = ReadFile("data/test");
 
   // TODO: Parse command-line args to index based on the correct field
+
   Index index = BuildMovieIndex(movie_list, Year); 
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
