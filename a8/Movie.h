@@ -1,4 +1,5 @@
-/*
+/*  Edited by Evan Douglass, March 23 2019
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -21,42 +22,42 @@
 
 
 /**
- * IndexField is an enum that we use to indicate fields of Movies. 
- */ 
-enum IndexField{Genre, Year, Type, Id};
+ * IndexField is an enum that we use to indicate fields of Movies.
+ */
+enum IndexField {Genre, Year, Type, Id};
 
-/** 
- * A Movie is a struct that holds information about a Movie. 
- * 
- * Fields that are null or invalid are -1 for the int fields, and NULL 
- * if they are pointer fields. 
+/**
+ * A Movie is a struct that holds information about a Movie.
+ *
+ * Fields that are null or invalid are -1 for the int fields, and NULL
+ * if they are pointer fields.
  *
  */
 typedef struct movie {
-	char *id; 
-	char *type; 
-	char *title; 
-	int isAdult; 
-	int year; 
-	int runtime; 
-	char *genres; // TODO: Make this an array of char*s
-
-} Movie, *MoviePtr; 
+	char *id;
+	char *type;
+	char *title;
+	int isAdult;
+	int year;
+	int runtime;
+	char **genres;  // TODO: Make this an array of char*s (DONE)
+} Movie, *MoviePtr;
 
 
 /**
- *  Creates an empty movie struct. 
- * 
- *  Mallocs space for the fields, but initializes the fields to 
- *  default/null values. 
+ *  Creates an empty movie struct.
+ *
+ *  Mallocs space for the fields, but initializes the fields to
+ *  default/null values.
  */
-Movie* CreateMovie(); 
+Movie* CreateMovie();
 
 
 /**
- * Destroys a movie, freeing up all char*s in the struct. 
+ * Destroys a movie, freeing up all char*s in the struct.
  */
 void DestroyMovie(Movie* movie);
+
 
 /**
  * Given a char* that is a row in the data file,
@@ -68,8 +69,8 @@ void DestroyMovie(Movie* movie);
  *
  * Fields are separated by a pipe (|), and a dash (-) specifies an empty value.
  *
- * Returns: A pointer to a Movie struct that has been allocated and populated. 
+ * Returns: A pointer to a Movie struct that has been allocated and populated.
  */
-Movie* CreateMovieFromRow(char *dataRow); 
+Movie* CreateMovieFromRow(char *dataRow);
 
-#endif // MOVIE
+#endif  // MOVIE
