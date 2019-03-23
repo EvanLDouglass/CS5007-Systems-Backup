@@ -1,4 +1,5 @@
-/*
+/*  Edited by Evan Douglass, March 22 2019
+ *
  *  Modifications 
  *  Copyright 2018 Adrienne Slaughter, Northeastern University. 
  *  Based on code created by Steven Gribble (under GNU GPL). 
@@ -35,8 +36,8 @@
 
 Index BuildMovieIndex(LinkedList movies, enum IndexField field_to_index){
   // TODO: How big to make this hashtable? How to decide? What to think about?
-  // Make this "appropriate".  
-  Index movie_index = CreateHashtable(100);
+  // Make this "appropriate".  (DONE)
+  Index movie_index = CreateHashtable(300);
 
   LLIter iter = CreateLLIter(movies);
   Movie* cur_movie;

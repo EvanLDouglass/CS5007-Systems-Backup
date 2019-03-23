@@ -35,7 +35,7 @@ typedef struct movie {
 	int isAdult; 
 	int year; 
 	int runtime; 
-	char *genres; // TODO: Make this an array of char*s
+	char **genres; // TODO: Make this an array of char*s (DONE)
 
 } Movie, *MoviePtr; 
 

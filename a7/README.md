@@ -47,8 +47,10 @@ To do this, go through each file, and identify the "TODO" tags (listed below; ge
 * MovieIndex.c:47:        // TODO: What to do if there are multiple genres? (Also implement it)
 
 # My Answers
-*How big to make this hashtable? How to decide? What to think about?*
-My main goal in deciding how big to make this hashtable is to minimize collisions while also minimizing the space in memory that it takes up. However, I don't care as much about memory space as I do about collisions and speed performance because we are working on modern computers.
+__*How big to make this hashtable? How to decide? What to think about?*__
+My main goal in deciding how big to make this hashtable is to minimize collisions while also minimizing the space in memory that it takes up. However, I don't care as much about memory space as I do about collisions and speed performance because we are working on modern computers. It is also worth noting that every time an element is added to the hashtable, our implementation will check if the load factor is over 3, and resize it by 9x if it is. So, once everything has been loaded up, we can be sure our load factor is a reasonable size. At this point my main concern is how many resizes will happen while we are loading data. Starting with a small hashtable could greatly increase the time to read all the data.
+
+Now, our movie index will be made up of keys and MovieSets, so any movie with the same key will be added to a set of similar movies. This means our initial size should be based off of the largest possible field set. The largest field set is probably either Year or Genre. According to Google, the first moving picture was made in 188, 131 years ago. While there are a lot of niche genres, I'd guess year is the bigger field set. At this point the chosen size is fairly arbitrary, but I think a reasonable size is twice the amount of the largest field set. To play it safe, I've chosen to start the hashtable at a size of 300.
 
 Evan Douglass
 Started March 22 2019
