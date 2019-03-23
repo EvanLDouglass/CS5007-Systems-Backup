@@ -1,4 +1,3 @@
-
 ```FileParser```:
 Responsible for reading in a file, checking for errors, and parse out movies.
 
@@ -46,3 +45,10 @@ To do this, go through each file, and identify the "TODO" tags (listed below; ge
 * FileParser.c:37:  // TODO: How big to make this hashtable? How to decide? What to think about?
 * FileParser.c:55:      // TODO: What to do if there is a collision?
 * MovieIndex.c:47:        // TODO: What to do if there are multiple genres? (Also implement it)
+
+# My Answers
+*How big to make this hashtable? How to decide? What to think about?*
+My main goal in deciding how big to make this hashtable is to minimize collisions while also minimizing the space in memory that it takes up. However, I don't care as much about memory space as I do about collisions and speed performance because we are working on modern computers.
+
+Evan Douglass
+Started March 22 2019

@@ -2,6 +2,7 @@
 *.c~
 *.h~
 *.sh~
+*.md~
 *.o
 *.a
 Makefile~
