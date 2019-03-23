@@ -106,25 +106,20 @@ int FindInList(LinkedList list, uint64_t key, HTKeyValue *old_kvp, int remove) {
 
   // If at least one element, try to find matching key
   LLIter iter = CreateLLIter(list);
-  void* voidTemp;
   HTKeyValue* kvpTemp;
   int moved = 0;
   while (moved == 0) {
-    LLIterGetPayload(iter, (void**)&voidTemp);
-    kvpTemp = (HTKeyValue*)voidTemp;
+    LLIterGetPayload(iter, (void**)&kvpTemp);
     // Test for key match
     if (kvpTemp->key == key) {
       old_kvp->value = kvpTemp->value;
       // Delete node if needed
-      int iterState = 0;
       if (remove == 1) {
-        iterState = LLIterDelete(iter, (LLPayloadFreeFnPtr)&NullFree);
+        LLIterDelete(iter, (LLPayloadFreeFnPtr)&FreeKVP);
       }
-      // If iter wasn't already free'd (list is still non-empty), free it
-      if (iterState == 1) {
-        DestroyLLIter(iter);
-        iter = NULL;
-      }
+      // Delete iter if not already gone
+      DestroyLLIter(iter);
+      iter = NULL;
       return remove;  // given int is same as return
     }
     moved = LLIterNext(iter);
@@ -162,6 +157,7 @@ int PutInHashtable(Hashtable ht,
   // Make payload for HT
   HTKeyValue* kvpPayload = (HTKeyValue*)malloc(sizeof(HTKeyValue));
   if (kvpPayload == NULL) {  // malloc failure, no more memory
+    free(kvpPayload);
     return 1;
   }
   kvpPayload->key = kvp.key;
