@@ -44,7 +44,7 @@ void CrawlFilesToMap(char *dir, DocIdMap map) {
   //   if it is, recursively call this function (ignore . & ..)
   //   if it isn't, add it to map
 
-  for (i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     char* name = namelist[i]->d_name;  // name of entry
 
     // Test for dir found on stackoverflow at:
@@ -52,7 +52,7 @@ void CrawlFilesToMap(char *dir, DocIdMap map) {
     // checking-if-a-directory-exists-in-unix-system-call
     if (stat(name, &s) == 0 && S_ISDIR(s.st_mode)) {
       // Also test for cur & parent directory (seperated for readability)
-      if (name != "." && name != "..") {
+      if (strcmp(name, ".") != 0 && strcmp(name,"..") != 0) {
         CrawlFilesToMap(name, map);
       }
     }

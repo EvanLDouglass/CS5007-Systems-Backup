@@ -30,6 +30,7 @@
 void DestroyMovieSetWrapper(void *movie_set) {
   DestroyMovieSet((MovieSet)movie_set);
 }
+
 void toLower(char *str, int len) {
   for (int i = 0; i < len; i++) {
     str[i] = tolower(str[i]);
@@ -40,7 +41,7 @@ int AddMovieTitleToIndex(Index index,
                          Movie *movie,
                          uint64_t doc_id,
                          int row_id) {
-// Put in the index
+  // Put in the index
   HTKeyValue kvp;
 
   // TODO: How to choose?
@@ -75,7 +76,6 @@ int AddMovieTitleToIndex(Index index,
   }
 
   return 0;
-
 }
 
 int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
