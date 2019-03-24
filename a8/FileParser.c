@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <pthread.h>
 
 #include "MovieIndex.h"
 #include "FileParser.h"
@@ -27,84 +26,80 @@
 #include "DocIdMap.h"
 
 //=======================
-// To minimize the number of files we have, I'm 
-// putting the private function prototypes for 
-// the fileparser here. 
+// To minimize the number of files we have, I'm
+// putting the private function prototypes for
+// the fileparser here.
 
 void IndexTheFile(char *file, uint64_t docId, Index index);
 
 /**
- * \fn Parses the files that are in a provided DocIdMap. 
+ * \fn Parses the files that are in a provided DocIdMap.
  *
  */
-int ParseTheFiles(DocIdMap docs, Index index) { 
+int ParseTheFiles(DocIdMap docs, Index index) {
   struct timeval stop, start;
   clock_t start2, end2;
   double cpu_time_used;
   gettimeofday(&start, NULL);
-    
+
   start2 = clock();
-  
+
   HTIter iter = CreateHashtableIterator(docs);
 
-  int i=0; 
+  int i = 0;
 
   HTKeyValue kv;
 
-  HTIteratorGet(iter, &kv);   
-  printf("processing file: %d\n", i++); 
+  HTIteratorGet(iter, &kv);
+  printf("processing file: %d\n", i++);
   IndexTheFile(kv.value, kv.key, index);
-
   while (HTIteratorHasMore(iter) != 0) {
-    HTIteratorGet(iter, &kv);   
-    printf("processing file: %d\n", i++); 
+    HTIteratorGet(iter, &kv);
+    printf("processing file: %d\n", i++);
     IndexTheFile(kv.value, kv.key, index);
-    HTIteratorNext(iter); 
+    HTIteratorNext(iter);
   }
 
-  HTIteratorGet(iter, &kv);   
-  printf("processing file: %d\n", i++); 
+  HTIteratorGet(iter, &kv);
+  printf("processing file: %d\n", i++);
   IndexTheFile(kv.value, kv.key, index);
-  
-  DestroyHashtableIterator(iter); 
-  
-  gettimeofday(&stop, NULL);
 
+  DestroyHashtableIterator(iter);
+
+  gettimeofday(&stop, NULL);
   end2 = clock();
   cpu_time_used = ((double) (end2 - start2)) / CLOCKS_PER_SEC;
 
-  printf("\n\nTook %lu microseconds to parse %d files. \n\n", 
-	stop.tv_usec - start.tv_usec, NumElemsInHashtable(docs));
+  printf("\n\nTook %lu microseconds to parse %d files. \n\n",
+  stop.tv_usec - start.tv_usec, NumElemsInHashtable(docs));
   printf("Took %f seconds to execute. \n", cpu_time_used);
-  return 0; 
+  return 0;
 }
 
 
 void IndexTheFile(char *file, uint64_t doc_id, Index index) {
   FILE *cfPtr;
-  
-  if ((cfPtr = fopen(file, "r")) == NULL){
+
+  if ((cfPtr = fopen(file, "r")) == NULL) {
     printf("File could not be opened\n");
-    return; 
-  }
-  else{
-    int buffer_size = 1000; 
-    char buffer[buffer_size]; 
+    return;
+  } else {
+    int buffer_size = 1000;
+    char buffer[buffer_size];
     int row = 0;
-    
-    while (fgets(buffer, buffer_size, cfPtr) != NULL ) {
-      Movie *movie = CreateMovieFromRow(buffer); 
-      int result = AddMovieTitleToIndex(index, movie, doc_id, row); 
-      if (result < 0){
-	fprintf(stderr, "Didn't add MovieToIndex.\n"); 
+
+    while (fgets(buffer, buffer_size, cfPtr) != NULL) {
+      Movie *movie = CreateMovieFromRow(buffer);
+      int result = AddMovieTitleToIndex(index, movie, doc_id, row);
+      if (result < 0) {
+        fprintf(stderr, "Didn't add MovieToIndex.\n");
       }
-      row++; 
-      DestroyMovie(movie); // Done with this now
+      row++;
+      DestroyMovie(movie);  // Done with this now
     }
     fclose(cfPtr);
   }
 }
-
 
 
 

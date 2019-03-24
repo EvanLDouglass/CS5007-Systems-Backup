@@ -31,25 +31,25 @@
  */
 
 /**
- * Prints a report to the terminal, given an index of movies. 
+ * Prints a report to the terminal, given an index of movies.
  */
 void PrintReport(Index index);
 
 /**
- * Helper function; Prints just the movies in a set. 
- * 
- */ 
+ * Helper function; Prints just the movies in a set.
+ *
+ */
 void OutputMovieSet(MovieSet movie_set);
 
 /**
- * Writes the report to the specified output FILE. 
+ * Writes the report to the specified output FILE.
  */
 void OutputReport(Index index, FILE output);
 
 
 /*
- * Writes the report to the specified output. 
- */ 
+ * Writes the report to the specified output.
+ */
 void SaveReport(Index index, char* filename);
 
-#endif // MOVIEREPORT_H
+#endif   // MOVIEREPORT_H

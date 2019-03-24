@@ -4,7 +4,7 @@ Here's a quick overview
 
 I will likely make some tweaks and **will** add an HTLL.a library for you to use. 
 
-[Docs!!](html/index.html) (after you pull/copy the repo, open html/index in your browser to see docs. Let me know if they are any help at all). 
+[Docs!!](html/index.html) (After you download, open html/index.html in your browser)
 
 
 ```FileParser```:
@@ -49,7 +49,6 @@ TODOs:
 * MovieIndex.c:      // TODO: how to deal with multiple genres??
 * MovieReport.c:  // TODO: Implement this.
 * MovieReport.c:  // TODO: Implement this. You might utilize OutputReport.
-* MovieSet.c:  while (LLIterHasNext(iter) != 0) { //TODO: get the payload properly
 * example_indexer.c:  // TODO: Parse command-line args to index based on the correct field
 * example_indexer.c:  // TODO: Output report to file, rather than terminal (see MovieReport.h)
 

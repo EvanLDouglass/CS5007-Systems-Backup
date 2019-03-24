@@ -22,45 +22,43 @@ void PrintReport(Index index) {
   while (HTIteratorHasMore(iter)) {
     HTIteratorNext(iter);
     HTIteratorGet(iter, &movie_set);
-    OutputMovieSet((MovieSet)movie_set.value); 
+    OutputMovieSet((MovieSet)movie_set.value);
   }
   // For every movie set, create a LLIter
-  
-  DestroyHashtableIterator(iter); 
+
+  DestroyHashtableIterator(iter);
 }
 
 void OutputMovieSet(MovieSet movie_set) {
   printf("%s: %s\n", "indexType", movie_set->desc);
-  printf("%d items\n", NumElementsInLinkedList(movie_set->movies)); 
+  printf("%d items\n", NumElementsInLinkedList(movie_set->movies));
   LLIter iter = CreateLLIter(movie_set->movies);
   if (iter == NULL) {
     printf("iter null for some reason.. \n");
-    return; 
+    return;
   }
   Movie *movie;
-  
-  LLIterGetPayload(iter, (void**)&movie);
-  printf("\t%s\n", movie->title); 
 
-  while(LLIterHasNext(iter)) {
-    LLIterNext(iter); 
+  LLIterGetPayload(iter, (void**)&movie);
+  printf("\t%s\n", movie->title);
+
+  while (LLIterHasNext(iter)) {
+    LLIterNext(iter);
     LLIterGetPayload(iter, (void**)&movie);
-    printf("\t%s\n", movie->title); 
+    printf("\t%s\n", movie->title);
   }
 
-  DestroyLLIter(iter); 
-  
+  DestroyLLIter(iter);
 }
 
 
 void OutputReport(Index index, FILE output) {
-  // TODO: Implement this. 
-  // After you've implemented it, consider modifying PrintReport() 
-  // to utilize this function. 
+  // TODO: Implement this.
+  // After you've implemented it, consider modifying PrintReport()
+  // to utilize this function.
 }
 
 void SaveReport(Index index, char* filename) {
-  // TODO: Implement this. You might utilize OutputReport. 
-
+  // TODO: Implement this. You might utilize OutputReport.
 }
 

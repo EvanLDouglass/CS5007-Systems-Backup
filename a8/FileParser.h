@@ -23,19 +23,15 @@
 #include "DocIdMap.h"
 
 
-/** 
- * Given a map of all the files that we want to index 
- * and search, open each file and index the contents to index 
+/**
+ * Given a map of all the files that we want to index
+ * and search, open each file and index the contents to index
  *
- * \param docs the DocIdMap that contains all the files we want to parse. 
- * \param the index to hold all the indexed docs. 
+ * \param docs the DocIdMap that contains all the files we want to parse.
+ * \param the index to hold all the indexed docs.
  */
 int ParseTheFiles(DocIdMap docs, Index index);
 
-
-
-
-  
 
 int GetRowFromFile(char *file, long rowId);
 

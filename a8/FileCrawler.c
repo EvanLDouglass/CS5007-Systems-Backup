@@ -1,5 +1,4 @@
-/*  Modified by Evan Douglass, March 23 2019.
- *
+/*
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -29,44 +28,13 @@
 
 
 void CrawlFilesToMap(char *dir, DocIdMap map) {
-  struct stat s;  // Should this be in the for loop?
+  struct stat s;
 
   struct dirent **namelist;
   int n;
+  n = scandir(dir, &namelist, 0, alphasort);
 
-  n = scandir(dir, &namelist, NULL, alphasort);
-  if (n == -1) {
-    puts("Error in scandir");
-    exit(1);
-  }
-
-  // TODO: use namelist to find all the files and put them in map (DONE)
+  // TODO: use namelist to find all the files and put them in map.
   // NOTE: There may be nested folders.
   // Be sure to lookup how scandir works. Don't forget about memory use.
-
-  // For each name in namelist, need to:
-  //   test if name is a directory with stat struct
-  //   if it is, recursively call this function (ignore . & ..)
-  //   if it isn't, add it to map
-
-  for (i = 0; i < n; i++) {
-    char* name = namelist[i]->d_name;  // name of entry
-
-    // Test for dir found on stackoverflow at:
-    // https://stackoverflow.com/questions/3828192/
-    // checking-if-a-directory-exists-in-unix-system-call
-    if (stat(name, &s) == 0 && S_ISDIR(s.st_mode)) {
-      // Also test for cur & parent directory (seperated for readability)
-      if (name != "." && name != "..") {
-        CrawlFilesToMap(name, map);
-      }
-    }
-
-    // For files:
-    // Map needs malloc'ed name => done in scandir
-    PutFileInMap(name, map);
-  }
-  // Still need to free namelist
-  free(namelist);
 }
-

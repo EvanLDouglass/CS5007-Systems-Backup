@@ -29,32 +29,32 @@ void SimpleFree(void *payload) {
 
 int AddMovieToSet(MovieSet set,  uint64_t docId, int rowId) {
   Hashtable docInd = set->doc_index;
-  
+
   HTKeyValue kvp;
-  HTKeyValue old_kvp; 
+  HTKeyValue old_kvp;
   int result = LookupInHashtable(docInd, docId, &kvp);
-  
-  //If the docId is in docInd, use it. 
+
+  // If the docId is in docInd, use it.
   // Otherwise, create a new entry for this docId in docInd.
   if (result < 0) {
     kvp.key = docId;
     kvp.value = CreateLinkedList();
-    PutInHashtable(docInd, kvp, &old_kvp); 
+    PutInHashtable(docInd, kvp, &old_kvp);
   }
-  
+
   // add rowId to the linked list.
   void *val = malloc(sizeof(int));
 
   if (val == NULL) {
     // Out of mem
     printf("Out of memory adding movie to set: %s\n", set->desc);
-    return -1; 
+    return -1;
   }
-  
-  *((int*)val) = rowId; 
+
+  *((int*)val) = rowId;
   result = InsertLinkedList((LinkedList)kvp.value, val);
 
-  return result; 
+  return result;
 }
 
 int MovieSetContainsDoc(MovieSet set, uint64_t docId) {
@@ -63,13 +63,13 @@ int MovieSetContainsDoc(MovieSet set, uint64_t docId) {
 }
 
 void PrintOffsetList(LinkedList list) {
-  printf("Printing offset list\n"); 
+  printf("Printing offset list\n");
   LLIter iter = CreateLLIter(list);
-  int* payload; 
-  while (LLIterHasNext(iter) != 0) { //TODO: get the payload properly 
-    LLIterGetPayload(iter, (void**)&payload); 
-    printf("%d\t", *((int*)payload)); 
-    LLIterNext(iter); 
+  int* payload;
+  while (LLIterHasNext(iter) != 0) {  //TODO: get the payload properly
+    LLIterGetPayload(iter, (void**)&payload);
+    printf("%d\t", *((int*)payload));
+    LLIterNext(iter);
   }
 }
 
@@ -79,29 +79,29 @@ MovieSet CreateMovieSet(char *desc) {
   if (set == NULL) {
     // Out of memory
     printf("Couldn't malloc for movieSet %s\n", desc);
-    return NULL; 
+    return NULL;
   }
   set->desc = (char*)malloc(strlen(desc) *  sizeof(char) + 1);
   if (set->desc == NULL) {
     printf("Couldn't malloc for movieSet->desc");
-    return NULL; 
+    return NULL;
   }
-  strcpy(set->desc, desc); 
+  strcpy(set->desc, desc);
   set->doc_index = CreateHashtable(16);
-  return set; 
+  return set;
 }
 
 void DestroyOffsetList(void *val) {
-  LinkedList list = (LinkedList)val; 
-  DestroyLinkedList(list, &SimpleFree); 
+  LinkedList list = (LinkedList)val;
+  DestroyLinkedList(list, &SimpleFree);
 }
 
 void DestroyMovieSet(MovieSet set) {
   // Free desc
-  free(set->desc); 
+  free(set->desc);
   // Free doc_index
   DestroyHashtable(set->doc_index, &DestroyOffsetList);
   // Free set
-  free(set); 
+  free(set);
 }
 

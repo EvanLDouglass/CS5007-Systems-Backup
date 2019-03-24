@@ -24,17 +24,17 @@
 
 
 /**
- * Iterates through a given directory, and for all files it 
+ * Iterates through a given directory, and for all files it
  * finds, adds them to the provided DocIdMap to assign a unique
- * id. 
+ * id.
  *
  * The result of this function is a DocIdMap that contains all the files
- * we will want to index and search. 
+ * we will want to index and search.
  *
  * \param dir which directory to crawl
- * \param map the DocIdMap to put the filenames in. 
+ * \param map the DocIdMap to put the filenames in.
  */
 void CrawlFilesToMap(char *dir, DocIdMap map);
 
 
-#endif // FILECRAWLER_H
+#endif  // FILECRAWLER_H

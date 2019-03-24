@@ -27,18 +27,16 @@
 #include "./FileParser.h"
 
 
-
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
   LinkedList movie_list  = ReadFile("data/test");
-
   // TODO: Parse command-line args to index based on the correct field
-  Index index = BuildMovieIndex(movie_list, Year); 
+  Index index = BuildMovieIndex(movie_list, Year);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
-  PrintReport(index); 
-  
+  PrintReport(index);
+
   DestroyIndex(index);
-  
-  return 0; 
+
+  return 0;
 }
 

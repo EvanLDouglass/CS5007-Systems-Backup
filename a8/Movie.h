@@ -1,5 +1,4 @@
-/*  Edited by Evan Douglass, March 23 2019
- *
+/*
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -34,13 +33,13 @@ enum IndexField {Genre, Year, Type, Id};
  *
  */
 typedef struct movie {
-	char *id;
-	char *type;
-	char *title;
-	int isAdult;
-	int year;
-	int runtime;
-	char **genres;  // TODO: Make this an array of char*s (DONE)
+  char *id;
+  char *type;
+  char *title;
+  int isAdult;
+  int year;
+  int runtime;
+  char *genres;  // TODO: Make this an array of char*s
 } Movie, *MoviePtr;
 
 
@@ -58,7 +57,6 @@ Movie* CreateMovie();
  */
 void DestroyMovie(Movie* movie);
 
-
 /**
  * Given a char* that is a row in the data file,
  * Creates and populates a Movie struct accordingly.
@@ -72,5 +70,4 @@ void DestroyMovie(Movie* movie);
  * Returns: A pointer to a Movie struct that has been allocated and populated.
  */
 Movie* CreateMovieFromRow(char *dataRow);
-
 #endif  // MOVIE
