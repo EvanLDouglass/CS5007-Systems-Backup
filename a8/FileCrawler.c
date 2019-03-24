@@ -35,7 +35,7 @@ void CrawlFilesToMap(char *dir, DocIdMap map) {
   int n;
   n = scandir(dir, &namelist, 0, alphasort);
 
-  // TODO: use namelist to find all the files and put them in map.
+  // TODO: use namelist to find all the files and put them in map. (DONE)
   // NOTE: There may be nested folders.
   // Be sure to lookup how scandir works. Don't forget about memory use.
   

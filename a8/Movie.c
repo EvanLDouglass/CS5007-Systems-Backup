@@ -29,14 +29,14 @@ Movie* CreateMovie() {
     printf("Couldn't allocate more memory to create a Movie\n");
     return NULL;
   }
-  // TODO: Populate/Initialize movie.
+  // TODO: Populate/Initialize movie. (DONE)
   mov-id = NULL;
   mov->type = NULL;
   mov->title = NULL;
   mov->isAdult = -1;
   mov->year = -1;
   mov->runtime = -1;
-  mov->genres = NULL;
+  mov->genres = CreateLinkedList();
 
   return mov;
 }
@@ -93,6 +93,12 @@ Movie* CreateMovieFromRow(char *data_row) {
   mov->year = CheckInt(token[5]);
   mov->runtime = CheckInt(token[7]);
   // TODO: Change such that genres is an array, not just a string.
+  // Need to tokenize the last token by "," and add to LL
+  char* allGenres = token[8];
+  char* oneGenre;
+  while (oneGenre = strtok_r(allGenres, ",", &allGenres) != NULL) {
+    void* payload = CheckAndAllocateString
+  }
   mov->genres = CheckAndAllocateString(token[8]);
 
   return mov;
