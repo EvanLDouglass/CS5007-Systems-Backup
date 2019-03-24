@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 24 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -46,7 +47,8 @@ typedef Hashtable Index;
  *
  *  \return 0 if successful.
  */
-int AddMovieToIndex(Index index, Movie *movie, enum IndexField field);
+int AddMovieToIndex(Index index, Movie *movie,
+                    enum IndexField fieldi, uint64_t doc_id, int row_id);
 
 /**
  * If this Index is indexing by movie title rather than

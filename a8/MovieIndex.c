@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 24 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -44,8 +45,8 @@ int AddMovieTitleToIndex(Index index,
   // Put in the index
   HTKeyValue kvp;
 
-  // TODO: How to choose?
-  int numFields = 1000;
+  // TODO: How to choose? (DONE)
+  int numFields = 150;
 
   char *token[numFields];
   char *rest = movie->title;
@@ -67,7 +68,7 @@ int AddMovieTitleToIndex(Index index,
     HTKeyValue old_kvp;
 
     if (result < 0) {
-      kvp.value = CreateMovieSet(token[j]);
+      kvp.value = (void*) CreateMovieSet(token[j]);
       kvp.key = FNVHash64((unsigned char*)token[j], strlen(token[j]));
       PutInHashtable(index, kvp, &old_kvp);
     }
@@ -78,7 +79,47 @@ int AddMovieTitleToIndex(Index index,
   return 0;
 }
 
-int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
+// Gets genres from the given movie and adds the movie
+// to an index under each genre seperately
+// Returns 0 if successful or a 1-indexed number representing
+// which genre the error occured at.
+int AddGenresToIndex(Index index, Movie *movie, uint64_t doc_id, int row_id) {
+  int num_genres = NumElementsInLinkedList(movie->genres);
+  LLIter iter = CreateLLIter(movie->genres);
+  for (int i = 0; i < num_genres; i++) {
+    char* genre;
+    int result;
+    HTKeyValue kvp, old_kvp;
+
+    // Get a genre
+    result = LLIterGetPayload(iter, (void**)&genre);
+    if (result == 1) {
+      return i + 1;
+    }
+    // Look for existing keys
+    uint64_t key = FNVHash64((unsigned char*)genre, strlen(genre));
+    result = LookupInHashtable(index, key, &kvp);
+
+    if (result < 0) {
+      // Need to add a new kvp
+      kvp.value = (void*) CreateMovieSet(genre);
+      kvp.key = key;
+      PutInHashtable(index, kvp, &old_kvp);
+    }
+    // There is an existing kvp
+    AddMovieToSet((MovieSet)kvp.value, doc_id, row_id);
+
+    LLIterNext(iter);
+  }
+  return 0;
+}
+
+int AddMovieToIndex(Index index, Movie *movie,
+                    enum IndexField field, uint64_t doc_id, int row_id) {
+  if (field == Genre) {
+    AddGenresToIndex(index, movie, doc_id, row_id);
+    return 0;
+  }
 
   // Put in the index
   HTKeyValue kvp;
@@ -103,23 +144,24 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
         break;
       case Id:
         doc_set_name = movie->id;
-      break;
+        break;
       case Genre:
         // TODO: What to do if there are multiple genres?
-        doc_set_name = movie->genres;
+        // Handle genre indexing as a completely different case
+        break;
     }
-    kvp.value = CreateMovieSet(doc_set_name);  // Should be something like "1974", or "Documentary"
+    kvp.value = (void*)CreateMovieSet(doc_set_name);
     kvp.key = ComputeKey(movie, field);
     PutInHashtable(index, kvp, &old_kvp);
   }
-
-  //AddMovieToSet((MovieSet)kvp.value, movie); // TODO: Something needs to happen here
+  // TODO: Something needs to happen here
+  AddMovieToSet((MovieSet)kvp.value, doc_id, row_id);  
 
   return 0;
 }
 
-
-
+// This function has been modified so that calling it with Genre as
+// the field will do nothing.
 uint64_t ComputeKey(Movie* movie, enum IndexField which_field) {
   switch(which_field) {
     case Year:
@@ -133,7 +175,8 @@ uint64_t ComputeKey(Movie* movie, enum IndexField which_field) {
       break;
     case Genre:
       // TODO: how to deal with multiple genres??
-      return FNVHash64((unsigned char*)movie->genres, strlen(movie->genres));
+      // This is handled by a different function
+      break;
   }
   return -1u;
 }
