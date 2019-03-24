@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 23 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -19,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "Assert007.h"
 #include "Movie.h"
 
 Movie* CreateMovie() {
@@ -28,8 +29,15 @@ Movie* CreateMovie() {
     printf("Couldn't allocate more memory to create a Movie\n"); 
     return NULL; 
   }
-  // TODO: Populate/Initialize movie.
-  
+  // TODO: Populate/Initialize movie (DONE)
+  mov-id = NULL;
+  mov->type = NULL;
+  mov->title = NULL;
+  mov->isAdult = -1;
+  mov->year = -1;
+  mov->runtime = -1;
+  mov->genres = NULL;
+
   return mov; 
 }
 
