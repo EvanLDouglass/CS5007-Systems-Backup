@@ -1,4 +1,5 @@
-/*
+/*  Edited by Evan Douglass, March 23 2019
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -39,7 +40,7 @@ typedef struct movie {
   int isAdult;
   int year;
   int runtime;
-  char *genres;  // TODO: Make this an array of char*s
+  LinkedList genres;  // TODO: Make this an array of char*s
 } Movie, *MoviePtr;
 
 
