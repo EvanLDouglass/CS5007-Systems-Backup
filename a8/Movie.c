@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 23 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -29,6 +30,13 @@ Movie* CreateMovie() {
     return NULL;
   }
   // TODO: Populate/Initialize movie.
+  mov-id = NULL;
+  mov->type = NULL;
+  mov->title = NULL;
+  mov->isAdult = -1;
+  mov->year = -1;
+  mov->runtime = -1;
+  mov->genres = NULL;
 
   return mov;
 }
