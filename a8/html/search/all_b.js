@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['readme',['README',['../md__r_e_a_d_m_e.html',1,'']]],
   ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
   ['row_5fid',['row_id',['../structsearch_result.html#a3cab83fcaa8953a7814db06b1e07f463',1,'searchResult']]],
   ['runqueries',['runQueries',['../main_8c.html#ac69d7882a979a1a2638f4c2b8ffc9d91',1,'main.c']]],

@@ -47,8 +47,7 @@ typedef Hashtable Index;
  *
  *  \return 0 if successful.
  */
-int AddMovieToIndex(Index index, Movie *movie,
-                    enum IndexField fieldi, uint64_t doc_id, int row_id);
+int AddMovieToIndex(Index index, Movie *movie, enum IndexField field);
 
 /**
  * If this Index is indexing by movie title rather than
@@ -97,6 +96,7 @@ Index CreateIndex();
 /**
  * Helper function to compute the key from a string, given
  * a Movie and which field is to be used as the key.
+ * Note that this function does nothing if the IndexField is Genre.
  *
  * \return uint64_t to be used as a key in the MovieIndex.
  */

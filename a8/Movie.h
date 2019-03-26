@@ -20,6 +20,7 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 
+#include "htll/LinkedList.h"
 
 /**
  * IndexField is an enum that we use to indicate fields of Movies.

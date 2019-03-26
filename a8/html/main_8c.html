@@ -5,18 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>A8: Movie Indexer: main.c File Reference</title>
+<title>A8: Indexing: main.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-  $(document).ready(initResizable);
-/* @license-end */</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,8 +21,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">A8: Movie Indexer
-   &#160;<span id="projectnumber">0.1</span>
+   <div id="projectname">A8: Indexing
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -54,23 +46,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('main_8c.html','');});
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -85,6 +60,7 @@ $(document).ready(function(){initNavTree('main_8c.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
@@ -108,13 +84,18 @@ $(document).ready(function(){initNavTree('main_8c.html','');});
 <code>#include &quot;<a class="el" href="_movie_index_8h_source.html">MovieIndex.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_movie_8h_source.html">Movie.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_query_processor_8h_source.html">QueryProcessor.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for main.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c__incl.png" border="0" usemap="#main_8c" alt=""/></div>
+<map name="main_8c" id="main_8c">
+</map>
 </div>
-<p><a href="main_8c_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac3b1bf085b6cd41d815567213490da6c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac3b1bf085b6cd41d815567213490da6c">GetRowFromFile</a> (char *file, long rowId)</td></tr>
-<tr class="separator:ac3b1bf085b6cd41d815567213490da6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95bfbea4f94eacf73d511999cb66891"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa95bfbea4f94eacf73d511999cb66891">CreateMovieFromFileRow</a> (char *file, long rowId, <a class="el" href="_movie_8h.html#a6f5eab8e6c6f61358bdf8722920c3e24">Movie</a> *<a class="el" href="structmovie.html">movie</a>)</td></tr>
+<tr class="separator:aa95bfbea4f94eacf73d511999cb66891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56b0f5e41f7af208f4c35f87431dd59a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a56b0f5e41f7af208f4c35f87431dd59a">doPrep</a> (char *dir)</td></tr>
 <tr class="separator:a56b0f5e41f7af208f4c35f87431dd59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b2772dfa1844dc9f18dbffdf963c9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a20b2772dfa1844dc9f18dbffdf963c9e">runQuery</a> (char *term)</td></tr>
@@ -132,6 +113,41 @@ Variables</h2></td></tr>
 <tr class="separator:aa711287a8f25c05d2fd5d8e5867e4d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aa95bfbea4f94eacf73d511999cb66891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa95bfbea4f94eacf73d511999cb66891">&#9670;&nbsp;</a></span>CreateMovieFromFileRow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CreateMovieFromFileRow </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>rowId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_movie_8h.html#a6f5eab8e6c6f61358bdf8722920c3e24">Movie</a> *&#160;</td>
+          <td class="paramname"><em>movie</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Open the specified file, read the specified row into the provided pointer to the movie. </p>
+
+</div>
+</div>
 <a id="a56b0f5e41f7af208f4c35f87431dd59a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56b0f5e41f7af208f4c35f87431dd59a">&#9670;&nbsp;</a></span>doPrep()</h2>
 
@@ -147,38 +163,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00053">53</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
-</div>
-</div>
-<a id="ac3b1bf085b6cd41d815567213490da6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3b1bf085b6cd41d815567213490da6c">&#9670;&nbsp;</a></span>GetRowFromFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int GetRowFromFile </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>rowId</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00034">34</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -208,8 +192,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00138">138</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
 </div>
 </div>
 <a id="ac69d7882a979a1a2638f4c2b8ffc9d91"></a>
@@ -226,8 +208,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00118">118</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -247,8 +227,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00071">71</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -264,8 +242,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00031">31</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
 </div>
 </div>
 <a id="a72671914196b4b33c8851a5b8be8c7de"></a>
@@ -280,20 +256,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00030">30</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="main_8c.html">main.c</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
 </body>
 </html>

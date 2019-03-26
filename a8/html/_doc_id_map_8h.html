@@ -5,18 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>A8: Movie Indexer: DocIdMap.h File Reference</title>
+<title>A8: Indexing: DocIdMap.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-  $(document).ready(initResizable);
-/* @license-end */</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,8 +21,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">A8: Movie Indexer
-   &#160;<span id="projectnumber">0.1</span>
+   <div id="projectname">A8: Indexing
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -54,23 +46,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('_doc_id_map_8h.html','');});
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -85,6 +60,7 @@ $(document).ready(function(){initNavTree('_doc_id_map_8h.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#typedef-members">Typedefs</a> &#124;
@@ -94,6 +70,20 @@ $(document).ready(function(){initNavTree('_doc_id_map_8h.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;htll/Hashtable.h&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for DocIdMap.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_doc_id_map_8h__incl.png" border="0" usemap="#_doc_id_map_8h" alt=""/></div>
+<map name="_doc_id_map_8h" id="_doc_id_map_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="_doc_id_map_8h__dep__incl.png" border="0" usemap="#_doc_id_map_8hdep" alt=""/></div>
+<map name="_doc_id_map_8hdep" id="_doc_id_map_8hdep">
+</map>
+</div>
 </div>
 <p><a href="_doc_id_map_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -134,8 +124,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8h_source.html#l00030">30</a> of file <a class="el" href="_doc_id_map_8h_source.html">DocIdMap.h</a>.</p>
-
 </div>
 </div>
 <a id="a444f90ae4ab89dc32db0d12ffca56f4b"></a>
@@ -149,8 +137,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8h_source.html#l00035">35</a> of file <a class="el" href="_doc_id_map_8h_source.html">DocIdMap.h</a>.</p>
+<p>A DocIdMap is a Hashtable that maps unique IDs to filenames. The key is an int, and the value is a char* that is a filename. </p>
 
 </div>
 </div>
@@ -170,8 +157,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00035">35</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
+<p>Creates an iterator to go through all of the document IDs in the DocIdMap.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">map</td><td>the DocIdMap to iterate through. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -189,9 +181,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates and returns a pointer to a DocIdMap. </p>
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00012">12</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
+<p>Creates and returns a pointer to an empty DocIdMap. </p>
 
 </div>
 </div>
@@ -211,8 +201,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00041">41</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
-
 </div>
 </div>
 <a id="acaa47f2c033d146742448274748f1cfa"></a>
@@ -231,9 +219,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Wrapper to destroy DocIdMap.</p>
-<p>Destroys and frees all data in the docidmap. </p>
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00017">17</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
+<p>Destroys and frees all data in the docidmap.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">map</td><td>the DocId map to destroy </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -252,8 +244,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00008">8</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
 
 </div>
 </div>
@@ -282,8 +272,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00045">45</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
 
 </div>
 </div>
@@ -315,20 +303,14 @@ Functions</h2></td></tr>
 <p>Given a map and a pointer to a filename, puts the filename in the map and gives it a unique ID.</p>
 <p>Assumes that the filename has been malloc'd prior to being added to the map. </p>
 
-<p class="definition">Definition at line <a class="el" href="_doc_id_map_8c_source.html#l00021">21</a> of file <a class="el" href="_doc_id_map_8c_source.html">DocIdMap.c</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="_doc_id_map_8h.html">DocIdMap.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
 </body>
 </html>

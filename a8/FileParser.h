@@ -21,7 +21,7 @@
 
 #include "MovieIndex.h"
 #include "DocIdMap.h"
-
+#include "htll/LinkedList.h"
 
 /**
  * Given a map of all the files that we want to index
@@ -32,9 +32,8 @@
  */
 int ParseTheFiles(DocIdMap docs, Index index);
 
-
 int GetRowFromFile(char *file, long rowId);
 
-
+LinkedList ReadFile(const char* filename);
 
 #endif

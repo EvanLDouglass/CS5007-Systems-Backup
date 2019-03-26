@@ -35,6 +35,17 @@ typedef struct movieSet {
   Hashtable doc_index; /*!< A hashtable that holds the info about which doc each movie is in*/
 } *MovieSet;
 
+/**
+  * A SetOfMovies is a set of movies.
+  *
+  * The difference between MovieSet and SetOfMovies is that SetOfMovies
+  * actually contains a list of populated movie structs, rather than references
+  * to where the data is stored.
+  */
+ typedef struct setOfMovies {
+   char *desc;
+   LinkedList movies;
+ } *SetOfMovies;
 
 /**
  * Adds a Movie to the set.
@@ -99,5 +110,45 @@ void DestroyOffsetList(void *val);
  */
 void DestroyMovieSet(MovieSet val);
 
+
+// ====================
+// Evan's functions
+// ====================
+
+/**
+ * Creates a new, empty SetOfMovies given the description.
+ *
+ * \param desc the description of what relates the movies that will be in this SetOfMovies
+ *
+ * \return A pointer to the new MovieSet that has been allocated.
+ */
+SetOfMovies CreateSetOfMovies(char *desc);
+
+/**
+ * Destroys the SetOfMovies..
+ *
+ * \param val the movieSet to be destroyed.
+ */
+void DestroySetOfMovies(SetOfMovies set);
+
+/**
+ * Adds a Movie to the set.
+ *
+ * \param set The SetOfMovies to add the movie to
+ * \param mov A Movie to add
+ *
+ * \return 0 if successful.
+ */
+int AddMovieToSetOfMovies(SetOfMovies set, MoviePtr mov);
+
+/**
+ * Checks if a movie is in the given SetOfMovies LinkedList
+ *
+ * \param list A LinkedList to look in
+ * \param mov A Movie to search for
+ *
+ * \return 1 if found, 0 otherwise
+ */
+int LookupMovieInLinkedList(LinkedList list, MoviePtr mov);
 
 #endif

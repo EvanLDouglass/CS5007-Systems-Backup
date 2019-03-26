@@ -5,18 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>A8: Movie Indexer: MovieSet.h File Reference</title>
+<title>A8: Indexing: MovieSet.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-  $(document).ready(initResizable);
-/* @license-end */</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,8 +21,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">A8: Movie Indexer
-   &#160;<span id="projectnumber">0.1</span>
+   <div id="projectname">A8: Indexing
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -54,23 +46,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('_movie_set_8h.html','');});
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -85,6 +60,7 @@ $(document).ready(function(){initNavTree('_movie_set_8h.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
@@ -96,6 +72,20 @@ $(document).ready(function(){initNavTree('_movie_set_8h.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &quot;htll/Hashtable.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_movie_8h_source.html">Movie.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for MovieSet.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_movie_set_8h__incl.png" border="0" usemap="#_movie_set_8h" alt=""/></div>
+<map name="_movie_set_8h" id="_movie_set_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="_movie_set_8h__dep__incl.png" border="0" usemap="#_movie_set_8hdep" alt=""/></div>
+<map name="_movie_set_8hdep" id="_movie_set_8hdep">
+</map>
+</div>
 </div>
 <p><a href="_movie_set_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -111,15 +101,15 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6ecc17f3213027eaa5a16e92f8decf07"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a6ecc17f3213027eaa5a16e92f8decf07">AddMovieToSet</a> (<a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set, uint64_t doc_id, int row_id)</td></tr>
+<tr class="memitem:a6ecc17f3213027eaa5a16e92f8decf07"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a6ecc17f3213027eaa5a16e92f8decf07">AddMovieToSet</a> (<a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set, uint64_t doc_id, int row_id)</td></tr>
 <tr class="separator:a6ecc17f3213027eaa5a16e92f8decf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a241649f3715b6e35da7b22045a61eda6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a241649f3715b6e35da7b22045a61eda6">DestroyMovieSet</a> (<a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set)</td></tr>
+<tr class="memitem:a241649f3715b6e35da7b22045a61eda6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a241649f3715b6e35da7b22045a61eda6">DestroyMovieSet</a> (<a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set)</td></tr>
 <tr class="separator:a241649f3715b6e35da7b22045a61eda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acab99c755e89390cdb43e7db34c124ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#acab99c755e89390cdb43e7db34c124ea">PrintOffsetList</a> (LinkedList list)</td></tr>
 <tr class="separator:acab99c755e89390cdb43e7db34c124ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36e16affedd88164bc611824df939042"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a36e16affedd88164bc611824df939042">MovieSetContainsDoc</a> (<a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set, uint64_t doc_id)</td></tr>
+<tr class="memitem:a36e16affedd88164bc611824df939042"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a36e16affedd88164bc611824df939042">MovieSetContainsDoc</a> (<a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> set, uint64_t doc_id)</td></tr>
 <tr class="separator:a36e16affedd88164bc611824df939042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f79e036e5e69be8ef2df4c2c3e3c225"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a0f79e036e5e69be8ef2df4c2c3e3c225">CreateMovieSet</a> (char *desc)</td></tr>
+<tr class="memitem:a0f79e036e5e69be8ef2df4c2c3e3c225"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#a0f79e036e5e69be8ef2df4c2c3e3c225">CreateMovieSet</a> (char *desc)</td></tr>
 <tr class="separator:a0f79e036e5e69be8ef2df4c2c3e3c225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab84664219b42bf0e112f653126b47ccb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_set_8h.html#ab84664219b42bf0e112f653126b47ccb">DestroyOffsetList</a> (void *val)</td></tr>
 <tr class="separator:ab84664219b42bf0e112f653126b47ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,7 +122,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structmovie_set.html">movieSet</a> * <a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a></td>
+          <td class="memname">typedef struct <a class="el" href="structmovie_set.html">movieSet</a> * <a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -151,7 +141,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int AddMovieToSet </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
           <td class="paramname"><em>set</em>, </td>
         </tr>
         <tr>
@@ -184,8 +174,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_doc_set_8c_source.html#l00030">30</a> of file <a class="el" href="_doc_set_8c_source.html">DocSet.c</a>.</p>
-
 </div>
 </div>
 <a id="a0f79e036e5e69be8ef2df4c2c3e3c225"></a>
@@ -195,7 +183,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> CreateMovieSet </td>
+          <td class="memname"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> CreateMovieSet </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>desc</em></td><td>)</td>
@@ -212,8 +200,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the new MovieSet that has been allocated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_doc_set_8c_source.html#l00077">77</a> of file <a class="el" href="_doc_set_8c_source.html">DocSet.c</a>.</p>
-
 </div>
 </div>
 <a id="a241649f3715b6e35da7b22045a61eda6"></a>
@@ -225,7 +211,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void DestroyMovieSet </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
           <td class="paramname"><em>set</em></td><td>)</td>
           <td></td>
         </tr>
@@ -240,8 +226,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="_movie_set_8c_source.html#l00106">106</a> of file <a class="el" href="_movie_set_8c_source.html">MovieSet.c</a>.</p>
 
 </div>
 </div>
@@ -268,8 +252,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_doc_set_8c_source.html#l00094">94</a> of file <a class="el" href="_doc_set_8c_source.html">DocSet.c</a>.</p>
-
 </div>
 </div>
 <a id="a36e16affedd88164bc611824df939042"></a>
@@ -281,7 +263,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MovieSetContainsDoc </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td>
           <td class="paramname"><em>set</em>, </td>
         </tr>
         <tr>
@@ -306,8 +288,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if the doc_id is found, -1 otherwise. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="_doc_set_8c_source.html#l00060">60</a> of file <a class="el" href="_doc_set_8c_source.html">DocSet.c</a>.</p>
 
 </div>
 </div>
@@ -334,20 +314,14 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_doc_set_8c_source.html#l00065">65</a> of file <a class="el" href="_doc_set_8c_source.html">DocSet.c</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="_movie_set_8h.html">MovieSet.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
 </body>
 </html>

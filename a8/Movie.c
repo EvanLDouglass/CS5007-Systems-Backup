@@ -30,13 +30,13 @@ Movie* CreateMovie() {
     return NULL;
   }
   // TODO: Populate/Initialize movie. (DONE)
-  mov-id = NULL;
+  mov->id = NULL;
   mov->type = NULL;
   mov->title = NULL;
   mov->isAdult = -1;
   mov->year = -1;
   mov->runtime = -1;
-  mov->genres = CreateLinkedList();
+  mov->genres = NULL;
 
   return mov;
 }
@@ -45,7 +45,7 @@ void DestroyMovie(Movie* movie) {
   free(movie->id);
   free(movie->type);
   free(movie->title);
-  DestroyLinkedList(movie->genres);
+  DestroyLinkedList(movie->genres, &free);
   free(movie);
 }
 
@@ -96,9 +96,10 @@ Movie* CreateMovieFromRow(char *data_row) {
 
   // TODO: Change such that genres is an array, not just a string. (DONE)
   // Need to tokenize the last token by "," and add to LL
+  mov->genres = CreateLinkedList();
   char* allGenres = token[8];
   char* oneGenre;
-  while (oneGenre = strtok_r(allGenres, ",", &allGenres) != NULL) {
+  while ((oneGenre = strtok_r(allGenres, ",", &allGenres)) != NULL) {
     // Allocate payload
     void* payload = (void*) CheckAndAllocateString(oneGenre);
     // Add to list
@@ -107,7 +108,7 @@ Movie* CreateMovieFromRow(char *data_row) {
     if (insert != 0) {
       fprintf(stderr, "Error adding to Genres list\n");
       DestroyMovie(mov);
-      return NULL
+      return NULL;
     }
   }
 

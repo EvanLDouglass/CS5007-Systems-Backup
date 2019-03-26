@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['row_5fid',['row_id',['../structsearch_result.html#a3cab83fcaa8953a7814db06b1e07f463',1,'searchResult']]],
-  ['runtime',['runtime',['../structmovie.html#a6885fec41faff728c1e6173cfb69e81f',1,'movie']]]
+  ['title',['title',['../structmovie.html#af06d911bb9e05f491ef3da520d03796c',1,'movie']]],
+  ['type',['type',['../structmovie.html#a23506fc4821ab6d9671f3e6222591a96',1,'movie']]]
 ];

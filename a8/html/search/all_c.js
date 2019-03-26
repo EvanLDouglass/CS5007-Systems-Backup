@@ -6,5 +6,5 @@ var searchData=
   ['searchresultiter',['searchResultIter',['../structsearch_result_iter.html',1,'searchResultIter'],['../_query_processor_8h.html#a15dbede7ed1cfc4a4cf3dcca4ef95a7d',1,'SearchResultIter():&#160;QueryProcessor.h']]],
   ['searchresultiterhasmore',['SearchResultIterHasMore',['../_query_processor_8c.html#ac69c2c8c1ef670f6bfec54e1841bf219',1,'SearchResultIterHasMore(SearchResultIter iter):&#160;QueryProcessor.c'],['../_query_processor_8h.html#ac69c2c8c1ef670f6bfec54e1841bf219',1,'SearchResultIterHasMore(SearchResultIter iter):&#160;QueryProcessor.c']]],
   ['searchresultnext',['SearchResultNext',['../_query_processor_8c.html#a9102553f6b523590978d96bdcfa385aa',1,'SearchResultNext(SearchResultIter iter):&#160;QueryProcessor.c'],['../_query_processor_8h.html#a9102553f6b523590978d96bdcfa385aa',1,'SearchResultNext(SearchResultIter iter):&#160;QueryProcessor.c']]],
-  ['simplefree',['SimpleFree',['../_doc_set_8c.html#a27a46aa51462cf84007f83f7d29ec2de',1,'SimpleFree(void *payload):&#160;DocSet.c'],['../_movie_set_8c.html#a27a46aa51462cf84007f83f7d29ec2de',1,'SimpleFree(void *payload):&#160;MovieSet.c']]]
+  ['simplefree',['SimpleFree',['../_movie_set_8c.html#a27a46aa51462cf84007f83f7d29ec2de',1,'MovieSet.c']]]
 ];

@@ -83,7 +83,7 @@ int AddMovieTitleToIndex(Index index,
 // to an index under each genre seperately
 // Returns 0 if successful or a 1-indexed number representing
 // which genre the error occured at.
-int AddGenresToIndex(Index index, Movie *movie, uint64_t doc_id, int row_id) {
+int AddGenresToIndex(Index index, Movie *movie) {
   int num_genres = NumElementsInLinkedList(movie->genres);
   LLIter iter = CreateLLIter(movie->genres);
   for (int i = 0; i < num_genres; i++) {

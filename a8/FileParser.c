@@ -18,13 +18,14 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
 #include "MovieIndex.h"
 #include "FileParser.h"
 #include "Movie.h"
 #include "DocIdMap.h"
+#include "htll/LinkedList.h"
 
 //=======================
 // To minimize the number of files we have, I'm
@@ -102,5 +103,32 @@ void IndexTheFile(char *file, uint64_t doc_id, Index index) {
   }
 }
 
+// Returns a LinkedList of Movie structs from the specified file
+LinkedList ReadFile(const char* filename){
+  FILE *cfPtr;
+
+  LinkedList movie_list = CreateLinkedList();
+
+  if ((cfPtr = fopen(filename, "r")) == NULL) {
+    printf("File could not be opened\n");
+    DestroyLinkedList(movie_list, NULL);
+    return NULL;
+  } else {
+    int max_row_length = 1000;
+    char row[max_row_length];
+
+    while (!feof(cfPtr)) {
+      fgets(row, max_row_length, cfPtr);
+      // Got the line; create a movie from it
+      MoviePtr movie = CreateMovieFromRow(row);
+      if (movie != NULL) {
+        InsertLinkedList(movie_list, movie);
+      }
+    }
+    fclose(cfPtr);
+
+  }
+  return movie_list;
+}
 
 

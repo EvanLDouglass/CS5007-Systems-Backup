@@ -1,3 +1,4 @@
+// Modified by Evan Douglass, March 24 2019
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,19 +18,19 @@ void PrintReport(Index index) {
   HTKeyValue movie_set;
 
   HTIteratorGet(iter, &movie_set);
-  OutputMovieSet((MovieSet)movie_set.value);
+  OutputMovieSet((SetOfMovies)movie_set.value);
 
   while (HTIteratorHasMore(iter)) {
     HTIteratorNext(iter);
     HTIteratorGet(iter, &movie_set);
-    OutputMovieSet((MovieSet)movie_set.value);
+    OutputMovieSet((SetOfMovies)movie_set.value);
   }
   // For every movie set, create a LLIter
 
   DestroyHashtableIterator(iter);
 }
 
-void OutputMovieSet(MovieSet movie_set) {
+void OutputMovieSet(SetOfMovies movie_set) {
   printf("%s: %s\n", "indexType", movie_set->desc);
   printf("%d items\n", NumElementsInLinkedList(movie_set->movies));
   LLIter iter = CreateLLIter(movie_set->movies);

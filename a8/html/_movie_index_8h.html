@@ -5,18 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>A8: Movie Indexer: MovieIndex.h File Reference</title>
+<title>A8: Indexing: MovieIndex.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-  $(document).ready(initResizable);
-/* @license-end */</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,8 +21,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">A8: Movie Indexer
-   &#160;<span id="projectnumber">0.1</span>
+   <div id="projectname">A8: Indexing
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -54,23 +46,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('_movie_index_8h.html','');});
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -85,6 +60,7 @@ $(document).ready(function(){initNavTree('_movie_index_8h.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#typedef-members">Typedefs</a> &#124;
@@ -97,6 +73,20 @@ $(document).ready(function(){initNavTree('_movie_index_8h.html','');});
 <code>#include &quot;htll/LinkedList.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_movie_8h_source.html">Movie.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_movie_set_8h_source.html">MovieSet.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for MovieIndex.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_movie_index_8h__incl.png" border="0" usemap="#_movie_index_8h" alt=""/></div>
+<map name="_movie_index_8h" id="_movie_index_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="_movie_index_8h__dep__incl.png" border="0" usemap="#_movie_index_8hdep" alt=""/></div>
+<map name="_movie_index_8hdep" id="_movie_index_8hdep">
+</map>
+</div>
 </div>
 <p><a href="_movie_index_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -111,7 +101,7 @@ Functions</h2></td></tr>
 <tr class="separator:acc37901ef1ea26ad29447880d3c0268f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2587e6e7c724c4b2e4e8801a74a5a2e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_index_8h.html#a2587e6e7c724c4b2e4e8801a74a5a2e7">AddMovieTitleToIndex</a> (<a class="el" href="_movie_index_8h.html#a02f569684caa17e45531c85d80387b68">Index</a> index, <a class="el" href="_movie_8h.html#a6f5eab8e6c6f61358bdf8722920c3e24">Movie</a> *<a class="el" href="structmovie.html">movie</a>, uint64_t docId, int row)</td></tr>
 <tr class="separator:a2587e6e7c724c4b2e4e8801a74a5a2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a6dc77741a7bd254ce1f3b76a527f4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_index_8h.html#a4a6dc77741a7bd254ce1f3b76a527f4d">GetMovieSet</a> (<a class="el" href="_movie_index_8h.html#a02f569684caa17e45531c85d80387b68">Index</a> index, const char *term)</td></tr>
+<tr class="memitem:a4a6dc77741a7bd254ce1f3b76a527f4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_index_8h.html#a4a6dc77741a7bd254ce1f3b76a527f4d">GetMovieSet</a> (<a class="el" href="_movie_index_8h.html#a02f569684caa17e45531c85d80387b68">Index</a> index, const char *term)</td></tr>
 <tr class="separator:a4a6dc77741a7bd254ce1f3b76a527f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ee61f9e528ad88ccae9a9f0bfe84828"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_movie_index_8h.html#a8ee61f9e528ad88ccae9a9f0bfe84828">DestroyIndex</a> (<a class="el" href="_movie_index_8h.html#a02f569684caa17e45531c85d80387b68">Index</a> index)</td></tr>
 <tr class="separator:a8ee61f9e528ad88ccae9a9f0bfe84828"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,8 +124,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>An index is a hashtable where they key is a MovieId (Movie-&gt;Id), and the value is a MovieSet.</p>
 <p>The Index is designed to allow indexing by one of multiple fields. </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8h_source.html#l00034">34</a> of file <a class="el" href="_movie_index_8h_source.html">MovieIndex.h</a>.</p>
 
 </div>
 </div>
@@ -179,9 +167,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>If this Index is indexing by movie title rather than one of the fields covered in AddMovieToIndex, use this function to iterate through all words in the title and add them to the index.</p>
 <p>INPUT: index: the index to add the movie to. movie: a Movie to be added to the index.</p>
-<p>RETURNS: 0 if successful. </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00041">41</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful. </dd></dl>
 
 </div>
 </div>
@@ -217,10 +203,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Indexes a given movie. Does not use to movie struct for anything other than extracting out the information; the movie is safe to free after calling this method.</p>
-<p>INPUT: index: the index to add the movie to. movie: a Movie to be added to the index. field: which Movie field to index on.</p>
-<p>RETURNS: 0 if successful. </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00080">80</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>the index to add the movie to. </td></tr>
+    <tr><td class="paramname">movie</td><td>a Movie to be added to the index. </td></tr>
+    <tr><td class="paramname">field</td><td>which Movie field to index on.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful. </dd></dl>
 
 </div>
 </div>
@@ -250,9 +241,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Helper function to compute the key from a string, given a Movie and which field is to be used as the key.</p>
-<p>RETURNS: uint64_t to be used as a key in the MovieIndex. </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00122">122</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>uint64_t to be used as a key in the MovieIndex. </dd></dl>
 
 </div>
 </div>
@@ -271,8 +260,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Creates a new Index. Allocates all the memory necessary for this index. </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00161">161</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
 
 </div>
 </div>
@@ -293,8 +280,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Destroys the supplied index, freeing up all resources used by this index. </p>
 
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00156">156</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
-
 </div>
 </div>
 <a id="a4a6dc77741a7bd254ce1f3b76a527f4d"></a>
@@ -304,7 +289,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> GetMovieSet </td>
+          <td class="memname"><a class="el" href="_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666">MovieSet</a> GetMovieSet </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_movie_index_8h.html#a02f569684caa17e45531c85d80387b68">Index</a>&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -324,22 +309,16 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets a MovieSet for a given word from the supplied index.</p>
 <p>INPUT: index: the index to search term: the term to search for in the index.</p>
-<p>RETURN: A MovieSet. Returns NULL if the term is not in the index. (that is, there are no movies with the given word in the title) </p>
-
-<p class="definition">Definition at line <a class="el" href="_movie_index_8c_source.html#l00141">141</a> of file <a class="el" href="_movie_index_8c_source.html">MovieIndex.c</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>A MovieSet. Returns NULL if the term is not in the index. (that is, there are no movies with the given word in the title) </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="_movie_index_8h.html">MovieIndex.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
 </body>
 </html>

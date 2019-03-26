@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['movie',['Movie',['../_movie_8h.html#a6f5eab8e6c6f61358bdf8722920c3e24',1,'Movie.h']]],
-  ['movieptr',['MoviePtr',['../_movie_8h.html#aec7abfe696c2eb6e5ca454a52ae5025f',1,'Movie.h']]],
-  ['movieset',['MovieSet',['../_doc_set_8h.html#ac804470e62a37f295817f4964b4cf666',1,'MovieSet():&#160;DocSet.h'],['../_movie_set_8h.html#ac804470e62a37f295817f4964b4cf666',1,'MovieSet():&#160;MovieSet.h']]]
+  ['searchresult',['SearchResult',['../_query_processor_8h.html#afdc3561bb38e5f0e620dcf1306b7fb23',1,'QueryProcessor.h']]],
+  ['searchresultiter',['SearchResultIter',['../_query_processor_8h.html#a15dbede7ed1cfc4a4cf3dcca4ef95a7d',1,'QueryProcessor.h']]]
 ];

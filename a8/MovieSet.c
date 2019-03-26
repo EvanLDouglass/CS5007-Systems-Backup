@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 25 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -20,11 +21,47 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "MovieSet.h"
 #include "htll/Hashtable.h"
+#include "htll/LinkedList.h"
+#include "MovieSet.h"
 
 void SimpleFree(void *payload) {
   free(payload);
+}
+
+// Returns 1 if item in list, 0 otherwise
+int LookupMovieInLinkedList(LinkedList list, MoviePtr mov) {
+  // No elements in list
+  if (NumElementsInLinkedList(list) == 0) {
+    return 0;
+  }
+  
+  // Test each existing string
+  LLIter iter = CreateLLIter(list);
+  MoviePtr payload;
+  while (1) {
+    LLIterGetPayload(iter, (void**)&payload);
+    if (strcmp(mov->id, payload->id) == 0) {
+      return 1;
+    }
+
+    if (LLIterHasNext(iter)) {
+      LLIterNext(iter);
+    } else {
+      break;
+    }
+  }
+  return 0;
+}
+
+// Returns 0 if successful, non-zero otherwise
+int AddMovieToSetOfMovies(SetOfMovies set, MoviePtr mov) {
+  // Ensure movie not in set already
+  int result = 1;  // defaults to unsuccessful
+  if (! (LookupMovieInLinkedList(set->movies, mov))) {  // movie not in list
+    result = InsertLinkedList(set->movies, (void*)mov);
+  }
+  return result;
 }
 
 int AddMovieToSet(MovieSet set,  uint64_t docId, int rowId) {
@@ -66,13 +103,17 @@ void PrintOffsetList(LinkedList list) {
   printf("Printing offset list\n");
   LLIter iter = CreateLLIter(list);
   int* payload;
-  while (LLIterHasNext(iter) != 0) {  //TODO: get the payload properly
+  while (1) {  //TODO: get the payload properly (DONE?)
     LLIterGetPayload(iter, (void**)&payload);
     printf("%d\t", *((int*)payload));
-    LLIterNext(iter);
+
+    if (LLIterHasNext(iter)) {
+      LLIterNext(iter);
+    } else {
+      break;
+    }
   }
 }
-
 
 MovieSet CreateMovieSet(char *desc) {
   MovieSet set = (MovieSet)malloc(sizeof(struct movieSet));
@@ -83,11 +124,28 @@ MovieSet CreateMovieSet(char *desc) {
   }
   set->desc = (char*)malloc(strlen(desc) *  sizeof(char) + 1);
   if (set->desc == NULL) {
-    printf("Couldn't malloc for movieSet->desc");
+    printf("Couldn't malloc for movieSet->desc\n");
     return NULL;
   }
   strcpy(set->desc, desc);
   set->doc_index = CreateHashtable(16);
+  return set;
+}
+
+SetOfMovies CreateSetOfMovies(char *desc) {
+  SetOfMovies set = (SetOfMovies)malloc(sizeof(struct setOfMovies));
+  if (set == NULL) {
+    // Out of memory
+    printf("Couldn't malloc for movieSet %s\n", desc);
+    return NULL;
+  }
+  set->desc = (char*)malloc(strlen(desc) * sizeof(char) + 1);
+  if (set->desc == NULL) {
+    printf("Couldn't malloc for SetOfMovies->desc\n");
+    return NULL;
+  }
+  strcpy(set->desc, desc);
+  set->movies = CreateLinkedList();
   return set;
 }
 
@@ -105,3 +163,8 @@ void DestroyMovieSet(MovieSet set) {
   free(set);
 }
 
+void DestroySetOfMovies(SetOfMovies set) {
+  free(set->desc);
+  DestroyLinkedList(set->movies, &SimpleFree);
+  free(set);
+}

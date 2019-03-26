@@ -45,12 +45,15 @@ TODOs:
 * Movie.h:    char *genres; // TODO: Make this an array of char*s
 * MovieIndex.c:  // TODO: How to choose?
 * MovieIndex.c:        // TODO: What to do if there are multiple genres?
-* MovieIndex.c:  //AddMovieToSet((MovieSet)kvp.value, movie); // TODO: Something needs to happen here; not sure what.
 * MovieIndex.c:      // TODO: how to deal with multiple genres??
 * MovieReport.c:  // TODO: Implement this.
 * MovieReport.c:  // TODO: Implement this. You might utilize OutputReport.
 * example_indexer.c:  // TODO: Parse command-line args to index based on the correct field
 * example_indexer.c:  // TODO: Output report to file, rather than terminal (see MovieReport.h)
+* main.c:  // TODO: Read a specified row from a specified file into Movie.
+* main.c:// TODO: This function pretty much runs the queries.
+* main.c:      // TODO: What to do with the filename?
+* main.c:    // TODO: What to do with the filename?
 
 Experiment: 
 
