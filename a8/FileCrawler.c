@@ -58,9 +58,20 @@ void CrawlFilesToMap(char *dir, DocIdMap map) {
     }
 
     // For files:
-    // Map needs malloc'ed name => done in scandir
-    PutFileInMap(name, map);
+	char *path;
+	path = realpath(name, NULL);  // NULL means malloc called
+    if (path == NULL) {
+      // Error occured
+      printf("An error occured reading file: %s\nskipped\n", path);
+      free(name);
+      free(path);
+      continue;
+    }
+    PutFileInMap(path, map);
+	// Need to free the name entry now
+	free(name);
   }
   // Still need to free namelist
   free(namelist);
 }
+

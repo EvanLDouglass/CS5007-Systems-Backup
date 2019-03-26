@@ -94,31 +94,30 @@ int AddGenresToIndex(Index index, Movie *movie) {
     // Get a genre
     result = LLIterGetPayload(iter, (void**)&genre);
     if (result == 1) {
-      return i + 1;
+      return i + 1;  // return 1-indexed genre on fail
     }
+
     // Look for existing keys
     uint64_t key = FNVHash64((unsigned char*)genre, strlen(genre));
     result = LookupInHashtable(index, key, &kvp);
 
     if (result < 0) {
       // Need to add a new kvp
-      kvp.value = (void*) CreateMovieSet(genre);
+      kvp.value = (void*) CreateSetOfMovies(genre);
       kvp.key = key;
       PutInHashtable(index, kvp, &old_kvp);
     }
     // There is an existing kvp
-    AddMovieToSet((MovieSet)kvp.value, doc_id, row_id);
+    AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
 
     LLIterNext(iter);
   }
   return 0;
 }
 
-int AddMovieToIndex(Index index, Movie *movie,
-                    enum IndexField field, uint64_t doc_id, int row_id) {
+int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
   if (field == Genre) {
-    AddGenresToIndex(index, movie, doc_id, row_id);
-    return 0;
+    return AddGenresToIndex(index, movie);
   }
 
   // Put in the index
@@ -150,18 +149,18 @@ int AddMovieToIndex(Index index, Movie *movie,
         // Handle genre indexing as a completely different case
         break;
     }
-    kvp.value = (void*)CreateMovieSet(doc_set_name);
+    kvp.value = (void*)CreateSetOfMovies(doc_set_name);
     kvp.key = ComputeKey(movie, field);
     PutInHashtable(index, kvp, &old_kvp);
   }
   // TODO: Something needs to happen here
-  AddMovieToSet((MovieSet)kvp.value, doc_id, row_id);  
+  AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);  
 
   return 0;
 }
 
 // This function has been modified so that calling it with Genre as
-// the field will do nothing.
+// the field will do nothing and return 1
 uint64_t ComputeKey(Movie* movie, enum IndexField which_field) {
   switch(which_field) {
     case Year:
@@ -176,7 +175,7 @@ uint64_t ComputeKey(Movie* movie, enum IndexField which_field) {
     case Genre:
       // TODO: how to deal with multiple genres??
       // This is handled by a different function
-      break;
+      return 1u;
   }
   return -1u;
 }
