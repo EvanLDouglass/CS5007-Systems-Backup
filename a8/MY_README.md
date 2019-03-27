@@ -34,5 +34,15 @@ That is, we need to compute the key of each genre individually.
 The way I decided to deal with this is to use a different function to work with genre indexing entirely.
 The ComputeKey function now only deals with Year, Type, and Id fields.
 
+**In main.c**
+```c
+// TODO: What to do with the filename?
+```
+This TODO appears twice in the file main.c in the function runQuery.
+It is asking this after getting a filename string and a SearchResult type after the user types in a term to search for.
+It seemed obvious after implementing the function at the top of the file (CreateMovieFromFileRow) that I had to find the file pointed to by `filename` and and use the SearchResult - `sr` - to make a Movie type.
+Based on the functions in MovieReport.c it made most sense to put these movies in a `SetOfMovies` and then pass that to the `OutputMovieSet` function.
+Thus, given a term to search for, we can output a list of movies that match the term.
+
 Evan Douglass<br>
 Created March 24 2019

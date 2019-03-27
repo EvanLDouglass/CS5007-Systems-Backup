@@ -30,7 +30,7 @@ indexer: example_indexer.c $(OBJS)
 	$(CC) $(CFLAGS) -c $<
 
 test: test_suite.o $(OBJS)
-	g++ -o test_suite test_suite_a4.o $(OBJS) -L. libHtll.a \
+	g++ -o test_suite test_suite_a4.o $(OBJS) -L. libHtll.a\
 		 -L${HOME}/lib/gtest -lgtest -lpthread
 
 test_suite.o: test_suite_a4.cc

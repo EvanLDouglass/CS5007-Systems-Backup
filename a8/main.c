@@ -1,3 +1,5 @@
+// Modified by Evan Douglass, March 26 2019.
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +17,7 @@
 #include "MovieIndex.h"
 #include "Movie.h"
 #include "QueryProcessor.h"
-
+#include "MovieReport.h"
 
 DocIdMap docs;
 Index docIndex;
@@ -26,6 +28,27 @@ Index docIndex;
  */
 int CreateMovieFromFileRow(char *file, long rowId, Movie* movie) {
   // TODO: Read a specified row from a specified file into Movie.
+  // Need to:
+  //   open file
+  //   go to row
+  //   CreateMovieFromRow to movie pointer
+  FILE *f = fopen(file, "r");
+  if (f == NULL) {
+    return 1;  // error
+  }
+  char *row;
+  long count = 0;
+  while ((row = fgets(row, 1000, f)) != NULL) {
+    count++;
+    if (count == rowId) {
+      movie = CreateMovieFromRow(row);
+      fclose(f);
+      return 0;
+    }
+  }
+  // Didn't find given row by end of file
+  fclose(f);
+  return 1;
 }
 
 void doPrep(char *dir) {
@@ -59,9 +82,11 @@ void runQuery(char *term) {
       printf("Couldn't malloc SearchResult in main.c\n");
       return;
     }
+
     int result;
     char *filename;
-
+    Movie* mov = NULL;
+    SetOfMovies set = CreateSetOfMovies("Search Results");
     // Check if there are more
     while (SearchResultIterHasMore(results) != 0) {
       result =  SearchResultNext(results);
@@ -70,19 +95,24 @@ void runQuery(char *term) {
         break;
       }
       SearchResultGet(results, sr);
-      char *filename = GetFileFromId(docs, sr->doc_id);
+      filename = GetFileFromId(docs, sr->doc_id);
       // TODO: What to do with the filename?
+      CreateMovieFromFileRow(filename, sr->row_id, mov);
+      AddMovieToSetOfMovies(set, mov);
     }
     // Get the last
     SearchResultGet(results, sr);
     filename = GetFileFromId(docs, sr->doc_id);
 
     // TODO: What to do with the filename?
+    CreateMovieFromFileRow(filename, sr->row_id, mov);
+    AddMovieToSetOfMovies(set, mov);
 
     free(sr);
     DestroySearchResultIter(results);
+    // Now that you have all the search results, print them out nicely.
+    OutputMovieSet(set);
   }
-  // Now that you have all the search results, print them out nicely.
 }
 
 void runQueries() {

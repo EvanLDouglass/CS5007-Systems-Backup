@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, March 26 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -29,8 +30,23 @@
 
 int main(int argc, char* argv[]) {
   LinkedList movie_list  = ReadFile("data/test");
-  // TODO: Parse command-line args to index based on the correct field
-  Index index = BuildMovieIndex(movie_list, Year);
+  // TODO: Parse command-line args to index based on the correct field (DONE)
+  if (argc < 3) {
+    printf("Wrong number of arguments.\n");
+    printf("usage: example_indexer.c <field_to_index> <directory_to_crawl>\n");
+    return 0;
+  }
+  // Determine which flag was picked, defaults to genre
+  int indexBy;
+  if (strcmp(argv[1], "-t") == 0) {
+    indexBy = Type;
+  } else if (strcmp(argv[1], "-y")) {
+    indexBy = Year;
+  } else {  // default to genre, "-g"
+    indexBy = Genre;
+  }
+  
+  Index index = BuildMovieIndex(movie_list, indexBy);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
   PrintReport(index);
