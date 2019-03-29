@@ -42,17 +42,25 @@ Movie* CreateMovie() {
 }
 
 void DestroyMovie(Movie* movie) {
-  free(movie->id);
-  free(movie->type);
-  free(movie->title);
+  if (movie->id != NULL) free(movie->id);
+  if (movie->type != NULL) free(movie->type);
+  if (movie->title != NULL) free(movie->title);
+  
+  // TODO: Destroy properly
   DestroyLinkedList(movie->genres, &free);
   free(movie);
 }
+
+void DestroyMovieWrapper(void *movie) {
+  DestroyMovie((Movie*)movie);
+}
+
 
 char* CheckAndAllocateString(char* token) {
   if (strcmp("-", token) == 0) {
     return NULL;
   } else {
+    // TODO(adrienne): get rid of whitespace.
     char *out = (char *) malloc((strlen(token) + 1) * sizeof(char));
     strcpy(out, token);
     return out;
@@ -82,7 +90,6 @@ Movie* CreateMovieFromRow(char *data_row) {
     token[i] = strtok_r(rest, "|", &rest);
     if (token[i] == NULL) {
       fprintf(stderr, "Error reading row\n");
-      free(mov);
       return NULL;
     }
   }
