@@ -28,7 +28,7 @@
  */
 typedef struct searchResult {
   uint64_t doc_id;
-    int row_id;
+  int row_id;
 } *SearchResult;
 
 /**

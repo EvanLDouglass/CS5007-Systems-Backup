@@ -1,5 +1,4 @@
-/*  Modified by Evan Douglass, March 25 2019.
- *
+/*
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -40,12 +39,12 @@ void PrintReport(Index index);
  * Helper function; Prints just the movies in a set.
  *
  */
-void OutputMovieSet(SetOfMovies movie_set);
+void OutputMovieSet(LinkedList movies, char* desc);
 
 /**
  * Writes the report to the specified output FILE.
  */
-void OutputReport(Index index, FILE output);
+void OutputReport(Index index, FILE* output);
 
 
 /*

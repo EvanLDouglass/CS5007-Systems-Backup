@@ -39,12 +39,12 @@ int CreateMovieFromFileRow(char *file, long rowId, Movie* movie) {
   char *row;
   long count = 0;
   while ((row = fgets(row, 1000, f)) != NULL) {
-    count++;
     if (count == rowId) {
       movie = CreateMovieFromRow(row);
       fclose(f);
       return 0;
     }
+    count++;
   }
   // Didn't find given row by end of file
   fclose(f);

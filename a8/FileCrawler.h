@@ -34,7 +34,7 @@
  * \param dir which directory to crawl
  * \param map the DocIdMap to put the filenames in.
  */
-void CrawlFilesToMap(char *dir, DocIdMap map);
+void CrawlFilesToMap(const char *dir, DocIdMap map);
 
 
 #endif  // FILECRAWLER_H

@@ -20,13 +20,12 @@ void PutFileInMap(char *filename, DocIdMap map) {
   HTKeyValue kvp;
   HTKeyValue old_kvp;
   kvp.key = NumElemsInHashtable(map) + 1;
-  printf("new key: %zu\n", kvp.key);
   kvp.value = filename;
   int result = PutInHashtable(map, kvp, &old_kvp);
   if (result == 2) {
     printf("there was a duplicate!!\n");
   } else if (result == 0) {
-    printf("inserted! \n");
+    //    printf("inserted! \n");
   }
 }
 
