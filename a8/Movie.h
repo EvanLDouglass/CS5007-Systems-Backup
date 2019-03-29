@@ -20,7 +20,7 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 
-#include "htll/LinkedList.h"
+#define NUM_GENRES 10
 
 /**
  * IndexField is an enum that we use to indicate fields of Movies.
@@ -41,9 +41,9 @@ typedef struct movie {
   int isAdult;
   int year;
   int runtime;
-  LinkedList genres;  // TODO: Make this an array of char*s (DONE)
+  //  char *genres;  // TODO: Make this an array (or linked list) of char*s (DONE)
+  LinkedList genres;
 } Movie, *MoviePtr;
-
 
 /**
  *  Creates an empty movie struct.
@@ -58,6 +58,11 @@ Movie* CreateMovie();
  * Destroys a movie, freeing up all char*s in the struct.
  */
 void DestroyMovie(Movie* movie);
+
+
+
+void DestroyMovieWrapper(void *movie);
+
 
 /**
  * Given a char* that is a row in the data file,
