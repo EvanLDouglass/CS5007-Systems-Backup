@@ -32,7 +32,18 @@
  *
  * The Index is designed to allow indexing by one of multiple fields.
  */
-typedef Hashtable Index;
+typedef struct index {
+  /**
+   * The hashtable that takes care of the indexing of a given movie. 
+   */
+  Hashtable ht;
+  /**
+   * Since a movie struct might appear in the hashtable/index multiple times,
+   * we'll keep a reference around to the list of movies for freeing.
+   * 
+   */
+  LinkedList movies; 
+} *Index; 
 
 
 /**
@@ -78,13 +89,20 @@ int AddMovieTitleToIndex(Index index, Movie *movie, uint64_t docId, int row);
  */
 MovieSet GetMovieSet(Index index, const char *term);
 
-/**
+ /**
  *
  *  Destroys the supplied index, freeing up all
  *   resources used by this index.
+ * (value is a SetOfMovies)
  *
  */
-int DestroyIndex(Index index);
+int DestroyTypeIndex(Index index);
+
+/**
+ *
+ * (value is a MovieSet)
+ */
+int DestroyOffsetIndex(Index index);
 
 /**
  * Creates a new Index. Allocates all the memory
