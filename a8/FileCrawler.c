@@ -58,7 +58,7 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
     }
 
     // For files:
-	char *path;
+/*	char *path;
 	path = realpath(name, NULL);  // NULL means malloc called
     if (path == NULL) {
       // Error occured
@@ -66,10 +66,10 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
       free(name);
       free(path);
       continue;
-    }
-    PutFileInMap(path, map);
+    }*/
+    PutFileInMap(name, map);
 	// Need to free the name entry now
-	free(name);
+	//free(name);
   }
   // Still need to free namelist
   free(namelist);

@@ -90,6 +90,7 @@ Movie* CreateMovieFromRow(char *data_row) {
     token[i] = strtok_r(rest, "|", &rest);
     if (token[i] == NULL) {
       fprintf(stderr, "Error reading row\n");
+      DestroyMovie(mov);
       return NULL;
     }
   }

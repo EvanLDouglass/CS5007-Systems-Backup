@@ -64,6 +64,6 @@ test_movieindex:  $(GOOGLE_TEST_LIB) test_movieindex.o $(OBJS)
 	@echo ===========================
 
 clean: FORCE
-	/bin/rm -f *.o *~ main test_suite indexer
+	/bin/rm -f *.o *~ main test_suite indexer test_movieindex
 
 FORCE:
