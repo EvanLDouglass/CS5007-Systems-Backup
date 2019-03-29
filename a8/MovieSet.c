@@ -25,6 +25,8 @@
 #include "htll/LinkedList.h"
 #include "MovieSet.h"
 
+static void NullFree(void *freeme) { }
+
 void SimpleFree(void *payload) {
   free(payload);
 }
@@ -103,17 +105,12 @@ void PrintOffsetList(LinkedList list) {
   printf("Printing offset list\n");
   LLIter iter = CreateLLIter(list);
   int* payload;
-  while (1) {  //TODO: get the payload properly (DONE?)
+  while (LLIterHasNext(iter) != 0) {
     LLIterGetPayload(iter, (void**)&payload);
     printf("%d\t", *((int*)payload));
-
-    if (LLIterHasNext(iter)) {
-      LLIterNext(iter);
-    } else {
-      break;
-    }
-  }
-}
+    LLIterNext(iter);
+   }
+ }
 
 MovieSet CreateMovieSet(char *desc) {
   MovieSet set = (MovieSet)malloc(sizeof(struct movieSet));

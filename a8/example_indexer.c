@@ -20,16 +20,16 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "htll/LinkedList.h"
 #include "MovieIndex.h"
 #include "Movie.h"
 #include "MovieReport.h"
-#include "./FileParser.h"
+#include "FileParser.h"
 
 
 int main(int argc, char* argv[]) {
-  LinkedList movie_list  = ReadFile("data/test");
   // TODO: Parse command-line args to index based on the correct field (DONE)
   if (argc < 3) {
     printf("Wrong number of arguments.\n");
@@ -46,12 +46,13 @@ int main(int argc, char* argv[]) {
     indexBy = Genre;
   }
   
+  LinkedList movie_list  = ReadFile(argv[3]);
   Index index = BuildMovieIndex(movie_list, indexBy);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
   PrintReport(index);
 
-  DestroyIndex(index);
+  DestroyTypeIndex(index);
 
   return 0;
 }

@@ -32,12 +32,52 @@ void DestroyMovieSetWrapper(void *movie_set) {
   DestroyMovieSet((MovieSet)movie_set);
 }
 
+void DestroySetOfMovieWrapper(void *set_movie) {
+  DestroySetOfMovies((SetOfMovies)set_movie);
+}
+
+// static void NullFree(void *freeme) { }
+
 void toLower(char *str, int len) {
   for (int i = 0; i < len; i++) {
     str[i] = tolower(str[i]);
   }
+
 }
 
+
+Index CreateIndex() {
+  Index ind = (Index)malloc(sizeof(struct index));
+  // TODO: How big to make this hashtable? How to decide? What to think about?
+  // Make this "appropriate".
+  ind->ht = CreateHashtable(128);
+  ind->movies = NULL; // TO BE NULL until it's populated/used.
+  return ind;
+}
+
+int DestroyIndex(Index index, void (*destroyValue)(void *)) {
+  DestroyHashtable(index->ht, destroyValue);
+
+  if (index->movies != NULL) {
+    DestroyLinkedList(index->movies, DestroyMovieWrapper);
+  } else {
+  }
+  free(index);
+  return 0;
+  }
+
+// Destroy index that has an offsetlist as a value
+int DestroyOffsetIndex(Index index) {
+    return DestroyIndex(index, DestroyMovieSetWrapper);
+}
+
+// Destroy's index that has aSetOfMovies as a value
+int DestroyTypeIndex(Index index) {
+  return DestroyIndex(index, DestroySetOfMovieWrapper);
+}
+
+
+// Assumes Index is a hashtable with key=title word, and value=hashtable with key doc id and value linked list of rows
 int AddMovieTitleToIndex(Index index,
                          Movie *movie,
                          uint64_t doc_id,
@@ -45,7 +85,7 @@ int AddMovieTitleToIndex(Index index,
   // Put in the index
   HTKeyValue kvp;
 
-  // TODO: How to choose? (DONE)
+  // TODO: How to choose this number? What are the pros and cons of choosing the wrong number? (DONE)
   int numFields = 150;
 
   char *token[numFields];
@@ -62,15 +102,15 @@ int AddMovieTitleToIndex(Index index,
   for (int j = 0; j < i; j++) {
     // If this key is already in the hashtable, get the MovieSet.
     // Otherwise, create a MovieSet and put it in.
-    int result = LookupInHashtable(index,
+    int result = LookupInHashtable(index->ht,
                           FNVHash64((unsigned char*)token[j],
                                     (unsigned int)strlen(token[j])), &kvp);
     HTKeyValue old_kvp;
 
     if (result < 0) {
-      kvp.value = (void*) CreateMovieSet(token[j]);
+      kvp.value = CreateMovieSet(token[j]);
       kvp.key = FNVHash64((unsigned char*)token[j], strlen(token[j]));
-      PutInHashtable(index, kvp, &old_kvp);
+      PutInHashtable(index->ht, kvp, &old_kvp);
     }
 
     AddMovieToSet((MovieSet)kvp.value, doc_id, row_id);
@@ -175,7 +215,7 @@ uint64_t ComputeKey(Movie* movie, enum IndexField which_field) {
     case Genre:
       // TODO: how to deal with multiple genres??
       // This is handled by a different function
-      return 1u;
+      return -1u;
   }
   return -1u;
 }
@@ -186,7 +226,7 @@ MovieSet GetMovieSet(Index index, const char *term) {
   char lower[strlen(term)+1];
   strcpy(lower, term);
   toLower(lower, strlen(lower));
-  int result = LookupInHashtable(index,
+  int result = LookupInHashtable(index->ht,
                                  FNVHash64((unsigned char*)lower,
                                            (unsigned int)strlen(lower)),
                                  &kvp);
@@ -194,15 +234,6 @@ MovieSet GetMovieSet(Index index, const char *term) {
     printf("term couldn't be found: %s \n", term);
     return NULL;
   }
+  printf("returning movieset\n");
   return (MovieSet)kvp.value;
-}
-
-
-int DestroyIndex(Index index) {
-  DestroyHashtable(index, &DestroyMovieSetWrapper);
-  return 0;
-}
-
-Index CreateIndex() {
-  return CreateHashtable(128);
 }
