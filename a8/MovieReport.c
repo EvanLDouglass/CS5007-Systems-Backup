@@ -1,3 +1,4 @@
+// Modified by Evan Douglass on March 28 2019.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,12 +45,36 @@ void OutputReport(Index index, FILE* output) {
   // TODO: Implement this function.
   // After you've implemented it, consider modifying PrintReport()
   // to utilize this function.
+  if (NumElemsInHashtable(index->ht) == 0) {
+    return;
+  }
 
+  HTIter iter = CreateHashtableIterator(index->ht);
+  HTKeyValuePtr kvp = NULL;
+  SetOfMovies set = NULL;
+
+  // Get first key and output list
+  HTIteratorGet(iter, kvp);
+  if (kvp->value != NULL) {
+    set = (SetOfMovies)kvp->value;
+    OutputListOfMovies(set->movies, set->desc, output);
+  }
+
+  // Get rest
+  while (HTIteratorHasMore(iter)) {
+    HTIteratorNext(iter);
+    HTIteratorGet(iter, kvp);
+    if (kvp->value != NULL) {
+      set = (SetOfMovies)kvp->value;
+      OutputListOfMovies(set->movies, set->desc, output);
+    }
+  }
+  DestroyHashtableIterator(iter);
 }
 
 void SaveReport(Index index, char* filename) {
   // TODO: Implement this. You might utilize OutputReport.
-
-  
+  // Open filename and check for success
+  // Save report
 }
 

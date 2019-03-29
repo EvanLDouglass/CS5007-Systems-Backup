@@ -16,6 +16,7 @@
  *
  *  See <http://www.gnu.org/licenses/>.
  */
+#include "htll/LinkedList.h"
 
 #ifndef MOVIE_H
 #define MOVIE_H

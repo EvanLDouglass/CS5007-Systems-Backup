@@ -139,13 +139,13 @@ int AddGenresToIndex(Index index, Movie *movie) {
 
     // Look for existing keys
     uint64_t key = FNVHash64((unsigned char*)genre, strlen(genre));
-    result = LookupInHashtable(index, key, &kvp);
+    result = LookupInHashtable(index->ht, key, &kvp);
 
     if (result < 0) {
       // Need to add a new kvp
       kvp.value = (void*) CreateSetOfMovies(genre);
       kvp.key = key;
-      PutInHashtable(index, kvp, &old_kvp);
+      PutInHashtable(index->ht, kvp, &old_kvp);
     }
     // There is an existing kvp
     AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
@@ -166,7 +166,7 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
 
   // If this key is already in the hashtable, get the MovieSet.
   // Otherwise, create a MovieSet and put it in.
-  int result = LookupInHashtable(index,
+  int result = LookupInHashtable(index->ht,
                                  ComputeKey(movie, field),
                                  &kvp);
 
@@ -191,7 +191,7 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
     }
     kvp.value = (void*)CreateSetOfMovies(doc_set_name);
     kvp.key = ComputeKey(movie, field);
-    PutInHashtable(index, kvp, &old_kvp);
+    PutInHashtable(index->ht, kvp, &old_kvp);
   }
   // TODO: Something needs to happen here
   AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);  

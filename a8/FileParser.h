@@ -23,6 +23,7 @@
 #include "DocIdMap.h"
 #include "htll/LinkedList.h"
 
+
 /**
  * Given a map of all the files that we want to index
  * and search, open each file and index the contents to index
@@ -32,8 +33,11 @@
  */
 int ParseTheFiles(DocIdMap docs, Index index);
 
+
 int GetRowFromFile(char *file, long rowId);
 
 LinkedList ReadFile(const char* filename);
+
+Index BuildMovieIndex(LinkedList movies, enum IndexField field_to_index);
 
 #endif

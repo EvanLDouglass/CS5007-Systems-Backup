@@ -73,7 +73,7 @@ void runQuery(char *term) {
   // Figure out how to get a set of Movies and create
   // a nice report from them.
   SearchResultIter results = FindMovies(docIndex, term);
-  LinkedList movies = CreateLinkedList();
+  //LinkedList movies = CreateLinkedList();
   if (results == NULL) {
     printf("No results for this term. Please try another.\n");
     return;
@@ -89,8 +89,8 @@ void runQuery(char *term) {
     // Get the first
     SearchResultGet(results, sr);
     filename = GetFileFromId(docs, sr->doc_id);
+
     // TODO: What to do with the filename?
-    
     Movie* mov = NULL;
     SetOfMovies set = CreateSetOfMovies("Search Results");
     // Check if there are more
@@ -103,17 +103,17 @@ void runQuery(char *term) {
       SearchResultGet(results, sr);
       filename = GetFileFromId(docs, sr->doc_id);
       // TODO: What to do with the filename?
-      CreateMovieFromFileRow(filename, sr->row_id, mov);
+      CreateMovieFromFileRow(filename, sr->row_id, &mov);
       AddMovieToSetOfMovies(set, mov);
     }
 
-    CreateMovieFromFileRow(filename, sr->row_id, mov);
+    CreateMovieFromFileRow(filename, sr->row_id, &mov);
     AddMovieToSetOfMovies(set, mov);
 
     free(sr);
     DestroySearchResultIter(results);
     // TODO: Now that you have all the search results, print them out nicely.
-    OutputMovieSet(set);
+    PrintReport((Index)set);
   }
 }
 

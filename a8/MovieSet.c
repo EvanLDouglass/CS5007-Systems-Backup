@@ -25,7 +25,7 @@
 #include "htll/LinkedList.h"
 #include "MovieSet.h"
 
-static void NullFree(void *freeme) { }
+//static void NullFree(void *freeme) { }
 
 void SimpleFree(void *payload) {
   free(payload);

@@ -44,9 +44,9 @@ int main(int argc, char* argv[]) {
     indexBy = Year;
   } else {  // default to genre, "-g"
     indexBy = Genre;
-  }
+  } 
   
-  LinkedList movie_list  = ReadFile(argv[3]);
+  LinkedList movie_list = ReadFile(argv[3]);
   Index index = BuildMovieIndex(movie_list, indexBy);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
