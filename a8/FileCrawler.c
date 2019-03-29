@@ -28,7 +28,7 @@
 #include "LinkedList.h"
 
 
-void CrawlFilesToMap(char *dir, DocIdMap map) {
+void CrawlFilesToMap(const char *dir, DocIdMap map) {
   struct stat s;
 
   struct dirent **namelist;
