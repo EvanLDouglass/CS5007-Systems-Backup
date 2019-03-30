@@ -28,6 +28,14 @@
 #include "DocIdMap.h"
 #include "LinkedList.h"
 
+// Helper function for CrawlFilesToMap
+// Frees the structures associated with dirent
+void FreeDirEnt(struct dirent **namelist, int n) {
+  for (int i = 0; i < n; i++) {
+    free(namelist[i]);
+  }
+  free(namelist);
+}
 
 void CrawlFilesToMap(const char *dir, DocIdMap map) {
   struct stat s;
@@ -52,8 +60,6 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   for (int i = 2; i < n; i++) {        // start at 2 to skip . & ..
     char* name = namelist[i]->d_name;  // name of entry
 
-    printf("Name: %s\n", name);
-
     // Make new name with dir path
     int lenDir = strlen(dir);
     int lenName = strlen(name);
@@ -63,33 +69,21 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
     strcat(path, "/");
     strcat(path, name);
 
-    printf("path: %s\n", path);
-
-    // name no longer needed
-    free(namelist[i]);
-    name = NULL;
-
     // Test for dir found on stackoverflow at:
     // https://stackoverflow.com/questions/3828192/
     // checking-if-a-directory-exists-in-unix-system-call
     stat(path, &s);
     if (S_ISDIR(s.st_mode)) {
       // For dirs:
-
-      printf("Crawling %s\n=====\n", path);
-
       CrawlFilesToMap(path, map);
+      // In this case, path not used for anything else
       free(path);
       path = NULL;
     } else {
       // For files:
-
-      printf("Putting %s into map\n=====\n", path);
-
       PutFileInMap(path, map);  // requires malloc'ed path
     }
-  // Still need to free namelist
-  free(namelist);
   }
+  FreeDirEnt(namelist, n);
 }
 
