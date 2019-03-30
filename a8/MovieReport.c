@@ -46,6 +46,7 @@ void OutputReport(Index index, FILE* output) {
   // After you've implemented it, consider modifying PrintReport()
   // to utilize this function.
   if (NumElemsInHashtable(index->ht) == 0) {
+    fprintf(output, "There are no movies to report\n");
     return;
   }
 
@@ -76,5 +77,12 @@ void SaveReport(Index index, char* filename) {
   // TODO: Implement this. You might utilize OutputReport.
   // Open filename and check for success
   // Save report
+  FILE* fptr = fopen(filename, "w");
+  if (fptr == NULL) {
+    printf("Couldn't open file: %s\n", filename);
+    return;
+  }
+
+  OutputReport(index, fptr);
 }
 

@@ -22,6 +22,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <errno.h>  // for scandir failure
 
 #include "FileCrawler.h"
 #include "DocIdMap.h"
@@ -34,6 +35,10 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   struct dirent **namelist;
   int n;
   n = scandir(dir, &namelist, 0, alphasort);
+  if (n < 0) {
+    fprintf(stderr, "Error in scandir for '%s': ", dir);
+    perror("");  // prints human readable error message
+  }
 
   // TODO: use namelist to find all the files and put them in map. (DONE)
   // NOTE: There may be nested folders.
@@ -44,34 +49,47 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   //   if it is, recursively call this function (ignore . & ..)
   //   if it isn't, add it to map
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 2; i < n; i++) {        // start at 2 to skip . & ..
     char* name = namelist[i]->d_name;  // name of entry
+
+    printf("Name: %s\n", name);
+
+    // Make new name with dir path
+    int lenDir = strlen(dir);
+    int lenName = strlen(name);
+    // Make new variable for path, include extra '/' char
+    char* path = (char*)malloc(sizeof(char) * (lenDir + lenName + 2));
+    strcpy(path, dir);
+    strcat(path, "/");
+    strcat(path, name);
+
+    printf("path: %s\n", path);
+
+    // name no longer needed
+    free(namelist[i]);
+    name = NULL;
 
     // Test for dir found on stackoverflow at:
     // https://stackoverflow.com/questions/3828192/
     // checking-if-a-directory-exists-in-unix-system-call
-    if (stat(name, &s) == 0 && S_ISDIR(s.st_mode)) {
-      // Also test for cur & parent directory (seperated for readability)
-      if (strcmp(name, ".") != 0 && strcmp(name,"..") != 0) {
-        CrawlFilesToMap(name, map);
-      }
-    }
+    stat(path, &s);
+    if (S_ISDIR(s.st_mode)) {
+      // For dirs:
 
-    // For files:
-/*	char *path;
-	path = realpath(name, NULL);  // NULL means malloc called
-    if (path == NULL) {
-      // Error occured
-      printf("An error occured reading file: %s\nskipped\n", path);
-      free(name);
+      printf("Crawling %s\n=====\n", path);
+
+      CrawlFilesToMap(path, map);
       free(path);
-      continue;
-    }*/
-    PutFileInMap(name, map);
-	// Need to free the name entry now
-	//free(name);
-  }
+      path = NULL;
+    } else {
+      // For files:
+
+      printf("Putting %s into map\n=====\n", path);
+
+      PutFileInMap(path, map);  // requires malloc'ed path
+    }
   // Still need to free namelist
   free(namelist);
+  }
 }
 
