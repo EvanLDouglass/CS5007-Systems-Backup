@@ -86,7 +86,7 @@ int AddMovieTitleToIndex(Index index,
   HTKeyValue kvp;
 
   // TODO: How to choose this number? What are the pros and cons of choosing the wrong number? (DONE)
-  int numFields = 150;
+  int numFields = 1000;
 
   char *token[numFields];
   char *rest = movie->title;

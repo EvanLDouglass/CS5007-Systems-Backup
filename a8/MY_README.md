@@ -1,48 +1,24 @@
 # Questions from TODO tags
 
-I have entered TODO questions as I came across them while completing this assignment.
-Each flag is shown as it is in the code with an answer below.
-
-**In MovieIndex.c:**
 ```c
-// TODO: How to choose?
-int numFields = 1000;
+FileParser.c:135: // TODO: How big to make this hashtable? How to decide? What to think about?
+MovieIndex.c:50: // TODO: How big to make this hashtable? How to decide? What to think about?
 ```
-The `numFields` variable is being used to set the length of an array of strings.
-The array holds each word in the title of a movie.
-Therefore, 1000 words is probably larger than we need.
-I'd even consider 10 words to be a fairly long title for a movie or tv show episode.
-Of course, people will surprise you sometimes with the choices they make, and I wouldn't be surprised if there was at least one title in our data that is abnormally long.
-I think it is safe to assume there is no title longer than 100 words, but just to be safe, and because we have plenty of memory avialable, I decided to make `numFields` equal to 150.
+Both of these TODOs reference the same thing.
+That is, How big should we make the hashtable in the Index type.
+The default value is 128.
+I think that is an appropriate number because it is roughly the number of years that "moving pictures" have existed.
+Between the different things we can index on - Type, Year, Genre - I think there are more values for year than an of the other choices.
+There are a lot of different formats of video, and a lot of niche generes you can find, but I don't think they reach the same bredth as Year.
+Thus, with 128 buckets, we can be relatively certain that our load factor will be reasonable, as there is about one bucket per year and whe should not need any more than that.
 
 ```c
-// TODO: What to do if there are multiple genres?
+MovieIndex.c:87: // TODO: How to choose this number? What are the pros and cons of choosing the wrong number?
 ```
-This TODO is in the AddMovieToIndex function.
-It is asking how to deal with a movie if it has multiple genres.
-I believe that if a movie has multiple genres, we need to index it by each genre seperately.
-This is because if we were to search for comedies, for example, we want everything tagged as a comedy to appear.
-If we indexed by all the genres as one string, then a search for comedy would not include things that are listed as action,adventure,comedy, for example.
-In order to make this work I will have to rewrite the function so that it handles genre indexing as a totally seperate task.
-
-```c
-// TODO: how to deal with multiple genres??
-```
-This TODO is in the ComputeKey function.
-It is different from the last in that it requires that we think about a different problem.
-That is, we need to compute the key of each genre individually.
-The way I decided to deal with this is to use a different function to work with genre indexing entirely.
-The ComputeKey function now only deals with Year, Type, and Id fields.
-
-**In main.c**
-```c
-// TODO: What to do with the filename?
-```
-This TODO appears twice in the file main.c in the function runQuery.
-It is asking this after getting a filename string and a SearchResult type after the user types in a term to search for.
-It seemed obvious after implementing the function at the top of the file (CreateMovieFromFileRow) that I had to find the file pointed to by `filename` and and use the SearchResult - `sr` - to make a Movie type.
-Based on the functions in MovieReport.c it made most sense to put these movies in a `SetOfMovies` and then pass that to the `OutputMovieSet` function.
-Thus, given a term to search for, we can output a list of movies that match the term.
+In this case the number is referring to a variable called `numFields`, which is set to `1000`.
+`numFields` represents the number of words in a title of a movie.
+The number 1000 is somewhat arbitrary, but is large enough to ensure that any title can fit in that array when split up by word. It is a common thing in schools to be asked to write a 1000 word essay, so we can be pretty sure that no title will overflow the array. On the otherhand, we will have way more space in this array than needed for just about every title, so that is a lot of wasted memory.
+However, since we are programming on modern computers, memory is not so much of an issue when it comes to 1000 spaces of a char* array.
 
 Evan Douglass<br>
 Created March 24 2019

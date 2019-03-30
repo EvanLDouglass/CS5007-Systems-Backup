@@ -36,19 +36,19 @@ int CreateMovieFromFileRow(char *file, long rowId, Movie** movie) {
   if (f == NULL) {
     return 1;  // error
   }
-  char *row;
-  long count = 0;
-  while ((row = fgets(row, 1000, f)) != NULL) {
-    if (count == rowId) {
-      *movie = CreateMovieFromRow(row);
+  char row[1000];
+  // Get to row
+  for (int i = 0; i <= rowId; i++) {
+    if ((fgets(row, 1000, f)) == NULL) {
+      // Something went wrong or EOF
       fclose(f);
-      return 0;
+      return 1;
     }
-    count++;
   }
-  // Didn't find given row by end of file
+  // row now contains the specified row
+  *movie = CreateMovieFromRow(row);
   fclose(f);
-  return 1;
+  return 0;
 }
 
 void doPrep(char *dir) {
@@ -74,7 +74,7 @@ void runQuery(char *term) {
   // a nice report from them.
   SearchResultIter results = FindMovies(docIndex, term);
   LinkedList movies = CreateLinkedList();
- 
+
   if (results == NULL) {
     printf("No results for this term. Please try another.\n");
     return;
@@ -84,6 +84,7 @@ void runQuery(char *term) {
       printf("Couldn't malloc SearchResult in main.c\n");
       return;
     }
+
     int result;
     char *filename;
    
@@ -92,10 +93,10 @@ void runQuery(char *term) {
     filename = GetFileFromId(docs, sr->doc_id);
 
     // TODO: What to do with the filename? (DONE)
-    MoviePtr movie;
+    Movie* movie;
 	CreateMovieFromFileRow(filename, sr->row_id, &movie);
     InsertLinkedList(movies, (void**)&movie);
-   
+
     // Check if there are more
     while (SearchResultIterHasMore(results) != 0) {
       result =  SearchResultNext(results);
@@ -109,14 +110,15 @@ void runQuery(char *term) {
       CreateMovieFromFileRow(filename, sr->row_id, &movie);
       InsertLinkedList(movies, (void**)&movie);
     }
-   
+
     free(sr);
     DestroySearchResultIter(results);
   }
   // TODO: Now that you have all the search results, print them out nicely.
-  OutputListOfMovies(movies, "Search Results", stdout);
+  Index index = BuildMovieIndex(movies, Type);
+  PrintReport(index);
 
-  DestroyLinkedList(movies, &DestroyMovieWrapper);
+  DestroyTypeIndex(index);
 }
 
 void runQueries() {
