@@ -104,7 +104,7 @@ TEST(FileCrawler, Create) {
   for (int i=1; i<=10; i++) {
     EXPECT_EQ(ids[i], 1);
   }
- 
+
   DestroyHashtableIterator(iter);
   DestroyDocIdMap(docs);
 }
@@ -123,10 +123,18 @@ TEST(MovieStruct, Full) {
   EXPECT_EQ(movie->year, 1984);
   EXPECT_EQ(movie->runtime, 120);
   //  EXPECT_EQ(strcmp(movie->genres, "Comedy,Romance"), 0);
-  // TODO: check the right thing for correct genre.
+  // TODO: check the right thing for correct genre. (DONE)
+  LLIter iter = CreateLLIter(movie->genres);
+  char* payload;
+  LLIterGetPayload(iter, (void**)&payload);
+  // Acts like a stack
+  EXPECT_EQ(strcmp(payload, "Romance"), 0);
+
+  LLIterNext(iter);
+  LLIterGetPayload(iter, (void**)&payload);
+  EXPECT_EQ(strcmp(payload, "Comedy"), 0);
 
   DestroyMovie(movie);
-
 }
 
 TEST(MovieIndex, Full) {
