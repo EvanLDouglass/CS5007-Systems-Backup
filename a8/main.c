@@ -69,11 +69,12 @@ void doPrep(char *dir) {
 }
 
 void runQuery(char *term) {
-// TODO: This function pretty much runs the queries.
+  // TODO: This function pretty much runs the queries.
   // Figure out how to get a set of Movies and create
   // a nice report from them.
   SearchResultIter results = FindMovies(docIndex, term);
-  //LinkedList movies = CreateLinkedList();
+  LinkedList movies = CreateLinkedList();
+ 
   if (results == NULL) {
     printf("No results for this term. Please try another.\n");
     return;
@@ -85,14 +86,16 @@ void runQuery(char *term) {
     }
     int result;
     char *filename;
-    
+   
     // Get the first
     SearchResultGet(results, sr);
     filename = GetFileFromId(docs, sr->doc_id);
 
-    // TODO: What to do with the filename?
-    Movie* mov = NULL;
-    SetOfMovies set = CreateSetOfMovies("Search Results");
+    // TODO: What to do with the filename? (DONE)
+    MoviePtr movie;
+	CreateMovieFromFileRow(filename, sr->row_id, &movie);
+    InsertLinkedList(movies, (void**)&movie);
+   
     // Check if there are more
     while (SearchResultIterHasMore(results) != 0) {
       result =  SearchResultNext(results);
@@ -101,20 +104,19 @@ void runQuery(char *term) {
         break;
       }
       SearchResultGet(results, sr);
-      filename = GetFileFromId(docs, sr->doc_id);
-      // TODO: What to do with the filename?
-      CreateMovieFromFileRow(filename, sr->row_id, &mov);
-      AddMovieToSetOfMovies(set, mov);
+      char *filename = GetFileFromId(docs, sr->doc_id);
+      // TODO: What to do with the filename? (DONE)
+      CreateMovieFromFileRow(filename, sr->row_id, &movie);
+      InsertLinkedList(movies, (void**)&movie);
     }
-
-    CreateMovieFromFileRow(filename, sr->row_id, &mov);
-    AddMovieToSetOfMovies(set, mov);
-
+   
     free(sr);
     DestroySearchResultIter(results);
-    // TODO: Now that you have all the search results, print them out nicely.
-    PrintReport((Index)set);
   }
+  // TODO: Now that you have all the search results, print them out nicely.
+  OutputListOfMovies(movies, "Search Results", stdout);
+
+  DestroyLinkedList(movies, &DestroyMovieWrapper);
 }
 
 void runQueries() {

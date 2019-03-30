@@ -25,7 +25,7 @@
 #include "htll/LinkedList.h"
 #include "MovieSet.h"
 
-//static void NullFree(void *freeme) { }
+static void NullFree(void *freeme) { }
 
 void SimpleFree(void *payload) {
   free(payload);
@@ -162,6 +162,6 @@ void DestroyMovieSet(MovieSet set) {
 
 void DestroySetOfMovies(SetOfMovies set) {
   free(set->desc);
-  DestroyLinkedList(set->movies, &SimpleFree);
+  DestroyLinkedList(set->movies, NullFree);
   free(set);
 }

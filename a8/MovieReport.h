@@ -36,6 +36,11 @@
 void PrintReport(Index index);
 
 /**
+ * Prints a list of movies to the terminal, given a linked list of movies
+ */
+void OutputListOfMovies(LinkedList, char*, FILE*);
+
+/**
  * Helper function; Prints just the movies in a set.
  *
  */

@@ -37,39 +37,21 @@ To do this, go through each file, and identify the "TODO" tags (An easy way to d
 
 While you're going through the TODO tags, you'll see some questions where we ask you what to put somewhere. Collect those, and put them (with answers) in your README.md file for this assignment. (In MovieIndex, FileParser). 
 
-TODOs: 
+## TODOs: 
 
-* FileCrawler.c:  // TODO: use namelist to find all the files and put them in map.
-* Movie.c:  // TODO: Populate/Initialize movie.
-* Movie.c:  // TODO: Change such that genres is an array, not just a string.
-* Movie.h:    char *genres; // TODO: Make this an array of char*s
-* MovieIndex.c:  // TODO: How to choose?
-* MovieIndex.c:        // TODO: What to do if there are multiple genres?
-* MovieIndex.c:  //AddMovieToSet((MovieSet)kvp.value, movie); // TODO: Something needs to happen here; not sure what.
-* MovieIndex.c:      // TODO: how to deal with multiple genres??
-* MovieReport.c:  // TODO: Implement this.
-* MovieReport.c:  // TODO: Implement this. You might utilize OutputReport.
-* example_indexer.c:  // TODO: Parse command-line args to index based on the correct field
-* example_indexer.c:  // TODO: Output report to file, rather than terminal (see MovieReport.h)
-
-
+### To write code: 
 * example_indexer.c:33:  // TODO: Parse command-line args to index based on the correct field (see getopt)
 * example_indexer.c:38:  // TODO: Output report to file, rather than terminal (see MovieReport.h)
 * FileCrawler.c:37:  // TODO: use namelist to find all the files and put them in map.
-* FileParser.c:135:  // TODO: How big to make this hashtable? How to decide? What to think about?
 * FileParser.c:144:  // TODO: Check that there is at least one movie
-* FileParser.c:154:      // TODO: What to do if there is a collision?
 * main.c:30:  // TODO: Read a specified row from a specified file into Movie.
-* main.c:53:  // TODO: This function pretty much runs the queries.
+* main.c:53:  // TODO: This function pretty much runs the queries. 
 * main.c:75:    // TODO: What to do with the filename?
 * main.c:87:      // TODO: What to do with the filename?
-* main.c:95:  // TODO: Now that you have all the search results, print them out nicely.
 * Movie.c:31:  // TODO: Populate/Initialize movie.
 * Movie.c:41:  // TODO: Destroy properly
 * Movie.c:95:  // TODO: Change such that genres is an array (or linkedlist), not just a string.
 * Movie.h:43:  //  char *genres;  // TODO: Make this an array (or linked list) of char*s
-* MovieIndex.c:50:  // TODO: How big to make this hashtable? How to decide? What to think about?
-* MovieIndex.c:87:  // TODO: How to choose this number? What are the pros and cons of choosing the wrong number?
 * MovieIndex.c:185:        // TODO: What to do if there are multiple genres?
 * MovieIndex.c:193:  // TODO: How do we put the movie in the index?
 * MovieIndex.c:215:      // TODO: how to deal with multiple genres??
@@ -78,10 +60,12 @@ TODOs:
 * test_suite_a4.cc:126:  // TODO: check the right thing for correct genre.
 
 
-Experiment: 
+### To answer in README: 
 
-What happens if the payload for each key in MovieIndex is a MovieStruct, rather than a docId/rowId pair? 
-
-
+* FileParser.c:135:  // TODO: How big to make this hashtable? How to decide? What to think about?\
+* FileParser.c:154:      // TODO: What to do if there is a collision?
+* main.c:95:  // TODO: Now that you have all the search results, print them out nicely.
+* MovieIndex.c:50:  // TODO: How big to make this hashtable? How to decide? What to think about?
+* MovieIndex.c:87:  // TODO: How to choose this number? What are the pros and cons of choosing the wrong number?
 
 

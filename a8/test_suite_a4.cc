@@ -134,6 +134,7 @@ TEST(MovieStruct, Full) {
   LLIterGetPayload(iter, (void**)&payload);
   EXPECT_EQ(strcmp(payload, "Comedy"), 0);
 
+  DestroyLLIter(iter);
   DestroyMovie(movie);
 }
 
@@ -153,6 +154,7 @@ TEST(MovieIndex, Full) {
   MovieSet set = GetMovieSet(ind, "seattle");
   EXPECT_EQ(strcmp(set->desc, "seattle"), 0);
   EXPECT_EQ(NumElemsInHashtable(set->doc_index), 1);
+  
   HTKeyValue kvp;
   LookupInHashtable(set->doc_index, 1, &kvp);
 

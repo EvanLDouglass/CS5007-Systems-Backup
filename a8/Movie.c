@@ -20,8 +20,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "Movie.h"
+
+void FreeString(void* string) {
+    free(string);
+}
 
 Movie* CreateMovie() {
   Movie *mov = (Movie*)malloc(sizeof(Movie));
@@ -45,9 +48,10 @@ void DestroyMovie(Movie* movie) {
   if (movie->id != NULL) free(movie->id);
   if (movie->type != NULL) free(movie->type);
   if (movie->title != NULL) free(movie->title);
-  
-  // TODO: Destroy properly
-  DestroyLinkedList(movie->genres, &free);
+  // TODO: Destroy properly (DONE)
+  if (movie->genres != NULL) {
+    DestroyLinkedList(movie->genres, &FreeString);
+  }
   free(movie);
 }
 
@@ -84,12 +88,26 @@ Movie* CreateMovieFromRow(char *data_row) {
   int num_fields = 9;
 
   char *token[num_fields];
+  // Init array to NULL
+  for (int i = 0; i < num_fields; i++) {
+    token[i] = NULL;
+  }
+
   char *rest = data_row;
 
   for (int i = 0; i < num_fields; i++) {
     token[i] = strtok_r(rest, "|", &rest);
     if (token[i] == NULL) {
       fprintf(stderr, "Error reading row\n");
+      DestroyMovie(mov);
+      return NULL;
+    }
+  }
+
+  // Check for formatting errors
+  for (int i = 0; i < num_fields; i++) {
+    if (token[i] == NULL) {
+      fprintf(stderr, "Formatting Error\n");
       DestroyMovie(mov);
       return NULL;
     }

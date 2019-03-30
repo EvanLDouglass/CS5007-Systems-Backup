@@ -164,8 +164,8 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
   HTKeyValue kvp;
   HTKeyValue old_kvp;
 
-  // If this key is already in the hashtable, get the MovieSet.
-  // Otherwise, create a MovieSet and put it in.
+  // If this key is already in the hashtable, get the SetOfMovies.
+  // Otherwise, create a SetOfMovies and put it in.
   int result = LookupInHashtable(index->ht,
                                  ComputeKey(movie, field),
                                  &kvp);

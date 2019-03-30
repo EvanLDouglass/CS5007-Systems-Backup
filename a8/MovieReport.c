@@ -29,7 +29,7 @@ void OutputListOfMovies(LinkedList movie_list, char *desc, FILE *file) {
   LLIterGetPayload(iter, (void**)&movie);
   if (movie->title != NULL) fprintf(file, "\t%s\n", movie->title);
   else fprintf(file, "title is null\n");
- 
+
   while (LLIterHasNext(iter)) {
     LLIterNext(iter);
     LLIterGetPayload(iter, (void**)&movie);
@@ -51,22 +51,22 @@ void OutputReport(Index index, FILE* output) {
   }
 
   HTIter iter = CreateHashtableIterator(index->ht);
-  HTKeyValuePtr kvp = NULL;
-  SetOfMovies set = NULL;
+  HTKeyValue kvp;
+  SetOfMovies set;
 
   // Get first key and output list
-  HTIteratorGet(iter, kvp);
-  if (kvp->value != NULL) {
-    set = (SetOfMovies)kvp->value;
+  HTIteratorGet(iter, &kvp);
+  if (kvp.value != NULL) {
+    set = (SetOfMovies)kvp.value;
     OutputListOfMovies(set->movies, set->desc, output);
   }
 
   // Get rest
   while (HTIteratorHasMore(iter)) {
     HTIteratorNext(iter);
-    HTIteratorGet(iter, kvp);
-    if (kvp->value != NULL) {
-      set = (SetOfMovies)kvp->value;
+    HTIteratorGet(iter, &kvp);
+    if (kvp.value != NULL) {
+      set = (SetOfMovies)kvp.value;
       OutputListOfMovies(set->movies, set->desc, output);
     }
   }
