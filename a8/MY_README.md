@@ -20,5 +20,22 @@ In this case the number is referring to a variable called `numFields`, which is 
 The number 1000 is somewhat arbitrary, but is large enough to ensure that any title can fit in that array when split up by word. It is a common thing in schools to be asked to write a 1000 word essay, so we can be pretty sure that no title will overflow the array. On the otherhand, we will have way more space in this array than needed for just about every title, so that is a lot of wasted memory.
 However, since we are programming on modern computers, memory is not so much of an issue when it comes to 1000 spaces of a char* array.
 
+```c
+FileParser.c:154: // TODO: What to do if there is a collision?
+```
+The way my functions are set up, this question is taken care of in `AddMovieToSetOfMovies`, which is called inside `AddMovieToIndex`.
+Inside `AddMovieToSetOfMovies`, the set - a linked list - is searched to determine if the movie already exists in it, which is determined by the id field of the movie.
+If the movie does exist in the set, then nothing happens, if it doesn't, then it is added to the linked list.
+The second part of this TODO asks how we can change the sytstem to do this check for us.
+What I've described here is exactly how we can change the system.
+This also makes the `if` statement that this TODO is nested in irrelevant, and in my final code I have deleted it.
+
+```c
+main.c:95: // TODO: Now that you have all the search results, print them out nicely.
+```
+We can do this fairly easily by building an index of the movies we have created and then printing a report to the console.
+I decided to index the movies by Type because I feel it is the most relavent index type when searching by title.
+I don't have any particular reason to feel this way, it is just how I would like to organize things.
+
 Evan Douglass<br>
 Created March 24 2019

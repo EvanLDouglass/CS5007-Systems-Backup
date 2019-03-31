@@ -136,27 +136,24 @@ Index BuildMovieIndex(LinkedList movies, enum IndexField field_to_index){
   // Make this "appropriate".
   Index movie_index = CreateIndex();
   movie_index->movies = movies;
-  
-  LLIter iter = CreateLLIter(movies);
-  Movie* cur_movie;
-  LLIterGetPayload(iter, (void**)&cur_movie);
-
-  // TODO: Check that there is at least one movie
-  // What happens if there is not at least one movie?
-  // How can we modify a piece(s) of our system to not have to do this check?
-  int result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
-
-  while (LLIterHasNext(iter)) {
-    LLIterNext(iter);
+  if (NumElementsInLinkedList(movies) != 0) {
+    LLIter iter = CreateLLIter(movies);
+    Movie* cur_movie;
     LLIterGetPayload(iter, (void**)&cur_movie);
-    result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
-    if (result == 2) {
-      // TODO: What to do if there is a collision?
-      // How might we change the system to help us deal with collisions?
-    }
-  }
 
-  DestroyLLIter(iter);
+    // TODO: Check that there is at least one movie (DONE)
+    // What happens if there is not at least one movie?
+    // How can we modify a piece(s) of our system to not have to do this check?
+    int result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
+
+    while (LLIterHasNext(iter)) {
+      LLIterNext(iter);
+      LLIterGetPayload(iter, (void**)&cur_movie);
+      result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
+    }
+
+    DestroyLLIter(iter);
+  }
   
   return movie_index;
 }
