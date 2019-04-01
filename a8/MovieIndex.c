@@ -28,8 +28,8 @@
 #include "Movie.h"
 #include "MovieSet.h"
 
-static void NullFree(void *freeme) { 
-}
+//static void NullFree(void *freeme) {}
+
 void DestroyMovieSetWrapper(void *movie_set) {
   DestroyMovieSet((MovieSet)movie_set);
 }
@@ -37,8 +37,6 @@ void DestroyMovieSetWrapper(void *movie_set) {
 void DestroySetOfMovieWrapper(void *set_movie) {
   DestroySetOfMovies((SetOfMovies)set_movie);
 }
-
-// static void NullFree(void *freeme) { }
 
 void toLower(char *str, int len) {
   for (int i = 0; i < len; i++) {
@@ -61,7 +59,7 @@ int DestroyIndex(Index index, void (*destroyValue)(void *)) {
   DestroyHashtable(index->ht, destroyValue);
 
   if (index->movies != NULL) {
-    DestroyLinkedList(index->movies, &NullFree);
+    DestroyLinkedList(index->movies, &DestroyMovieWrapper);
   } else {
   }
   free(index);
@@ -128,10 +126,15 @@ int AddMovieTitleToIndex(Index index,
 int AddGenresToIndex(Index index, Movie *movie) {
   int num_genres = NumElementsInLinkedList(movie->genres);
   LLIter iter = CreateLLIter(movie->genres);
+  HTKeyValue kvp, old_kvp;
+  // Init index list if not started
+  if (index->movies == NULL) {
+    index->movies = CreateLinkedList();
+  }
+
   for (int i = 0; i < num_genres; i++) {
     char* genre;
     int result;
-    HTKeyValue kvp, old_kvp;
 
     // Get a genre
     result = LLIterGetPayload(iter, (void**)&genre);
@@ -146,13 +149,13 @@ int AddGenresToIndex(Index index, Movie *movie) {
 
     if (result < 0) {
       // Need to add a new kvp
-      kvp.value = (void*) CreateSetOfMovies(genre);
+      kvp.value = (void*)CreateSetOfMovies(genre);
       kvp.key = key;
       PutInHashtable(index->ht, kvp, &old_kvp);
     }
-    // There is an existing kvp
     result = AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
     if (result == 1) {  // unsuccessful add
+      DestroyLLIter(iter);
       DestroyMovie(movie);
       return 1;
     }
@@ -160,12 +163,23 @@ int AddGenresToIndex(Index index, Movie *movie) {
     LLIterNext(iter);
   }
   DestroyLLIter(iter);
+
+  // Add the movie to the index LL if not a duplicate
+  if (! (LookupMovieInLinkedList(index->movies, movie))) {  // movie not in list
+    InsertLinkedList(index->movies, (void*)movie);
+  }
+
   return 0;
 }
 
 int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
   if (field == Genre) {
     return AddGenresToIndex(index, movie);
+  }
+
+  // Init index list if not started
+  if (index->movies == NULL) {
+    index->movies = CreateLinkedList();
   }
 
   // Put in the index
@@ -206,6 +220,11 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
   if (result == 1) {  // unsuccessful add
     DestroyMovie(movie);
     return 1;
+  }
+
+  // Add the movie to the index LL if not a duplicate
+  if (! (LookupMovieInLinkedList(index->movies, movie))) {  // movie not in list
+    InsertLinkedList(index->movies, (void*)movie);
   }
 
   return 0;

@@ -34,16 +34,16 @@
  */
 typedef struct index {
   /**
-   * The hashtable that takes care of the indexing of a given movie. 
+   * The hashtable that takes care of the indexing of a given movie.
    */
   Hashtable ht;
   /**
    * Since a movie struct might appear in the hashtable/index multiple times,
    * we'll keep a reference around to the list of movies for freeing.
-   * 
+   *
    */
-  LinkedList movies; 
-} *Index; 
+  LinkedList movies;
+} *Index;
 
 
 /**

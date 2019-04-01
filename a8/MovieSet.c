@@ -29,13 +29,15 @@ void SimpleFree(void *payload) {
   free(payload);
 }
 
+void NullFree(void* item) {}
+
 // Returns 1 if item in list, 0 otherwise
 int LookupMovieInLinkedList(LinkedList list, MoviePtr mov) {
   // No elements in list
   if (NumElementsInLinkedList(list) == 0) {
     return 0;
   }
-  
+
   // Test each existing string
   LLIter iter = CreateLLIter(list);
   MoviePtr payload;
@@ -163,6 +165,6 @@ void DestroyMovieSet(MovieSet set) {
 
 void DestroySetOfMovies(SetOfMovies set) {
   free(set->desc);
-  DestroyLinkedList(set->movies, &DestroyMovieWrapper);
+  DestroyLinkedList(set->movies, &NullFree);
   free(set);
 }

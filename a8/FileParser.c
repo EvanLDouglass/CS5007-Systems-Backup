@@ -48,12 +48,11 @@ LinkedList ReadFile(const char* filename){
     int max_row_length = 1000;
     char row[max_row_length];
 
-    int i = 0; 
+    int i = 0;
 
-    
-    while (!feof(cfPtr)) {
-      fgets(row, max_row_length, cfPtr);
-      i++; 
+
+    while( (fgets(row, max_row_length, cfPtr)) != NULL) {
+      i++;
       // Got the line; create a movie from it
       MoviePtr movie = CreateMovieFromRow(row);
       if (movie != NULL) {
@@ -61,7 +60,7 @@ LinkedList ReadFile(const char* filename){
       }
     }
     fclose(cfPtr);
-    printf("Read %d rows, and have %d movies in the list\n", i, NumElementsInLinkedList(movie_list)); 
+    printf("Read %d rows, and have %d movies in the list\n", i, NumElementsInLinkedList(movie_list));
   }
   return movie_list;
 }
@@ -154,7 +153,7 @@ Index BuildMovieIndex(LinkedList movies, enum IndexField field_to_index){
 
     DestroyLLIter(iter);
   }
-  
+
   return movie_index;
 }
 

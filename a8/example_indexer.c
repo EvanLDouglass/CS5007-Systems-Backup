@@ -50,14 +50,13 @@ int main(int argc, char* argv[]) {
     default:
       indexBy = Genre;
   }
-  
+
   // Assumes the 2nd argument is the filename
-  printf("file: %s\n", argv[2]);
   LinkedList movie_list = ReadFile(argv[2]);
   Index index = BuildMovieIndex(movie_list, indexBy);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)
-  PrintReport(index);
+  SaveReport(index, "moviereport.txt");
 
   DestroyTypeIndex(index);
 

@@ -129,7 +129,7 @@ Movie* CreateMovieFromRow(char *data_row) {
     // Allocate payload
     char* payload = CheckAndAllocateString(oneGenre);
     // Add to list
-    InsertLinkedList(mov->genres, (void*)payload); 
+    InsertLinkedList(mov->genres, (void*)payload);
   }
 
   return mov;

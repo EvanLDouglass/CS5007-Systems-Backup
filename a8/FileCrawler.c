@@ -51,7 +51,7 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   // TODO: use namelist to find all the files and put them in map. (DONE)
   // NOTE: There may be nested folders.
   // Be sure to lookup how scandir works. Don't forget about memory use.
-  
+
   // For each name in namelist, need to:
   //   test if name is a directory with stat struct
   //   if it is, recursively call this function (ignore . & ..)
