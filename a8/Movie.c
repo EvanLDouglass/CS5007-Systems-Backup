@@ -127,15 +127,9 @@ Movie* CreateMovieFromRow(char *data_row) {
   char* oneGenre;
   while ((oneGenre = strtok_r(allGenres, ",", &allGenres)) != NULL) {
     // Allocate payload
-    void* payload = (void*) CheckAndAllocateString(oneGenre);
+    char* payload = CheckAndAllocateString(oneGenre);
     // Add to list
-    int insert = InsertLinkedList(mov->genres, payload);
-    // Check for insert errors
-    if (insert != 0) {
-      fprintf(stderr, "Error adding to Genres list\n");
-      DestroyMovie(mov);
-      return NULL;
-    }
+    InsertLinkedList(mov->genres, (void*)payload); 
   }
 
   return mov;

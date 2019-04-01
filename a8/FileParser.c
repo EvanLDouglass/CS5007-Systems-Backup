@@ -144,12 +144,12 @@ Index BuildMovieIndex(LinkedList movies, enum IndexField field_to_index){
     // TODO: Check that there is at least one movie (DONE)
     // What happens if there is not at least one movie?
     // How can we modify a piece(s) of our system to not have to do this check?
-    int result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
+    AddMovieToIndex(movie_index, cur_movie, field_to_index);
 
     while (LLIterHasNext(iter)) {
       LLIterNext(iter);
       LLIterGetPayload(iter, (void**)&cur_movie);
-      result = AddMovieToIndex(movie_index, cur_movie, field_to_index);
+      AddMovieToIndex(movie_index, cur_movie, field_to_index);
     }
 
     DestroyLLIter(iter);

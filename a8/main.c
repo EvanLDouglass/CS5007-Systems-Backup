@@ -27,7 +27,7 @@ Index docIndex;
  * provided pointer to the movie.
  */
 int CreateMovieFromFileRow(char *file, long rowId, Movie** movie) {
-  // TODO: Read a specified row from a specified file into Movie.
+  // TODO: Read a specified row from a specified file into Movie. (DONE)
   // Need to:
   //   open file
   //   go to row
@@ -73,29 +73,32 @@ void runQuery(char *term) {
   // Figure out how to get a set of Movies and create
   // a nice report from them.
   SearchResultIter results = FindMovies(docIndex, term);
-  LinkedList movies = CreateLinkedList();
+  Index index = CreateIndex();
+  Movie* movie;
 
   if (results == NULL) {
     printf("No results for this term. Please try another.\n");
+    DestroyTypeIndex(index);
     return;
   } else {
     SearchResult sr = (SearchResult)malloc(sizeof(*sr));
     if (sr == NULL) {
       printf("Couldn't malloc SearchResult in main.c\n");
+      DestroySearchResultIter(results);
+      DestroyTypeIndex(index);
       return;
     }
 
     int result;
     char *filename;
-   
+
     // Get the first
     SearchResultGet(results, sr);
     filename = GetFileFromId(docs, sr->doc_id);
 
     // TODO: What to do with the filename? (DONE)
-    Movie* movie;
 	CreateMovieFromFileRow(filename, sr->row_id, &movie);
-    InsertLinkedList(movies, (void**)&movie);
+    AddMovieToIndex(index, movie, Type);
 
     // Check if there are more
     while (SearchResultIterHasMore(results) != 0) {
@@ -105,17 +108,15 @@ void runQuery(char *term) {
         break;
       }
       SearchResultGet(results, sr);
-      char *filename = GetFileFromId(docs, sr->doc_id);
+      filename = GetFileFromId(docs, sr->doc_id);
       // TODO: What to do with the filename? (DONE)
       CreateMovieFromFileRow(filename, sr->row_id, &movie);
-      InsertLinkedList(movies, (void**)&movie);
+      AddMovieToIndex(index, movie, Type);
     }
-
-    free(sr);
-    DestroySearchResultIter(results);
+   free(sr);
+   DestroySearchResultIter(results);
   }
   // TODO: Now that you have all the search results, print them out nicely.
-  Index index = BuildMovieIndex(movies, Type);
   PrintReport(index);
 
   DestroyTypeIndex(index);

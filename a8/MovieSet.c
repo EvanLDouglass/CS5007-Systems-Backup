@@ -25,8 +25,6 @@
 #include "htll/LinkedList.h"
 #include "MovieSet.h"
 
-static void NullFree(void *freeme) { }
-
 void SimpleFree(void *payload) {
   free(payload);
 }
@@ -44,15 +42,17 @@ int LookupMovieInLinkedList(LinkedList list, MoviePtr mov) {
   while (1) {
     LLIterGetPayload(iter, (void**)&payload);
     if (strcmp(mov->id, payload->id) == 0) {
+      DestroyLLIter(iter);
       return 1;
     }
-
+    // Move to next movie if available
     if (LLIterHasNext(iter)) {
       LLIterNext(iter);
     } else {
       break;
     }
   }
+  DestroyLLIter(iter);
   return 0;
 }
 
@@ -138,6 +138,7 @@ SetOfMovies CreateSetOfMovies(char *desc) {
   }
   set->desc = (char*)malloc(strlen(desc) * sizeof(char) + 1);
   if (set->desc == NULL) {
+    free(set);
     printf("Couldn't malloc for SetOfMovies->desc\n");
     return NULL;
   }
@@ -162,6 +163,6 @@ void DestroyMovieSet(MovieSet set) {
 
 void DestroySetOfMovies(SetOfMovies set) {
   free(set->desc);
-  DestroyLinkedList(set->movies, NullFree);
+  DestroyLinkedList(set->movies, &DestroyMovieWrapper);
   free(set);
 }

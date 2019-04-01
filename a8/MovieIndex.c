@@ -28,6 +28,8 @@
 #include "Movie.h"
 #include "MovieSet.h"
 
+static void NullFree(void *freeme) { 
+}
 void DestroyMovieSetWrapper(void *movie_set) {
   DestroyMovieSet((MovieSet)movie_set);
 }
@@ -59,7 +61,7 @@ int DestroyIndex(Index index, void (*destroyValue)(void *)) {
   DestroyHashtable(index->ht, destroyValue);
 
   if (index->movies != NULL) {
-    DestroyLinkedList(index->movies, DestroyMovieWrapper);
+    DestroyLinkedList(index->movies, &NullFree);
   } else {
   }
   free(index);
@@ -134,6 +136,7 @@ int AddGenresToIndex(Index index, Movie *movie) {
     // Get a genre
     result = LLIterGetPayload(iter, (void**)&genre);
     if (result == 1) {
+      DestroyLLIter(iter);
       return i + 1;  // return 1-indexed genre on fail
     }
 
@@ -148,10 +151,15 @@ int AddGenresToIndex(Index index, Movie *movie) {
       PutInHashtable(index->ht, kvp, &old_kvp);
     }
     // There is an existing kvp
-    AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
+    result = AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
+    if (result == 1) {  // unsuccessful add
+      DestroyMovie(movie);
+      return 1;
+    }
 
     LLIterNext(iter);
   }
+  DestroyLLIter(iter);
   return 0;
 }
 
@@ -194,7 +202,11 @@ int AddMovieToIndex(Index index, Movie *movie, enum IndexField field) {
     PutInHashtable(index->ht, kvp, &old_kvp);
   }
   // TODO: Something needs to happen here
-  AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);  
+  result = AddMovieToSetOfMovies((SetOfMovies)kvp.value, movie);
+  if (result == 1) {  // unsuccessful add
+    DestroyMovie(movie);
+    return 1;
+  }
 
   return 0;
 }

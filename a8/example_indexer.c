@@ -38,15 +38,22 @@ int main(int argc, char* argv[]) {
   }
   // Determine which flag was picked, defaults to genre
   int indexBy;
-  if (strcmp(argv[1], "-t") == 0) {
-    indexBy = Type;
-  } else if (strcmp(argv[1], "-y")) {
-    indexBy = Year;
-  } else {  // default to genre, "-g"
-    indexBy = Genre;
-  } 
+  int opt = getopt(argc, argv, "tyg");
+  switch (opt) {
+    case 't':
+      indexBy = Type;
+      break;
+    case 'y':
+      indexBy = Year;
+      break;
+    case 'g':
+    default:
+      indexBy = Genre;
+  }
   
-  LinkedList movie_list = ReadFile(argv[3]);
+  // Assumes the 2nd argument is the filename
+  printf("file: %s\n", argv[2]);
+  LinkedList movie_list = ReadFile(argv[2]);
   Index index = BuildMovieIndex(movie_list, indexBy);
 
   // TODO: Output report to file, rather than terminal (see MovieReport.h)

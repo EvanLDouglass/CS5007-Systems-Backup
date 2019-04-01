@@ -84,5 +84,7 @@ void SaveReport(Index index, char* filename) {
   }
 
   OutputReport(index, fptr);
+
+  fclose(fptr);
 }
 

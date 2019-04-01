@@ -120,8 +120,8 @@ TEST(MovieIndex, AddMovieToIndex) {
 
   // Destroy movie index
   DestroyTypeIndex(index);
-  DestroyMovie(m1);
-  DestroyMovie(m2);
+  //DestroyMovie(m1);
+  //DestroyMovie(m2);
 }
 
 
