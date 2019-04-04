@@ -63,6 +63,35 @@ test_movieindex:  $(GOOGLE_TEST_LIB) test_movieindex.o $(OBJS)
 	@echo Run tests by running ./test_movieindex
 	@echo ===========================
 
+benchmarker: Benchmarker.c $(OBJS)
+	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -L. libHtll.a
+	@echo ===========================
+	@echo Run benchmarker by running ./benchmarker dir_name/
+	@echo \(dirname  is the file of movies to use for benchmark\)
+	@echo ===========================
+
+enchmarker: Benchmarker.c $(OBJS)
+	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -L. libHtll.a
+	@echo ===========================
+	@echo Run benchmarker by running ./benchmarker dir_name/
+	@echo \(dirname  is the file of movies to use for benchmark\)
+	@echo ===========================
+
+enchmarker: Benchmarker.c $(OBJS)
+	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -L. libHtll.a
+	@echo ===========================
+	@echo Run benchmarker by running ./benchmarker dir_name/
+	@echo \(dirname  is the file of movies to use for benchmark\)
+	@echo ===========================
+
+enchmarker: Benchmarker.c $(OBJS)
+	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -L. libHtll.a
+	@echo ===========================
+	@echo Run benchmarker by running ./benchmarker dir_name/
+	@echo \(dirname  is the file of movies to use for benchmark\)
+	@echo ===========================
+
+
 clean: FORCE
 	/bin/rm -f *.o *~ main test_suite indexer test_movieindex
 
