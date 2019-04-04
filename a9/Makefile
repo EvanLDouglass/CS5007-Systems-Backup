@@ -34,7 +34,7 @@ indexer: example_indexer.c $(OBJS)
 	@echo ===========================
 
 benchmarker: Benchmarker.c $(OBJS)
-	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -L. libHtll.a
+	gcc -Wall -g -o benchmarker Benchmarker.c $(OBJS) -lpthread -L. libHtll.a
 	@echo ===========================
 	@echo Run benchmarker by running ./benchmarker dir_name/
 	@echo \(dirname  is the file of movies to use for benchmark\)

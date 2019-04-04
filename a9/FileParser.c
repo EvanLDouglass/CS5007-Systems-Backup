@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, April 03 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
@@ -20,6 +21,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
+#include <pthread.h>
 
 #include "MovieIndex.h"
 #include "FileParser.h"
@@ -29,6 +31,15 @@
 //  Only for NullFree; TODO(adrienne): NullFree should live somewhere else.
 
 #define BUFFER_SIZE 1000
+
+pthread_mutex_t m_open = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t m_add = PTHREAD_MUTEX_INITIALIZER;
+
+struct indexMTArgs {
+  char *file;
+  uint64_t doc_id;
+  Index index;
+};
 
 //=======================
 // To minimize the number of files we have, I'm
@@ -82,6 +93,124 @@ void IndexTheFile(char *file, uint64_t doc_id, Index index) {
         continue;
       }
       int result = AddMovieTitleToIndex(index, movie, doc_id, row);
+      if (result < 0) {
+        fprintf(stderr, "Didn't add MovieToIndex.\n");
+      }
+      row++;
+      DestroyMovie(movie);  // Done with this now
+    }
+    fclose(cfPtr);
+  }
+}
+
+/**
+ * Parses the files that are in the provided DocIdMap, 
+ * utilizing multithreading.
+ * Builds an OffsetIndex.
+ */
+int ParseTheFiles_MT(DocIdMap docs, Index index) {
+  HTIter iter = CreateHashtableIterator(docs);
+  HTKeyValue kv;
+  pthread_t p1, p2, p3, p4, p5;
+
+  // Leave the first call normal in case there
+  // is only one movie.
+  IndexTheFile(kv.value, kv.key, index);
+
+  struct indexHTArgs args;
+  while (HTIteratorHasMore(iter) != 0) {
+    // Iterate using 5 threads
+    // First thread
+    HTIteratorGet(iter, &kv);
+    args.file = kv.value;
+    args.doc_id = kv.key;
+    args.index = index;
+    pthread_create(&p1, NULL, &IndexTheFile_MT, (void*)args); 
+    HTIteratorNext(iter);
+
+    // Second thread
+    if (HTIteratorHasMore(iter) != 0) {
+      HTIteratorGet(iter, &kv);
+      args.file = kv.value;
+      args.doc_id = kv.key;
+      args.index = index;
+      pthread_create(&p2, NULL, &IndexTheFile_MT, (void*)args); 
+      HTIteratorNext(iter);
+    }
+
+    // Third thread
+    if (HTIteratorHasMore(iter) != 0) {
+      HTIteratorGet(iter, &kv);
+      args.file = kv.value;
+      args.doc_id = kv.key;
+      args.index = index;
+      pthread_create(&p3, NULL, &IndexTheFile_MT, (void*)args); 
+      HTIteratorNext(iter);
+    }
+
+    // Fourth thread
+    if (HTIteratorHasMore(iter) != 0) {
+      HTIteratorGet(iter, &kv);
+      args.file = kv.value;
+      args.doc_id = kv.key;
+      args.index = index;
+      pthread_create(&p4, NULL, &IndexTheFile_MT, (void*)args); 
+      HTIteratorNext(iter);
+    }
+
+    // Last thread
+    if (HTIteratorHasMore(iter) != 0) {
+      HTIteratorGet(iter, &kv);
+      args.file = kv.value;
+      args.doc_id = kv.key;
+      args.index = index;
+      pthread_create(&p5, NULL, &IndexTheFile_MT, (void*)args); 
+      HTIteratorNext(iter);
+    }
+
+    // Wait for the threads before moving on
+    pthread_join(p1, NULL);
+    pthread_join(p2, NULL);
+    pthread_join(p3, NULL);
+    pthread_join(p4, NULL);
+    pthread_join(p5, NULL);
+  }
+
+  // Get the last one?
+  //HTIteratorGet(iter, &kv);
+  //IndexTheFile(kv.value, kv.key, index);
+
+  DestroyHashtableIterator(iter);
+
+  return 0;
+}
+
+// Builds an OffsetIndex using multithreading
+void* IndexTheFile_MT(void* arguments) {
+  FILE *cfPtr;
+  // Unpack the arguments
+  struct indexHTArgs* args = (struct indexHTArgs*) arguments;
+
+  pthread_mutex_lock(&m_open);
+  cfPtr = fopen(args->file, "r");
+  pthread_mutex_unlock(&m_open);
+
+  if (cfPtr == NULL) {
+    printf("File could not be opened\n");
+    return NULL;
+  } else {
+    char buffer[BUFFER_SIZE];
+    int row = 0;
+
+    while (fgets(buffer, BUFFER_SIZE, cfPtr) != NULL) {
+      Movie *movie = CreateMovieFromRow(buffer);
+      if (movie == NULL) {
+        continue;
+      }
+      pthread_mutex_lock(&m_add);
+      int result = AddMovieTitleToIndex(args->index, movie, args->doc_id, row);
+      pthread_mutex_unlock(&m_add);
+
       if (result < 0) {
         fprintf(stderr, "Didn't add MovieToIndex.\n");
       }
