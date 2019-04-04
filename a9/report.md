@@ -49,6 +49,14 @@ Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirt
 Destroyed DocIdMap
 Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
 ```
+These results are slightly misleading at first glance, but seem to confirm my hypotheses.
+We can see that building the OffsetIndex took a longer time than the TypeIndex, which is the opposite of what I hypothesized.
+However, there are nearly 2000 times more entries in the OffsetIndex and it only took about 3.5 times longer to build.
+This suggests that the OffsetIndex is *much* faster than the TypeIndex to build.
+
+The raw values for memory usage of each index is, interestingly, the exact same.
+However, there are only 10 entries in the TypeIndex and over 2200 in the OffsetIndex.
+We see again that the TypeIndex is *much* more memory intensive than the OffsetIndex.
 
 Created by Evan Douglass
 April 03 2019
