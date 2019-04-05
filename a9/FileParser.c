@@ -28,18 +28,19 @@
 #include "Movie.h"
 #include "DocIdMap.h"
 #include "MovieSet.h"
+
 //  Only for NullFree; TODO(adrienne): NullFree should live somewhere else.
 
 #define BUFFER_SIZE 1000
-
-pthread_mutex_t m_open = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t m_add = PTHREAD_MUTEX_INITIALIZER;
 
 struct indexMTArgs {
   char *file;
   uint64_t doc_id;
   Index index;
 };
+
+pthread_mutex_t m_open = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t m_add = PTHREAD_MUTEX_INITIALIZER;
 
 //=======================
 // To minimize the number of files we have, I'm
@@ -48,7 +49,7 @@ struct indexMTArgs {
 
 void IndexTheFile(char *file, uint64_t docId, Index index);
 
-void IndexTheFile_MT(char *file, uint64_t docId, Index index);
+void IndexTheFile_MT(void* arguments);
 
 
 /**
@@ -111,60 +112,58 @@ void IndexTheFile(char *file, uint64_t doc_id, Index index) {
 int ParseTheFiles_MT(DocIdMap docs, Index index) {
   HTIter iter = CreateHashtableIterator(docs);
   HTKeyValue kv;
+
+  // Multithreading vars
   pthread_t p1, p2, p3, p4, p5;
 
-  // Leave the first call normal in case there
-  // is only one movie.
-  IndexTheFile(kv.value, kv.key, index);
-
-  struct indexHTArgs args;
-  while (HTIteratorHasMore(iter) != 0) {
+  struct indexMTArgs args[5];
+  while (1) {
     // Iterate using 5 threads
     // First thread
     HTIteratorGet(iter, &kv);
-    args.file = kv.value;
-    args.doc_id = kv.key;
-    args.index = index;
-    pthread_create(&p1, NULL, &IndexTheFile_MT, (void*)args); 
+    args[0].file = kv.value;
+    args[0].doc_id = kv.key;
+    args[0].index = index;
+    pthread_create(&p1, NULL, (void*)IndexTheFile_MT, (void*)&args[0]);
     HTIteratorNext(iter);
 
     // Second thread
     if (HTIteratorHasMore(iter) != 0) {
       HTIteratorGet(iter, &kv);
-      args.file = kv.value;
-      args.doc_id = kv.key;
-      args.index = index;
-      pthread_create(&p2, NULL, &IndexTheFile_MT, (void*)args); 
+      args[1].file = kv.value;
+      args[1].doc_id = kv.key;
+      args[1].index = index;
+      pthread_create(&p2, NULL, (void*)IndexTheFile_MT, (void*)&args[1]);
       HTIteratorNext(iter);
     }
 
     // Third thread
     if (HTIteratorHasMore(iter) != 0) {
       HTIteratorGet(iter, &kv);
-      args.file = kv.value;
-      args.doc_id = kv.key;
-      args.index = index;
-      pthread_create(&p3, NULL, &IndexTheFile_MT, (void*)args); 
+      args[2].file = kv.value;
+      args[2].doc_id = kv.key;
+      args[2].index = index;
+      pthread_create(&p3, NULL, (void*)IndexTheFile_MT, (void*)&args[2]);
       HTIteratorNext(iter);
     }
 
     // Fourth thread
     if (HTIteratorHasMore(iter) != 0) {
       HTIteratorGet(iter, &kv);
-      args.file = kv.value;
-      args.doc_id = kv.key;
-      args.index = index;
-      pthread_create(&p4, NULL, &IndexTheFile_MT, (void*)args); 
+      args[3].file = kv.value;
+      args[3].doc_id = kv.key;
+      args[3].index = index;
+      pthread_create(&p4, NULL, (void*)IndexTheFile_MT, (void*)&args[3]); 
       HTIteratorNext(iter);
     }
 
     // Last thread
     if (HTIteratorHasMore(iter) != 0) {
       HTIteratorGet(iter, &kv);
-      args.file = kv.value;
-      args.doc_id = kv.key;
-      args.index = index;
-      pthread_create(&p5, NULL, &IndexTheFile_MT, (void*)args); 
+      args[4].file = kv.value;
+      args[4].doc_id = kv.key;
+      args[4].index = index;
+      pthread_create(&p5, NULL, (void*)IndexTheFile_MT, (void*)&args[4]); 
       HTIteratorNext(iter);
     }
 
@@ -174,30 +173,32 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
     pthread_join(p3, NULL);
     pthread_join(p4, NULL);
     pthread_join(p5, NULL);
+
+    if (HTIteratorHasMore(iter) == 0) {
+      break;
+    }
   }
 
-  // Get the last one?
-  //HTIteratorGet(iter, &kv);
-  //IndexTheFile(kv.value, kv.key, index);
-
   DestroyHashtableIterator(iter);
-
+  pthread_mutex_destroy(&m_open);
+  pthread_mutex_destroy(&m_add);
   return 0;
 }
 
 // Builds an OffsetIndex using multithreading
-void* IndexTheFile_MT(void* arguments) {
+void IndexTheFile_MT(void* arguments) {
   FILE *cfPtr;
   // Unpack the arguments
-  struct indexHTArgs* args = (struct indexHTArgs*) arguments;
-
-  pthread_mutex_lock(&m_open);
-  cfPtr = fopen(args->file, "r");
-  pthread_mutex_unlock(&m_open);
+  struct indexMTArgs* args = (struct indexMTArgs*) arguments;
+  char* file = args->file;
+  uint64_t doc_id = args->doc_id;
+  Index index = args->index;
+printf("file name: %s, id: %ld\n", file, doc_id);
+  cfPtr = fopen(file, "r");
 
   if (cfPtr == NULL) {
     printf("File could not be opened\n");
-    return NULL;
+    return;
   } else {
     char buffer[BUFFER_SIZE];
     int row = 0;
@@ -208,7 +209,7 @@ void* IndexTheFile_MT(void* arguments) {
         continue;
       }
       pthread_mutex_lock(&m_add);
-      int result = AddMovieTitleToIndex(args->index, movie, args->doc_id, row);
+      int result = AddMovieTitleToIndex(index, movie, doc_id, row);
       pthread_mutex_unlock(&m_add);
 
       if (result < 0) {
@@ -219,6 +220,7 @@ void* IndexTheFile_MT(void* arguments) {
     }
     fclose(cfPtr);
   }
+printf("End of thread for file %s\n", file);
 }
 
 // Takes a linkedlist of movies, and builds a hashtable based on the given field

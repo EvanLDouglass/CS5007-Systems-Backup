@@ -65,7 +65,7 @@ void doPrep(char *dir) {
 
   // Index the files
   printf("Parsing and indexing files...\n");
-  ParseTheFiles_HT(docs, docIndex);
+  ParseTheFiles_MT(docs, docIndex);
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 
@@ -94,7 +94,7 @@ void BenchmarkMovieSet(DocIdMap docs) {
 
   // Index the files
   printf("Parsing and indexing files...\n");
-  ParseTheFiles_HT(docs, docIndex);
+  ParseTheFiles_MT(docs, docIndex);
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 

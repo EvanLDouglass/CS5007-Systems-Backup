@@ -20,14 +20,14 @@ all: main indexer benchmarker
 
 
 main: main.c $(OBJS)
-	gcc -Wall -g -o main main.c $(OBJS) -L. libHtll.a
+	gcc -Wall -g -o main main.c $(OBJS) -lpthread -L. libHtll.a
 	@echo ===========================
 	@echo Run main by running ./main dir/
 	@echo \(where dir is the directory to look for files to index\)
 	@echo ===========================
 
 indexer: example_indexer.c $(OBJS)
-	gcc -Wall -g -o indexer example_indexer.c $(OBJS) -L. libHtll.a
+	gcc -Wall -g -o indexer example_indexer.c $(OBJS) -lpthread -L. libHtll.a
 	@echo ===========================
 	@echo Run indexer by running ./indexer -X filename
 	@echo \(X is the field to index by, filename is the file of movies to index\)
