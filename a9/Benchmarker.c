@@ -65,7 +65,7 @@ void doPrep(char *dir) {
 
   // Index the files
   printf("Parsing and indexing files...\n");
-  ParseTheFiles_MT(docs, docIndex);
+  ParseTheFiles(docs, docIndex);
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 
@@ -181,7 +181,6 @@ int main(int argc, char *argv[]) {
   printf("Memory usage: \n");
 
   getMemory();
-  DestroyOffsetIndex(docIndex);
   printf("Destroyed OffsetIndex\n");
   getMemory();
   // =======================
@@ -196,13 +195,14 @@ int main(int argc, char *argv[]) {
   printf("Took %f seconds to execute. \n", cpu_time_used);
   printf("Memory usage: \n");
   getMemory();
-  DestroyTypeIndex(movie_index);
   printf("Destroyed TypeIndex\n");
   getMemory();
   // ======================
 
+  DestroyOffsetIndex(docIndex);
+  DestroyTypeIndex(movie_index);
   DestroyDocIdMap(docs);
-  printf("\n\nDestroyed DocIdMap\n");
+  printf("\n\nDestroyed All Indexes\n");
   getMemory();
 }
 
