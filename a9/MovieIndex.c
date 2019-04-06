@@ -20,12 +20,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <pthread.h>
 
 #include "MovieIndex.h"
 #include "htll/LinkedList.h"
 #include "htll/Hashtable.h"
 #include "Movie.h"
 #include "MovieSet.h"
+
 
 void DestroyMovieSetWrapper(void *movie_set) {
   DestroyMovieSet((MovieSet)movie_set);

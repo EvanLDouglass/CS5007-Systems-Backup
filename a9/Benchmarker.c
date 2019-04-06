@@ -94,7 +94,7 @@ void BenchmarkMovieSet(DocIdMap docs) {
 
   // Index the files
   printf("Parsing and indexing files...\n");
-  ParseTheFiles_MT(docs, docIndex);
+  ParseTheFiles(docs, docIndex);
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 
