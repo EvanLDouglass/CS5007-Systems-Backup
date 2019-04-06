@@ -134,7 +134,6 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[1].doc_id = kv.key;
       args[1].index = index;
       pthread_create(&p2, NULL, (void*)IndexTheFile_MT, (void*)&args[1]);
-      HTIteratorNext(iter);
     }
 
     // Third thread
@@ -145,7 +144,6 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[2].doc_id = kv.key;
       args[2].index = index;
       pthread_create(&p3, NULL, (void*)IndexTheFile_MT, (void*)&args[2]);
-      HTIteratorNext(iter);
     }
 
     // Fourth thread
@@ -156,9 +154,8 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[3].doc_id = kv.key;
       args[3].index = index;
       pthread_create(&p4, NULL, (void*)IndexTheFile_MT, (void*)&args[3]); 
-      HTIteratorNext(iter);
     }
-/*
+
     // Last thread
     if (HTIteratorHasMore(iter) != 0) {
       HTIteratorNext(iter);
@@ -167,18 +164,19 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[4].doc_id = kv.key;
       args[4].index = index;
       pthread_create(&p5, NULL, (void*)IndexTheFile_MT, (void*)&args[4]); 
-      HTIteratorNext(iter);
     }
-*/
+
     // Wait for the threads before moving on
     pthread_join(p1, NULL);
     pthread_join(p2, NULL);
     pthread_join(p3, NULL);
     pthread_join(p4, NULL);
-    //pthread_join(p5, NULL);
+    pthread_join(p5, NULL);
 
     if (HTIteratorHasMore(iter) == 0) {
       break;
+    } else {
+      HTIteratorNext(iter);
     }
   }
 
@@ -196,7 +194,7 @@ void IndexTheFile_MT(void* arguments) {
   char* file = args->file;
   uint64_t doc_id = args->doc_id;
   Index index = args->index;
-printf("file: %s\n", file);
+
   cfPtr = fopen(file, "r");
 
   if (cfPtr == NULL) {
@@ -223,7 +221,6 @@ printf("file: %s\n", file);
     }
     fclose(cfPtr);
   }
-puts("end thread");
 }
 
 // Takes a linkedlist of movies, and builds a hashtable based on the given field

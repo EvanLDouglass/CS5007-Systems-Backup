@@ -179,9 +179,6 @@ int main(int argc, char *argv[]) {
   cpu_time_used = ((double) (end2 - start2)) / CLOCKS_PER_SEC;
   printf("Took %f seconds to execute. \n", cpu_time_used);
   printf("Memory usage: \n");
-
-  getMemory();
-  printf("Destroyed OffsetIndex\n");
   getMemory();
   // =======================
 
@@ -194,8 +191,6 @@ int main(int argc, char *argv[]) {
   cpu_time_used = ((double) (end2 - start2)) / CLOCKS_PER_SEC;
   printf("Took %f seconds to execute. \n", cpu_time_used);
   printf("Memory usage: \n");
-  getMemory();
-  printf("Destroyed TypeIndex\n");
   getMemory();
   // ======================
 

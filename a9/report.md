@@ -23,39 +23,33 @@ This is because the TypeIndex has to parse each line into a `Movie` at the outse
 
 Results of the initial benchmarker test are below.
 ```
-Created DocIdMap
-Cur Real Mem: 772       Peak Real Mem: 772       Cur VirtMem: 4532      PeakVirtMem: 4532
-
-
-Building the OffsetIndex
-Parsing and indexing files...
 22197 entries in the index.
-Took 0.306884 seconds to execute.
+Took 0.340117 seconds to execute.
 Memory usage:
-Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
-Destroyed OffsetIndex
-Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
+Cur Real Mem: 28744     Peak Real Mem: 28744     Cur VirtMem: 33572     PeakVirtMem: 33572
 
 
 Building the TypeIndex
 10 entries in the index.
-Took 0.089401 seconds to execute.
+Took 0.112338 seconds to execute.
 Memory usage:
-Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
-Destroyed TypeIndex
-Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
+Cur Real Mem: 36928     Peak Real Mem: 36928     Cur VirtMem: 41756     PeakVirtMem: 41756
 
 
-Destroyed DocIdMap
-Cur Real Mem: 28916     Peak Real Mem: 28916     Cur VirtMem: 31592     PeakVirtMem: 31592
+Destroyed All Indexes
+Cur Real Mem: 36928     Peak Real Mem: 36928     Cur VirtMem: 41756     PeakVirtMem: 41756
 ```
 These results are slightly misleading at first glance, but seem to confirm my hypotheses.
 We can see that building the OffsetIndex took a longer time than the TypeIndex, which is the opposite of what I hypothesized.
 However, there are nearly 2000 times more entries in the OffsetIndex and it only took about 3.5 times longer to build.
 This suggests that the OffsetIndex is *much* faster than the TypeIndex to build.
 
-The raw values for memory usage of each index is, interestingly, the exact same.
-However, there are only 10 entries in the TypeIndex and over 2200 in the OffsetIndex.
+The raw values for memory usage of each index was the exact same the first time I ran this benchmark.
+Because of a piazza post, I have since changed the code so that all of the structures are freed at the end of main, instead of as soon as the test was over.
+This allows us to see the memory usage of each test though the relative differences.
+Doing the math, we can see that for the TypeIndex there is 8184 bytes of "Cur Real Mem" and 8184 bytes of "Cur VirtMem".
+These are the same numbers for the "Peak" categories.
+Again, while the OffsetIndex uses more memory overall, it also has 2000 more entries and uses only (about) 3.5 times more real memory and 4.1 times more virtual memory.
 We see again that the TypeIndex is *much* more memory intensive than the OffsetIndex.
 
 Created by Evan Douglass
