@@ -39,7 +39,6 @@ struct indexMTArgs {
   Index index;
 };
 
-pthread_mutex_t m_open = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t m_add = PTHREAD_MUTEX_INITIALIZER;
 
 //=======================
@@ -181,7 +180,6 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
   }
 
   DestroyHashtableIterator(iter);
-  pthread_mutex_destroy(&m_open);
   pthread_mutex_destroy(&m_add);
   return 0;
 }
