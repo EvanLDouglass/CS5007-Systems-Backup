@@ -104,7 +104,7 @@ void IndexTheFile(char *file, uint64_t doc_id, Index index) {
 }
 
 /**
- * Parses the files that are in the provided DocIdMap, 
+ * Parses the files that are in the provided DocIdMap,
  * utilizing multithreading.
  * Builds an OffsetIndex.
  */
@@ -152,7 +152,7 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[3].file = kv.value;
       args[3].doc_id = kv.key;
       args[3].index = index;
-      pthread_create(&p4, NULL, (void*)IndexTheFile_MT, (void*)&args[3]); 
+      pthread_create(&p4, NULL, (void*)IndexTheFile_MT, (void*)&args[3]);
     }
 
     // Last thread
@@ -162,7 +162,7 @@ int ParseTheFiles_MT(DocIdMap docs, Index index) {
       args[4].file = kv.value;
       args[4].doc_id = kv.key;
       args[4].index = index;
-      pthread_create(&p5, NULL, (void*)IndexTheFile_MT, (void*)&args[4]); 
+      pthread_create(&p5, NULL, (void*)IndexTheFile_MT, (void*)&args[4]);
     }
 
     // Wait for the threads before moving on

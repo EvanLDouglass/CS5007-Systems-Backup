@@ -76,6 +76,7 @@ void runQueryBenchmark1(char *term, char* genre) {
   // a nice report from them.
   SearchResultIter results = FindMovies(docIndex, term);
   LinkedList movies = CreateLinkedList();
+  LinkedList forDestroy = CreateLinkedList();
 
   if (results == NULL) {
     printf("No results for this term. Please try another.\n");
@@ -101,6 +102,8 @@ void runQueryBenchmark1(char *term, char* genre) {
         InsertLinkedList(movies, movie);
       }
     }
+    InsertLinkedList(forDestroy, movie);
+
     // Check if there are more
     while (SearchResultIterHasMore(results) != 0) {
       result =  SearchResultNext(results);
@@ -119,6 +122,7 @@ void runQueryBenchmark1(char *term, char* genre) {
           InsertLinkedList(movies, movie);
         }
       }
+      InsertLinkedList(forDestroy, movie);
     }
 
     free(sr);
@@ -130,7 +134,8 @@ void runQueryBenchmark1(char *term, char* genre) {
   } else {
     OutputListOfMovies(movies, "Results", stdout);
   }
-  DestroyLinkedList(movies, &DestroyMovieWrapper);
+  DestroyLinkedList(forDestroy, &DestroyMovieWrapper);
+  DestroyLinkedList(movies, &NullFree);
 }
 
 // Searches for genre first, then term
