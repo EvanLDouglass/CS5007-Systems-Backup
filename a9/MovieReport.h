@@ -43,6 +43,9 @@ void OutputMovieSet(LinkedList movies, char* desc);
 
 // Same as above but used a Linked List and you can designate a file to output to
 void OutputListOfMovies(LinkedList movie_list, char *desc, FILE *file);
+
+// Outputs a list of movies but filters by title
+void OutputListOfMoviesFilterBy(LinkedList movie_list, char *desc, FILE *file, char* filter);
 /**
  * Writes the report to the specified output FILE.
  */

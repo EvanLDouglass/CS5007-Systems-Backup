@@ -133,18 +133,36 @@ void runQueryBenchmark1(char *term, char* genre) {
   DestroyLinkedList(movies, &DestroyMovieWrapper);
 }
 
+// Searches for genre first, then term
+void runQueryBenchmark2(char *genre, char* term) {
+  HTKeyValue kvp;
+  uint64_t genre_key = FNVHash64((unsigned char*)genre, strlen(genre));
+
+  int result = LookupInHashtable(movie_index->ht,
+                                 genre_key,
+                                 &kvp);
+  if (result < 0) {
+	printf("genre %s not found\n", genre);
+	return;
+  }
+  // Get movies and delete movies if word not in title
+  SetOfMovies set = (SetOfMovies)kvp.value;
+  LinkedList list = set->movies;
+  OutputListOfMoviesFilterBy(list, "Results", stdout, "Seattle");
+}
+
 void BenchmarkSetOfMovies(DocIdMap docs) {
   HTIter iter = CreateHashtableIterator(docs);
   // Now go through all the files, and insert them into the index.
   HTKeyValue kv;
   HTIteratorGet(iter, &kv);
   LinkedList movie_list  = ReadFile((char*)kv.value);
-  movie_index = BuildMovieIndex(movie_list, Type);
+  movie_index = BuildMovieIndex(movie_list, Genre);
 
   while (HTIteratorHasMore(iter) != 0) {
     HTIteratorGet(iter, &kv);
     movie_list = ReadFile((char*)kv.value);
-    AddToMovieIndex(movie_index, movie_list, Type);
+    AddToMovieIndex(movie_index, movie_list, Genre);
     HTIteratorNext(iter);
   }
 
@@ -270,6 +288,17 @@ int main(int argc, char *argv[]) {
   getMemory();
   // ======================
 
+  // ======================
+  // Benchmark Search: term->genre
+  puts("\n\nSearching for \"Crime\" with \"Seattle\" in title");
+  start2 = clock();
+  runQueryBenchmark2("Crime", "Seattle");
+  end2 = clock();
+  cpu_time_used = ((double) (end2 - start2)) / CLOCKS_PER_SEC;
+  printf("Took %f seconds to execute. \n", cpu_time_used);
+  printf("Memory usage: \n");
+  getMemory();
+  // ======================
 
 
   DestroyOffsetIndex(docIndex);

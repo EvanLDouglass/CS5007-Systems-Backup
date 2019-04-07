@@ -13,6 +13,8 @@ Thus, every entry in a TypeIndex is several times bigger than an entry in an Off
 
 I think the TypeIndex will be faster to search. Unlike the OffestIndex, the TypeIndex has all of the data it needs to make a report saved in memory already.
 The OffsetIndex saves only a reference to a file and line, then has to go grab each line, parse them each into a `Movie` and then output the report.
+When we make the search "fair", by searching for a term in the title and an genre - in this case "Seattle" and "Crime" respectively - The TypeIndex will have to do some extra searching through title strings.
+But this is much less than the OffsetIndex still has to search through in the files.
 All the processing that needs to be done on the fly in an OffsetIndex should make it slower than the TypeIndex.
 
 ### Which Index is faster to build?
@@ -23,21 +25,7 @@ This is because the TypeIndex has to parse each line into a `Movie` at the outse
 
 Results of the initial benchmarker test are below.
 ```
-22197 entries in the index.
-Took 0.340117 seconds to execute.
-Memory usage:
-Cur Real Mem: 28744     Peak Real Mem: 28744     Cur VirtMem: 33572     PeakVirtMem: 33572
 
-
-Building the TypeIndex
-10 entries in the index.
-Took 0.112338 seconds to execute.
-Memory usage:
-Cur Real Mem: 36928     Peak Real Mem: 36928     Cur VirtMem: 41756     PeakVirtMem: 41756
-
-
-Destroyed All Indexes
-Cur Real Mem: 36928     Peak Real Mem: 36928     Cur VirtMem: 41756     PeakVirtMem: 41756
 ```
 These results are slightly misleading at first glance, but seem to confirm my hypotheses.
 We can see that building the OffsetIndex took a longer time than the TypeIndex, which is the opposite of what I hypothesized.
