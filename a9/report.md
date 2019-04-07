@@ -90,7 +90,16 @@ The "Title First" search has to do much more processing than that, including ite
 
 From here on I will only be including information on the `MovieSet` Benchmark, as it is the only one affected by multi-threading.
 
-
+With the machine still using one core, I found that the Benchmark ran slower when using multi-threading than when not.
+It also used slightly more memory
+```
+22197 entries in the index.
+Took 0.322125 seconds to execute.
+Memory usage:
+Cur Real Mem: 29036     Peak Real Mem: 29036     Cur VirtMem: 367184    PeakVirtMem: 375380
+```
+This is to be expected since the machine is really conducting something more like *pseudo-multi-threading*.
+It will naturally take more time because of the overhead needed to create new threads and use mutex locks.
 
 Created by Evan Douglass
 April 03 2019
