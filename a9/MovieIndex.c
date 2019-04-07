@@ -225,3 +225,18 @@ MovieSet GetMovieSet(Index index, const char *term) {
   printf("returning movieset\n");
   return (MovieSet)kvp.value;
 }
+
+SetOfMovies GetSetOfMovies(Index index, const char *term) {
+  HTKeyValue kvp;
+  int result = LookupInHashtable(index->ht,
+                                 FNVHash64((unsigned char*)term,
+                                           (unsigned int)strlen(term)),
+                                 &kvp);
+  if (result < 0) {
+    printf("term couln't be found: %s \n", term);
+    return NULL;
+  }
+  printf("returning SetOfMovies\n");
+  return (SetOfMovies)kvp.value;
+}
+

@@ -41,6 +41,8 @@ void PrintReport(Index index);
  */
 void OutputMovieSet(LinkedList movies, char* desc);
 
+// Same as above but used a Linked List and you can designate a file to output to
+void OutputListOfMovies(LinkedList movie_list, char *desc, FILE *file);
 /**
  * Writes the report to the specified output FILE.
  */

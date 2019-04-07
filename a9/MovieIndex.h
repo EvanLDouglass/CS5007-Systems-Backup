@@ -117,4 +117,6 @@ Index CreateIndex();
  */
 uint64_t ComputeKey(Movie* movie, enum IndexField);
 
+// Gets a Set Of Moives
+SetOfMovies GetSetOfMovies(Index index, const char *term);
 #endif

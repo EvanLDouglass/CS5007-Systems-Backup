@@ -1,3 +1,5 @@
+// Modified by Evan Douglass, April 03 2019.
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,6 +71,68 @@ void doPrep(char *dir) {
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 
+void runQueryBenchmark1(char *term, char* genre) {
+  // Figure out how to get a set of Movies and create
+  // a nice report from them.
+  SearchResultIter results = FindMovies(docIndex, term);
+  LinkedList movies = CreateLinkedList();
+
+  if (results == NULL) {
+    printf("No results for this term. Please try another.\n");
+    return;
+  } else {
+    SearchResult sr = (SearchResult)malloc(sizeof(*sr));
+    if (sr == NULL) {
+      printf("Couldn't malloc SearchResult in main.c\n");
+      return;
+    }
+    int result;
+    char *filename;
+
+    // Get the last
+    SearchResultGet(results, sr);
+    filename = GetFileFromId(docs, sr->doc_id);
+
+    Movie *movie;
+    CreateMovieFromFileRow(filename, sr->row_id, &movie);
+    for (int i = 0; i < NUM_GENRES; i++) {
+      if (movie->genres[i] != NULL && strcmp(movie->genres[i], genre) == 0) {
+        printf("genre: %s\n", movie->genres[i]);
+        InsertLinkedList(movies, movie);
+      }
+    }
+    // Check if there are more
+    while (SearchResultIterHasMore(results) != 0) {
+      result =  SearchResultNext(results);
+      if (result < 0) {
+        printf("error retrieving result\n");
+        break;
+      }
+      SearchResultGet(results, sr);
+      char *filename = GetFileFromId(docs, sr->doc_id);
+
+      Movie *movie;
+      CreateMovieFromFileRow(filename, sr->row_id, &movie);
+      for (int i = 0; i < NUM_GENRES; i++) {
+        if (movie->genres[i] != NULL && strcmp(movie->genres[i], genre) == 0) {
+          printf("genre: %s\n", movie->genres[i]);
+          InsertLinkedList(movies, movie);
+        }
+      }
+    }
+
+    free(sr);
+    DestroySearchResultIter(results);
+  }
+  // Now that you have all the search results, print them out nicely.
+  if (NumElementsInLinkedList(movies) == 0) {
+    puts("Empty List");
+  } else {
+    OutputListOfMovies(movies, "Results", stdout);
+  }
+  DestroyLinkedList(movies, &DestroyMovieWrapper);
+}
+
 void BenchmarkSetOfMovies(DocIdMap docs) {
   HTIter iter = CreateHashtableIterator(docs);
   // Now go through all the files, and insert them into the index.
@@ -94,7 +158,7 @@ void BenchmarkMovieSet(DocIdMap docs) {
 
   // Index the files
   printf("Parsing and indexing files...\n");
-  ParseTheFiles(docs, docIndex);
+  ParseTheFiles_MT(docs, docIndex);
   printf("%d entries in the index.\n", NumElemsInHashtable(docIndex->ht));
 }
 
@@ -193,6 +257,20 @@ int main(int argc, char *argv[]) {
   printf("Memory usage: \n");
   getMemory();
   // ======================
+
+  // ======================
+  // Benchmark Search: term->genre
+  puts("\n\nSearching for \"Seattle\" with genre == \"Crime\"");
+  start2 = clock();
+  runQueryBenchmark1("Seattle", "Crime");
+  end2 = clock();
+  cpu_time_used = ((double) (end2 - start2)) / CLOCKS_PER_SEC;
+  printf("Took %f seconds to execute. \n", cpu_time_used);
+  printf("Memory usage: \n");
+  getMemory();
+  // ======================
+
+
 
   DestroyOffsetIndex(docIndex);
   DestroyTypeIndex(movie_index);
