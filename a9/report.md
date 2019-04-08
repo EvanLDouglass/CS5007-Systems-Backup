@@ -172,6 +172,82 @@ So, if the bulk of the work is under a lock, then all the threads will be bottle
 There is also the extra overhead of creating 5 threads during every iteration of a `while` loop in `ParseTheFiles_MT`.
 Perhaps both of these factors together lead to a slower execution time.
 
+### Running the Benchmark on a larger data set
+
+The same pattern of results occured when Benchmarking on a larger set of files: the `data` folder from assignment 7.
+In order to complete the tests in a reasonable amount of time, I reduced the folder to about half of it's original size.
+```
+638078 entries in the index.
+Took 26.129372 seconds to execute.
+Memory usage:
+Cur Real Mem: 1236960   Peak Real Mem: 1236960   Cur VirtMem: 1241716   PeakVirtMem: 1241716
+
+
+Building the TypeIndex
+55 entries in the index.
+Took 14.266847 seconds to execute.
+Memory usage:
+Cur Real Mem: 2159376   Peak Real Mem: 2159376   Cur VirtMem: 2164132   PeakVirtMem: 2164132
+
+
+Searching for "Seattle" with genre == "Crime"
+returning movieset
+Getting docs for movieset term: "seattle"
+genre: Crime
+indexType: Results
+1 items
+        The Seattle Story
+Took 3.040472 seconds to execute.
+Memory usage:
+Cur Real Mem: 2159376   Peak Real Mem: 2159376   Cur VirtMem: 2164264   PeakVirtMem: 2164264
+
+
+Searching for "Crime" with "Seattle" in title
+indexType: Results
+113943 items
+        Seattle/Tacoma
+        The Seattle Story
+        Seattle, WA: Long Walk Home
+Took 0.045972 seconds to execute.
+Memory usage:
+Cur Real Mem: 2159376   Peak Real Mem: 2159376   Cur VirtMem: 2164264   PeakVirtMem: 2164264
+
+
+Destroyed All Indexes
+Cur Real Mem: 2152960   Peak Real Mem: 2159376   Cur VirtMem: 2157700   PeakVirtMem: 2164264
+```
+Before doing this Benchmark with the multi-threaded Benchmarker.c, there is something to note.
+The search results using different methods have different results.
+Specifically, the title-then-genre search has a movie also in the genre-then-title search, but the genre-then-title search has more results than the former.
+Given more time, this is something I would like to look into, because one or both of these functions are not doing what they are supposed to.
+It is likely that the differences here affected the outcome of the test.
+Of course, the ratio between the times would probably not change much either.
+The genre-then-title search is 66 times faster than the title-then-genre search, even though there may be flaws.
+
+Now for the multi-threaded results. I will only show the OffsetIndex results here, as that is the only test affected.
+```
+Building the OffsetIndex
+Parsing and indexing files...
+638078 entries in the index.
+Took 27.180565 seconds to execute.
+Memory usage:
+Cur Real Mem: 1237120   Peak Real Mem: 1237120   Cur VirtMem: 1422324   PeakVirtMem: 1496056
+```
+Again, while the results are close, the multi-threaded version is a second slower than the serial version.
+
+## Part 3
+
+### How to change the system to support other types of queries?
+
+This is an interesting question.
+Based on the results above, the genre-then-title search is much faster than the opposite, however there are significant differences in the implementations of both.
+Ultimately, in a real movie search system, I wouldn't want to limit a search to anything.
+Ideally, I would be able to search from title, genre, type, and any other field with ease.
+Without getting too deep into the weeds, it seems like we would have to update the system to index by every field available to us.
+This might take the form of several different indexes all working together and passing information amongst one another.
+A web based system like Google would be best, so that we would only need to store the links to each movie instead of instantiate data structures for every search.
+Hopefully this would allow complex searches that could be done very quickly.
+Of course, it would also be nice to simply use a database and query that for the user instead of building our own data storage structures.
 
 Created by Evan Douglass
 April 03 2019
