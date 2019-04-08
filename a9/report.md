@@ -119,7 +119,7 @@ Below are two lines from the output of `lscpu` that show my VM is using two CPUs
 ```
 CPU(s):              2
 On-line CPU(s) list: 0,1
-``` 
+```
 
 My next thought was that my program wasn't actually multi-threading.
 However, I was able to confirm that I am actually multi-threading because when I add some strategic print statements I get something like this 24 times:
@@ -134,7 +134,7 @@ End of thread w/ file id: 6
 End of thread w/ file id: 8
 End of thread w/ file id: 10
 End of thread w/ file id: 9
-``` 
+```
 
 Since the program is multi-threaded, I thought that maybe I was running too many threads for only using 2 CPUs, but when I run the test with only two threads it takes even longer
 ```

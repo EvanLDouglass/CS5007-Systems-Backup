@@ -1,4 +1,5 @@
-/*
+/*  Modified by Evan Douglass, April 2019.
+ *
  *  Created by Adrienne Slaughter
  *  CS 5007 Spring 2019
  *  Northeastern University, Seattle
