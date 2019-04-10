@@ -53,7 +53,9 @@ int open_clientfd(char* hostname, int port) {
   serveraddr.sin_port = htons(port);  // socket from host to server form
 
   // Connect with server, if possible
-  if (connect(clientfd, (SA*)&serveraddr, sizeof(serveraddr)) < 0) {
+  if (connect(clientfd,
+              (struct sockaddr*)&serveraddr,
+              sizeof(serveraddr)) < 0) {
     return -1;
   }
   return clientfd;
