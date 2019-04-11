@@ -23,42 +23,59 @@ char *ip = "127.0.0.1";
  * server running on the given hostname and listening for connections
  * on the given port.
  *
- * This function is described in our textbook: chapter 11, section 4.
+ * This function is adapted from our textbook: chapter 11, section 4.
  *
  * Returns a connection descriptor if successful,
- * -1 on Unix error,
- *  -2 on DNS error
+ * -1 on getaddrinfo failure
+ * -2 on connection failure
  */
 int open_clientfd(char* hostname, int port) {
-  int clientfd;
-  struct hostent *hp;
-  struct sockaddr_in serveraddr;
+  int clientfd;  // result: the file descriptor of a socket
+  struct addrinfo hints, *listp, *p;
 
-  // Make socket descriptor
-  if ((clientfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+  // Get server info
+  memset(&hints, 0, sizeof(struct addrinfo));
+  hints.ai_socktype = SOCK_STREAM;  // Used for TCP
+  // The following flags I don't fully understand, but I'm trusting the
+  // textbook authors to make the right choices here
+  hints.ai_flags = AI_NUMERICSERV;  // using a numeric descriptor
+  hints.ai_flags |= AI_ADDRCONFIG;  // used for connections (line is using a bitwise OR)
+  // Call to get info
+  int result = getaddrinfo(hostname, port, &hints, &listp);
+  if (result) {
+    fprintf(stderr, "Something went wrong in getaddrinfo: %s\n",
+            gai_strerror(result));
     return -1;
   }
 
-  // Get server's IP and port
-  if ((hp = gethostbyname(hostname)) == NULL) {
+  // Walk through returned list to find working connection
+  for (p = listp; p; p = p->ai_next) {
+    // Make a socket descriptor
+    if ((clientfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0) {
+      // Socket failed, move to next
+      continue;
+    }
+
+    // Socket succeeded
+    if (connect(clientfd, p->ai_addr, p->ai_addrlen) != -1) {
+      // Successful connection, exit loop
+      break;
+    } else {
+      // Failed connection, try next in loop
+      close(clientfd);
+    }
+  }
+
+  // Clean memory
+  freeaddrinfo(listp);
+
+  if (!p) {
+    // All connections failed, p is NULL
     return -2;
+  } else {
+    // Success, return socket file descriptor
+    return clientfd;
   }
-
-  // Set socket structures with null values
-  bzero((char*)&serveraddr, sizeof(serveraddr));
-  // Fill in server's socket address structure
-  serveraddr.sin_family = AF_INET;
-  bcopy((char*)hp->h_addr_list[0],
-        (char*)&serveraddr.sin_addr.s_addr, hp->h_length);
-  serveraddr.sin_port = htons(port);  // socket from host to server form
-
-  // Connect with server, if possible
-  if (connect(clientfd,
-              (struct sockaddr*)&serveraddr,
-              sizeof(serveraddr)) < 0) {
-    return -1;
-  }
-  return clientfd;
 }
 
 void RunQuery(char *query) {
