@@ -2,7 +2,8 @@
 
 #define QUERY_CLIENT_H
 
-void RunQueryHelper(int infd, int outfd, const char *query); 
+int open_clientfd(char* hostname, char* port);
+//void RunQueryHelper(int infd, int outfd, const char *query); 
 void RunPrompt();
 
 #endif

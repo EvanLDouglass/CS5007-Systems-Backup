@@ -10,13 +10,14 @@
 #include <arpa/inet.h>
 
 #include "includes/QueryProtocol.h"
-#include "QueryClient.h"
+#include "queryclient.h"
 
-char *port_string = "1500";
+char *port_string;
 unsigned short int port;
-char *ip = "127.0.0.1";
+char *ip;
 
 #define BUFFER_SIZE 1000
+#define MAX_QUERY_LEN 100
 
 /**
  * This is a helper function that makes a connection with a
@@ -26,10 +27,9 @@ char *ip = "127.0.0.1";
  * This function is adapted from our textbook: chapter 11, section 4.
  *
  * Returns a connection descriptor if successful,
- * -1 on getaddrinfo failure
- * -2 on connection failure
+ * exits process with an error message on error.
  */
-int open_clientfd(char* hostname, int port) {
+int open_clientfd(char* hostname, char* port) {
   int clientfd;  // result: the file descriptor of a socket
   struct addrinfo hints, *listp, *p;
 
@@ -43,9 +43,9 @@ int open_clientfd(char* hostname, int port) {
   // Call to get info
   int result = getaddrinfo(hostname, port, &hints, &listp);
   if (result) {
-    fprintf(stderr, "Something went wrong in getaddrinfo: %s\n",
+    fprintf(stderr, "Something went wrong getting server info: %s\n",
             gai_strerror(result));
-    return -1;
+    exit(1);
   }
 
   // Walk through returned list to find working connection
@@ -71,24 +71,82 @@ int open_clientfd(char* hostname, int port) {
 
   if (!p) {
     // All connections failed, p is NULL
-    return -2;
+    fprintf(stderr, "Couldn't make a connection. Please try running the program again.\n");
+    exit(2);
   } else {
     // Success, return socket file descriptor
+    printf("Connected to %s\n\n", hostname);
     return clientfd;
   }
 }
 
+// Prints an error message
+void ProtocolError() {
+  printf("Protocol Error: Please try again.\n");
+}
+
+// Reads from a socket and adds a null terminator to the buffer
+// buffLen should be one less than the size of the buffer to avoid
+// overwriting any part of the response.
+int ReadAddNull(int socket, char* buffer, int buffLen) {
+  int len = read(socket, buffer, buffLen);
+  // Ensure there is a null terminator on the string
+  buffer[len] = '\0';
+  return len;
+}
+
 void RunQuery(char *query) {
- 
-  // Find the address
-
-  // Create the socket
-
   // Connect to the server
+  int sockfd = open_clientfd(ip, port_string);
+  
+  /* 
+   * Do the query-protocol
+   * =====================
+   */
+  char result[1000];
+  // Server sends ACK after connection
+  ReadAddNull(sockfd, result, 999);
+  // Check that protocol is followed
+  if (CheckAck(result) == -1) {
+    ProtocolError();
+    close(sockfd);
+    return;
+  }
 
-  // Do the query-protocol
+  int numResponses;
+  // Write query to server
+  write(sockfd, query, strlen(query));
+  // Get number of results back
+  ReadAddNull(sockfd, result, 999);
+  // Send ACK, check for error
+  if (SendAck(sockfd) == -1) {
+    ProtocolError();
+    close(sockfd);
+    return;
+  }
+  numResponses = atoi(result);
 
-  // Close the connection
+  // Get all the search results
+  for (int i = 0; i < numResponses; i++) {
+    ReadAddNull(sockfd, result, 999);
+    printf("%s\n\n", result);
+    if (SendAck(sockfd) == -1) {
+      ProtocolError();
+      close(sockfd);
+      return;
+    }
+  }
+  
+  // Server sends GOODBY before closing connection
+  ReadAddNull(sockfd, result, 999);
+  if (CheckGoodbye(result) == -1) {
+    ProtocolError();
+    close(sockfd);
+    return;
+  }
+
+  // Close the connection at end of search
+  close(sockfd);
 }
 
 void RunPrompt() {
@@ -113,10 +171,17 @@ void RunPrompt() {
 
 int main(int argc, char **argv) {
   // Check/get arguments
+  if (argc != 3) {
+    printf("Must have two arguments.\n");
+    printf("Usage: queryclient <IP address/hostname> <port number>\n");
+    return 0;
+  }
+  ip = argv[1];
+  port_string = argv[2];
 
   // Get info from user
+  // function runs query from within
+  RunPrompt();
 
-  // Run Query
-  
   return 0;
 }
