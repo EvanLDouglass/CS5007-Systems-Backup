@@ -11,7 +11,7 @@ GTEST_DIR = ${HOME}/src/googletest-release-1.8.0/googletest
 # define useful flags to cc/ld/etc.
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 CXXFLAGS += -g -Wall -Wextra -pthread
-CFLAGS = -g -Wall -I. -I.. -Iincludes -pthread
+CFLAGS = -g -Wall -I. -I.. -Iincludes/ -pthread
 LDFLAGS = -L.
 
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
@@ -35,17 +35,17 @@ multiserver: MultiServer.c
 	-L. libIndexer.a -L. libHtll.a
 
 runserver:
-	./queryserver ../a9/data_small/ 1500
+	./queryserver data_small/ 1500
 
 runmultiserver:
-	./multiserver ../a9/data_small/ 1500
+	./multiserver data_small/ 1500
 
 client: QueryClient.c
 	gcc $(CFLAGS) -g -o queryclient QueryClient.c \
 	-L. libIndexer.a -L. libHtll.a
 
 runclient:
-	./queryclient 127.0.0.1 1500
+	./queryclient localhost 1500
 
 test: test_suite.o $(OBJS) queryclient.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -L. -lHtll

@@ -9,14 +9,14 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#include "includes/QueryProtocol.h"
+#include "QueryProtocol.h"
 #include "queryclient.h"
 
 char *port_string;
 unsigned short int port;
 char *ip;
 
-#define BUFFER_SIZE 1000
+#define BUFFER_SIZE 1500
 #define MAX_QUERY_LEN 100
 
 /**
@@ -27,7 +27,7 @@ char *ip;
  * This function is adapted from our textbook: chapter 11, section 4.
  *
  * Returns a connection descriptor if successful,
- * exits process with an error message on error.
+ * -1 with an error message on error.
  */
 int open_clientfd(char* hostname, char* port) {
   int clientfd;  // result: the file descriptor of a socket
@@ -45,7 +45,7 @@ int open_clientfd(char* hostname, char* port) {
   if (result) {
     fprintf(stderr, "Something went wrong getting server info: %s\n",
             gai_strerror(result));
-    exit(1);
+    return -1;
   }
 
   // Walk through returned list to find working connection
@@ -72,7 +72,7 @@ int open_clientfd(char* hostname, char* port) {
   if (!p) {
     // All connections failed, p is NULL
     fprintf(stderr, "Couldn't make a connection. Please try running the program again.\n");
-    exit(2);
+    return -1;
   } else {
     // Success, return socket file descriptor
     printf("Connected to %s\n\n", hostname);
@@ -103,9 +103,9 @@ void RunQuery(char *query) {
    * Do the query-protocol
    * =====================
    */
-  char result[1000];
+  char result[BUFFER_SIZE];
   // Server sends ACK after connection
-  ReadAddNull(sockfd, result, 999);
+  ReadAddNull(sockfd, result, BUFFER_SIZE-1);
   // Check that protocol is followed
   if (CheckAck(result) == -1) {
     ProtocolError();
@@ -117,8 +117,7 @@ void RunQuery(char *query) {
   // Write query to server
   write(sockfd, query, strlen(query));
   // Get number of results back
-  ReadAddNull(sockfd, result, 999);
-  // Send ACK, check for error
+  ReadAddNull(sockfd, result, BUFFER_SIZE-1);
   if (SendAck(sockfd) == -1) {
     ProtocolError();
     close(sockfd);
@@ -128,7 +127,7 @@ void RunQuery(char *query) {
 
   // Get all the search results
   for (int i = 0; i < numResponses; i++) {
-    ReadAddNull(sockfd, result, 999);
+    ReadAddNull(sockfd, result, BUFFER_SIZE-1);
     printf("%s\n\n", result);
     if (SendAck(sockfd) == -1) {
       ProtocolError();
@@ -138,7 +137,7 @@ void RunQuery(char *query) {
   }
   
   // Server sends GOODBY before closing connection
-  ReadAddNull(sockfd, result, 999);
+  ReadAddNull(sockfd, result, BUFFER_SIZE-1);
   if (CheckGoodbye(result) == -1) {
     ProtocolError();
     close(sockfd);
@@ -150,7 +149,7 @@ void RunQuery(char *query) {
 }
 
 void RunPrompt() {
-  char input[BUFFER_SIZE];
+  char input[MAX_QUERY_LEN];
 
   while (1) {
     printf("Enter a term to search for, or q to quit: ");
