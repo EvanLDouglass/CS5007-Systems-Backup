@@ -39,7 +39,7 @@ int open_clientfd(char* hostname, char* port) {
   // The following flags I don't fully understand, but I'm trusting the
   // textbook authors to make the right choices here
   hints.ai_flags = AI_NUMERICSERV;  // using a numeric descriptor
-  hints.ai_flags |= AI_ADDRCONFIG;  // used for connections (line is using a bitwise OR)
+  hints.ai_flags |= AI_ADDRCONFIG;  // used for connection
   // Call to get info
   int result = getaddrinfo(hostname, port, &hints, &listp);
   if (result) {
@@ -71,7 +71,8 @@ int open_clientfd(char* hostname, char* port) {
 
   if (!p) {
     // All connections failed, p is NULL
-    fprintf(stderr, "Couldn't make a connection. Please try running the program again.\n");
+    fprintf(stderr,
+        "Couldn't make a connection. Please try running the program again.\n");
     return -1;
   } else {
     // Success, return socket file descriptor
@@ -98,8 +99,8 @@ int ReadAddNull(int socket, char* buffer, int buffLen) {
 void RunQuery(char *query) {
   // Connect to the server
   int sockfd = open_clientfd(ip, port_string);
-  
-  /* 
+
+  /*
    * Do the query-protocol
    * =====================
    */
@@ -124,6 +125,9 @@ void RunQuery(char *query) {
     return;
   }
   numResponses = atoi(result);
+  if (numResponses == 0) {
+    puts("No results");
+  }
 
   // Get all the search results
   for (int i = 0; i < numResponses; i++) {
@@ -135,7 +139,7 @@ void RunQuery(char *query) {
       return;
     }
   }
-  
+
   // Server sends GOODBY before closing connection
   ReadAddNull(sockfd, result, BUFFER_SIZE-1);
   if (CheckGoodbye(result) == -1) {

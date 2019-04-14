@@ -67,7 +67,7 @@ int Cleanup() {
  */
 int open_listenfd(char* port) {
   struct addrinfo hints, *listp, *p;
-  int listenfd, optval=1;
+  int listenfd, optval = 1;
 
   // Get a list of server addresses
   memset(&hints, 0, sizeof(struct addrinfo));
@@ -90,7 +90,7 @@ int open_listenfd(char* port) {
     // Text states this will allow the server to accept connections immediately
     // after a termination and restart.
     setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR,
-               (const void*)&optval, sizeof(int));
+               (const void*)&optval, sizeof(optval));
 
     // Bind descriptor to address
     if (bind(listenfd, p->ai_addr, p->ai_addrlen) == 0) {
@@ -191,49 +191,59 @@ int main(int argc, char **argv) {
     SearchResultIter iter;
     ReadAddNull(conn_fd, response, 100);
     iter = FindMovies(docIndex, response);
+    if (iter != NULL) {
+      // Send number of results
+      int numResults = NumResultsInIter(iter);
+      snprintf(response, sizeof(response), "%d", numResults);
+      write(conn_fd, response, strlen(response));
 
-    // Send number of results
-    int numResults = NumResultsInIter(iter);
-    sprintf(response, "%d", numResults);
-    write(conn_fd, response, strlen(response));
-
-    // Get ACK
-    ReadAddNull(conn_fd, response, 100);
-    if (CheckAck(response) == -1) {
-      ProtocolError();
-      close(conn_fd);
-      continue;
-    }
-
-    // Give results to client
-    //SearchResult movieID = malloc(sizeof(SearchResult));
-    while (1) {
-      // Get and write to client
-      struct searchResult movieID;
-      SearchResultGet(iter, &movieID);
-      CopyRowFromFile(&movieID, docs, movieSearchResult);
-      write(conn_fd, movieSearchResult, strlen(movieSearchResult));
-      //free(movieID);
-
-      // Check for ACK
+      // Get ACK
       ReadAddNull(conn_fd, response, 100);
       if (CheckAck(response) == -1) {
         ProtocolError();
-        break;
+        close(conn_fd);
+        continue;
       }
 
-      // Check for more results
-      if (SearchResultIterHasMore(iter)) {
-        SearchResultNext(iter);
-      } else {
-        break;
+      // Give results to client
+      while (1) {
+        // Get and write to client
+        struct searchResult movieID;
+        SearchResultGet(iter, &movieID);
+        CopyRowFromFile(&movieID, docs, movieSearchResult);
+        write(conn_fd, movieSearchResult, strlen(movieSearchResult));
+
+        // Check for ACK
+        ReadAddNull(conn_fd, response, 100);
+        if (CheckAck(response) == -1) {
+          ProtocolError();
+          break;
+        }
+
+        // Check for more results
+        if (SearchResultIterHasMore(iter)) {
+          SearchResultNext(iter);
+        } else {
+          DestroySearchResultIter(iter);
+          break;
+        }
+      }
+    } else {
+      // There were no matching terms
+      // Send number of results
+      write(conn_fd, "0", 1);
+
+      // Get ACK
+      ReadAddNull(conn_fd, response, 100);
+      if (CheckAck(response) == -1) {
+        ProtocolError();
+        close(conn_fd);
+        continue;
       }
     }
 
     // Step 6: Close the socket
     SendGoodbye(conn_fd);
-    //free(movieID);
-    DestroySearchResultIter(iter);
     close(conn_fd);
   }
 
